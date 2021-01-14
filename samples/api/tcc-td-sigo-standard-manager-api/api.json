@@ -1,0 +1,31 @@
+{
+  "standard": [
+    {
+      "id": 1,
+      "uuid": "067d914c-cb19-4f3f-8755-584e0eafe344",
+      "identification": "ISO 9001:2015",
+      "publicationDate": "2015-09-30",
+      "validityStart": "2015-10-30",
+      "title": "Sistemas de gestão da qualidade - Requisitos",
+      "title-global-language": "Quality management systems - Requirements",
+      "Comite": "ABNT/CB-025 Qualidade",
+      "pages": "32",
+      "status": "Em Vigor",
+      "language": "Português",
+      "Organization": "ABNT - Associação Brasileira de Normas Técnicas",
+      "price": {
+        "value": 170,
+        "currency": "BRL"
+      },
+      "objective": "Esta Norma especifica requisitos para um sistema de gestão da qualidade quando uma organização: a) necessita demonstrar sua capacidade para prover consistentemente produtos e serviços que atendam aos requisitos do cliente e aos requisitos estatutários e regulamentares aplicáveis, e b) visa aumentar a satisfação do cliente por meio da aplicação eficaz do sistema, incluindo processos para melhoria do sistema e para a garantia da conformidade com os requisitos do cliente e com os requisitos estatutários e regulamentares aplicáveis.",
+      "url": "http://paginapessoal.utfpr.edu.br/canabarro/iso%209000-2015.pdf/at_download/file",
+      "file": "NORMA%20ISO%2090002015.pdf"
+    },
+    {
+      "publicationDate": "2021-01-13",
+      "identification": "ISO 9002",
+      "title": "Teste",
+      "id": 2
+    }
+  ]
+}

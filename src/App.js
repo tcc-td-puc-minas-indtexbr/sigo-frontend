@@ -1,23 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import {Admin, Resource} from 'react-admin'
+import restProvider from 'ra-data-simple-rest'
 
-function App() {
+import authProvider from './authProvider';
+
+import StandardList from './components/standard/StandardList'
+import StandardCreate from './components/standard/StandardCreate'
+import StandardEdit from "./components/standard/StandardEdit"
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <div>
+        <Admin
+            title="SIGO"
+            dataProvider={restProvider(window.env.API_URL)}
+            authProvider={authProvider}
         >
-          Learn React
-        </a>
-      </header>
+            <Resource name="standard" list={StandardList} create={StandardCreate} edit={StandardEdit} />
+        </Admin>
     </div>
   );
 }
