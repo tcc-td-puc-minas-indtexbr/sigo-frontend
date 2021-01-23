@@ -1,6 +1,8 @@
 import Layout from './components/layout';
+import Empty from './components/layout/empty';
 import Xpto from './pages/Xpto';
 import Foo from './pages/Foo';
+import Login from './pages/Auth/Login';
 
 export type ComponentRoute = {
   path: string,
@@ -25,6 +27,11 @@ const routes: ComponentRoute[] = [
     path: "/blog-posts",
     layout: Layout,
     component: Xpto
+  },
+  {
+    path: "/login",
+    layout: Empty,
+    component: Login
   }
 ];
 
