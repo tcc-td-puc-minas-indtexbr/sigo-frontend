@@ -48,6 +48,8 @@
     "json-server": "^0.16.3"
   },
   "react-dotenv": {
-    "whitelist": ["API_URL"]
+    "whitelist": [
+      "API_URL"
+    ]
   }
 }

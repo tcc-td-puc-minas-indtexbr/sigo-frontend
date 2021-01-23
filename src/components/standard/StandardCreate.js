@@ -7,7 +7,7 @@ const StandardCreate = (props) => {
             <SimpleForm>
                 <TextInput source='identification'></TextInput>
                 <TextInput source='title'></TextInput>
-                <DateInput source='publicationDate'></DateInput>
+                <DateInput source='publication_date'></DateInput>
             </SimpleForm>
         </Create>
     )

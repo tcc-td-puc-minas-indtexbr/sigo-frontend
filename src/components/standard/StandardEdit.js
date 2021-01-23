@@ -9,7 +9,7 @@ const StandardEdit = (props) => {
                 <TextInput disabled source='uuid'></TextInput>
                 <TextInput source='identification'></TextInput>
                 <TextInput source='title'></TextInput>
-                <DateInput source='publicationDate'></DateInput>
+                <DateInput source='publicatio_dDate'></DateInput>
             </SimpleForm>
         </Edit>
     )

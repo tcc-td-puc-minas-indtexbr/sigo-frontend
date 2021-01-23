@@ -7,7 +7,7 @@ const StandardList = (props) => {
             <Datagrid>
                 <TextField source='identification'></TextField>
                 <TextField source='title'></TextField>
-                <DateField source='publicationDate'></DateField>
+                <DateField source='publication_date'></DateField>
                 <EditButton basePath='/standard' />
                 <DeleteButton basePath='/standard' />
             </Datagrid>
