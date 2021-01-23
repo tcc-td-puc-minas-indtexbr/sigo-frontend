@@ -3,7 +3,7 @@ import { ReactNodeLike } from "prop-types";
 import { Container, Row, Col } from "shards-react";
 
 import MainNavbar from "../components/layout/MainNavbar/MainNavbar";
-import MainSidebar from "../components/layout/MainSidebar/MainSidebar";
+import MainSidebar from "../components/layout/MainSidebar";
 import MainFooter from "../components/layout/MainFooter";
 
 type LayoutProps = {
@@ -21,7 +21,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => (
         sm="12"
         tag="main"
       >
-        <MainNavbar />
+        {/* <MainNavbar /> */}
         {children}
         {/* <MainFooter /> */}
       </Col>

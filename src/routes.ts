@@ -20,6 +20,11 @@ const routes: ComponentRoute[] = [
     path: "/blog-overview",
     layout: Layout,
     component: Foo
+  },
+  {
+    path: "/blog-posts",
+    layout: Layout,
+    component: Xpto
   }
 ];
 
