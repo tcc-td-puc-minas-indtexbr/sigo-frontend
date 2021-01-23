@@ -8,7 +8,7 @@ import MainFooter from "./MainFooter";
 
 type LayoutProps = {
   children?: ReactNodeLike
-}
+};
 
 const Layout: React.FC<LayoutProps> = ({ children }) => (
   <Container fluid>
@@ -22,8 +22,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => (
         tag="main"
       >
         <MainNavbar />
-        {children}
-        {/* <MainFooter /> */}
+        <Container className="main-content-container px-4" fluid>
+          {children}
+        </Container>
+        <MainFooter />
       </Col>
     </Row>
   </Container>
