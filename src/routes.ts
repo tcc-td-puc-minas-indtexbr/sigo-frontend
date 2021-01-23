@@ -1,4 +1,4 @@
-import Layout from './layout';
+import Layout from './components/layout';
 import Xpto from './pages/Xpto';
 import Foo from './pages/Foo';
 

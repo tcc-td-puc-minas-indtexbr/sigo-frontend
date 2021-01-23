@@ -33,7 +33,7 @@ const SidebarMainNavbar: React.FC = () => {
         </NavbarBrand>
         <a
           className="toggle-sidebar d-sm-inline d-md-none d-lg-none"
-          onClick={()  => toggleSidebar()}
+          onClick={toggleSidebar}
         >
           <i className="material-icons">&#xE5C4;</i>
         </a>
