@@ -1,0 +1,13 @@
+version: '3.7'
+
+services:
+  sigo-frontend:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    privileged: true
+    volumes:
+      - '.:/app'
+      - '/app/node_modules'
+    ports:
+      - 3001:3000

@@ -8,7 +8,7 @@ import "./shards-dashboard/styles/shards-dashboards.1.1.0.min.css";
 
 const App: React.FC = () => {
   return (
-    <Router basename={process.env.REACT_APP_BASENAME || ""}>
+    <Router>
       <AppProvider>
         {routes.map((route, index) => {
           return (
