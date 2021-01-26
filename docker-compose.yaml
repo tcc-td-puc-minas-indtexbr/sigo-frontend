@@ -4,7 +4,7 @@ services:
   sigo-frontend:
     build:
       context: .
-      dockerfile: ./Dockerfile
+      dockerfile: ./docker/node/Dockerfile
     privileged: true
     volumes:
       - '.:/app'

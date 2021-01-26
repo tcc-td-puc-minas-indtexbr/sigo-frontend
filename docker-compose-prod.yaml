@@ -4,7 +4,7 @@ services:
   sigo-frontend-prod:
     build:
       context: .
-      dockerfile: Dockerfile.prod
+      dockerfile: ./docker/node/Dockerfile.prod
     privileged: true
     ports:
       - 8010:80
