@@ -17,8 +17,8 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "start": "react-dotenv && react-scripts start",
-    "build": "react-dotenv && react-scripts build",
+    "start": "cp .env.dev .env && react-dotenv && react-scripts start",
+    "build": "cp .env.production .env && react-dotenv && react-scripts build",
     "test": "react-dotenv && react-scripts test",
     "eject": "react-dotenv && react-scripts eject",
     "server": "json-server --middlewares ./resources/json-server/middlewares/headers.js --watch samples/api/tcc-td-sigo-standard-manager-api/api.json --port 5000",
