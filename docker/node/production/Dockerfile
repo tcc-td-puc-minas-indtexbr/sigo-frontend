@@ -23,8 +23,6 @@ RUN npm run build
 FROM nginx:stable-alpine
 # COPY --from=build /app/build /usr/share/nginx/html
 
-RUN ls
-
 COPY ./build /var/www
 COPY ./docker/nginx/nginx.conf /etc/nginx/nginx.conf
 # COPY ./docker/nginx/nginx.conf /etc/nginx/conf.d/default.conf
