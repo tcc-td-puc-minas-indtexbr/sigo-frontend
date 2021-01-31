@@ -10,3 +10,5 @@ https://medium.com/yld-blog/deploy-your-create-react-app-with-docker-and-ngnix-6
 
 Fazer o processo do ECR:
 https://www.freecodecamp.org/news/how-to-deploy-a-node-js-application-to-amazon-web-services-using-docker-81c2a2d7225b/
+
+https://mherman.org/blog/dockerizing-a-react-app/
