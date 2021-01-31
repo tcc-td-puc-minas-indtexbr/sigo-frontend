@@ -20,8 +20,9 @@ phases:
   post_build:
     commands:
       - echo Loging in ECR
-      - aws ecr get-login --region sa-east-1 --no-include-email
-#      - aws ecr get-login-password --region sa-east-1
+#      - aws ecr get-login --region sa-east-1 --no-include-email
+      - aws ecr get-login-password --region sa-east-1
+      - docker login --username AWS --password-stdin $1.dkr.ecr.sa-east-1.amazonaws.com
       - echo Pushing docker images
       - ./bin/aws/ecr-docker-push.sh $ACCOUNT_ID
       - echo Generating imagedefinitions.json file
