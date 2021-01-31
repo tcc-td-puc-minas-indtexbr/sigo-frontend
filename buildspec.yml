@@ -12,8 +12,6 @@ phases:
       - npm install
   build:
     commands:
-      - echo Copying env
-      - rm .env | cp .env.production .env
       - npm run build
       - echo Bulding docker image
       - ./bin/aws/ecr-docker-build.sh
