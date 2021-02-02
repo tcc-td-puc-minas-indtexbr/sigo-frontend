@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Container,
   Row,
@@ -13,10 +13,11 @@ import {
   FormFeedback,
 } from "shards-react";
 import Spinner from '../../../components/spinner';
-import AuthService from '../../../service/AuthService';
+import AuthContext from '../../../store/AuthContext';
 
 const Login = () => {
-  const authService = new AuthService();
+  const { login } = useContext(AuthContext);
+  
   const [isLoading, setIsloading] = useState(false);
   const [isInvalid, setIsInvalid] = useState(false);
   const [form, setForm] = useState({
@@ -34,9 +35,9 @@ const Login = () => {
     e.preventDefault();
     setIsloading(true);
 
-    const response = await authService.Login(form);
+    const isLoginSuccess = await login(form);
 
-    if (response.user === undefined) {
+    if (!isLoginSuccess) {
       setIsInvalid(true);
     }
 

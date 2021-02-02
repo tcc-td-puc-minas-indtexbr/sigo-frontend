@@ -3,7 +3,9 @@ type LoginRequest = {
   password: string
 };
 
-type Response = { 
+type Response = {
+  token: string,
+  isSuccess: boolean,
   user: any
 };
 
@@ -19,6 +21,8 @@ class AuthService implements IAuthService {
       return new Promise<Response>(resolve => {
         setTimeout(() => {
           resolve({
+            token: "",
+            isSuccess: false,
             user: undefined
           })
         }, 1000);
@@ -28,15 +32,14 @@ class AuthService implements IAuthService {
     return new Promise<Response>(resolve => {
       setTimeout(() => {
         resolve({
+          token: '0fa97dac-38d4-46d4-8fcc-e5423afdfeaf',
+          isSuccess: true,
           user: {
-            token: '0fa97dac-38d4-46d4-8fcc-e5423afdfeaf',
-            user: {
-              id: '11c69e1b-f536-436a-9ddc-77faf9c42f77',
-              name: 'Michael Scott',
-              email: email,
-              avatarUrl: 'https://i1.wp.com/www.nonada.com.br/wp-content/uploads/2012/08/scarell1.jpg',
-              locale: 'Scranton, PA'
-            }
+            id: '11c69e1b-f536-436a-9ddc-77faf9c42f77',
+            name: 'Michael Scott',
+            role: "admin",
+            email: email,
+            avatarUrl: 'https://i1.wp.com/www.nonada.com.br/wp-content/uploads/2012/08/scarell1.jpg',
           }
         })
       }, 2000);

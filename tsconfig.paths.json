@@ -6,6 +6,7 @@
       "@models/*": ["models/*"],
       "@pages/*": ["pages/*"],
       "@services/*": ["services/*"],
+      "@shared/*": ["shared/*"],
       "@store/*": ["store/*"],
     }
   }
