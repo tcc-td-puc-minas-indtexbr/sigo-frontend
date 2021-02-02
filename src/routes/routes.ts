@@ -1,12 +1,13 @@
-import Layout from './components/layout';
-import Empty from './components/layout/empty';
-import Xpto from './pages/Xpto';
-import Foo from './pages/Foo';
-import Login from './pages/Auth/Login';
+import Layout from '../components/layout';
+import Empty from '../components/layout/empty';
+import Xpto from '../pages/Xpto';
+import Foo from '../pages/Foo';
+import Login from '../pages/Auth/Login';
 
 export type ComponentRoute = {
   path: string,
   exact?: boolean,
+  public?: boolean,
   layout: React.FC,
   component: React.FC
 };
@@ -31,6 +32,7 @@ const routes: ComponentRoute[] = [
   {
     path: "/login",
     layout: Empty,
+    public: true,
     component: Login
   }
 ];

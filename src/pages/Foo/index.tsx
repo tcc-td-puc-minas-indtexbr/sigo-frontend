@@ -1,6 +1,4 @@
-import React, { useContext } from 'react';
-import AppContext from '../../store/AppContext';
-import { Button } from "shards-react";
+import React from 'react';
 import { MDBDataTable } from 'mdbreact';
 
 const columnsConfig = [
@@ -43,8 +41,6 @@ const columnsConfig = [
 ];
 
 const Foo: React.FC = () => {
-  const { toggleSidebar } = useContext(AppContext);
-
   return <MDBDataTable
     className="table-responsive-md"
     striped

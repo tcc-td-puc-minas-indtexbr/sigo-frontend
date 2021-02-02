@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ReactNodeLike } from "prop-types";
 import LoginRequest from "@models/Request/LoginRequest";
 import AuthService from "../../services/AuthService";
@@ -13,7 +13,6 @@ type User = {
 };
 
 type AuthContextProps = {
-  isAuthenticated: boolean;
   token: string;
   user: User;
   login: (request: LoginRequest) => Promise<boolean>;
@@ -33,7 +32,6 @@ const userInitialState = {
 };
 
 const AuthContext = React.createContext<AuthContextProps>({
-  isAuthenticated: false,
   token: "",
   user: userInitialState,
   login: () => Promise.resolve(false),
@@ -42,7 +40,6 @@ const AuthContext = React.createContext<AuthContextProps>({
 
 export const AuthProvider: React.FC<AuthProviderProps> = (props) => {
   const authService = new AuthService();
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [token, setToken] = useState<string>("");
   const [user, setUser] = useState<User>(userInitialState);
 
@@ -56,7 +53,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = (props) => {
     localStorage.setItem(LocalStorageKeys.token, JSON.stringify(response.token));
     setUser(response.user);
     setToken(response.token);
-    setIsAuthenticated(true);
 
     return true;
   };
@@ -66,12 +62,22 @@ export const AuthProvider: React.FC<AuthProviderProps> = (props) => {
     localStorage.setItem(LocalStorageKeys.token, "");
     setUser(userInitialState);
     setToken("");
-    setIsAuthenticated(false);
   };
+
+
+  useEffect(() => {
+    const token = localStorage.getItem(LocalStorageKeys.token);
+    const user = localStorage.getItem(LocalStorageKeys.token);
+
+    if (token !== "" && token !== null && user !== "" && user !== null ) {
+      setUser(JSON.parse(user));
+      setToken(token);
+    }
+
+  }, []);
 
   return (
     <AuthContext.Provider value={{ 
-      isAuthenticated, 
       token, 
       user,
       login,

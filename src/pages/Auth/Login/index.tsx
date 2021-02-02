@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import {
   Container,
   Row,
@@ -17,6 +18,7 @@ import AuthContext from '../../../store/AuthContext';
 
 const Login = () => {
   const { login } = useContext(AuthContext);
+  const history = useHistory();
   
   const [isLoading, setIsloading] = useState(false);
   const [isInvalid, setIsInvalid] = useState(false);
@@ -42,6 +44,7 @@ const Login = () => {
     }
 
     setIsloading(false);
+    history.push("/");
   };
 
   return (
