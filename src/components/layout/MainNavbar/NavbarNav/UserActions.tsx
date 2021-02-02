@@ -39,7 +39,7 @@ const UserActions: React.FC = () => {
           <i className="material-icons">&#xE896;</i> Transactions
           </DropdownItem>
         <DropdownItem divider />
-        <DropdownItem tag={Link} to="/" className="text-danger">
+        <DropdownItem tag={Link} to="/login" className="text-danger">
           <i className="material-icons text-danger">&#xE879;</i> Logout
           </DropdownItem>
       </Collapse>

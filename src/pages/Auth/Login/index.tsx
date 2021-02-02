@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Container,
   Row,
@@ -9,10 +9,40 @@ import {
   Button,
   Form,
   FormInput,
-  FormGroup
+  FormGroup,
+  FormFeedback,
 } from "shards-react";
+import Spinner from '../../../components/spinner';
+import AuthService from '../../../service/AuthService';
 
 const Login = () => {
+  const authService = new AuthService();
+  const [isLoading, setIsloading] = useState(false);
+  const [isInvalid, setIsInvalid] = useState(false);
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
+
+  const setEmail = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setForm({ ...form, email: e.target.value });
+
+  const setPassword = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setForm({ ...form, password: e.target.value });
+
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsloading(true);
+
+    const response = await authService.Login(form);
+
+    if (response.user === undefined) {
+      setIsInvalid(true);
+    }
+
+    setIsloading(false);
+  };
+
   return (
     <Container fluid>
       <Row className="vh-100">
@@ -29,19 +59,35 @@ const Login = () => {
                 <h4 className="pb-2">SIGO</h4>
                 <CardSubtitle>Acesse sua conta</CardSubtitle>
               </Col>
-              <Form>
+              <Form onSubmit={onSubmit}>
                 <FormGroup>
-                  <label htmlFor="#username">Nome de usuário</label>
-                  <FormInput id="#username" placeholder="Nome de usuário" />
+                  <label htmlFor="#email">Email</label>
+                  <FormInput
+                    autoComplete="email"
+                    id="#email"
+                    placeholder="Email"
+                    onChange={setEmail}
+                    required
+                    invalid={isInvalid} />
                 </FormGroup>
                 <FormGroup>
                   <label htmlFor="#password">Senha</label>
-                  <FormInput type="password" id="#password" placeholder="Senha" />
+                  <FormInput
+                    autoComplete="current-password"
+                    type="password"
+                    id="#password"
+                    placeholder="Senha"
+                    onChange={setPassword}
+                    required
+                    invalid={isInvalid} />
+                  <FormFeedback>Email ou senha incorretos.</FormFeedback>
                 </FormGroup>
+                <Col className="text-center pt-2">
+                  {
+                    isLoading ? <Spinner /> : <Button type="submit" pill>Acessar conta</Button>
+                  }
+                </Col>
               </Form>
-              <Col className="text-center pt-2">
-                <Button pill>Acessar conta</Button>
-              </Col>
             </CardBody>
           </Card>
         </Col>
