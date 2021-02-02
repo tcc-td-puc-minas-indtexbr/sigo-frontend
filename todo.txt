@@ -1,0 +1,15 @@
+  
+https://conzatech.com/configurando-o-nginx-como-proxy-reverso-no-docker/
+
+
+https://www.freecodecamp.org/news/docker-nginx-letsencrypt-easy-secure-reverse-proxy-40165ba3aee2/
+
+https://medium.com/@gusiol/hospedando-e-gerenciando-aplica%C3%A7%C3%B5es-num-mesmo-dom%C3%ADnio-com-nginx-proxy-e-portainer-ce13d3dd5e3e
+
+OK - static:
+https://medium.com/yld-blog/deploy-your-create-react-app-with-docker-and-ngnix-653e94ffb537
+
+Fazer o processo do ECR:
+https://www.freecodecamp.org/news/how-to-deploy-a-node-js-application-to-amazon-web-services-using-docker-81c2a2d7225b/
+
+https://mherman.org/blog/dockerizing-a-react-app/

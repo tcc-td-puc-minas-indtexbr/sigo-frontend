@@ -8,6 +8,7 @@ ENV PATH /app/node_modules/.bin:$PATH
 COPY package.json ./
 COPY package-lock.json ./
 
+# python and g++ are mandatory due to Shards-Dashboard
 RUN apk --no-cache --virtual build-dependencies add \
     python \
     make \
