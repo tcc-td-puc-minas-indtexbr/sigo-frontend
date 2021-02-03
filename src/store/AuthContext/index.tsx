@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ReactNodeLike } from "prop-types";
-import LoginRequest from "@models/Request/LoginRequest";
+import LoginRequest from "../../models/Request/LoginRequest";
 import AuthService from "../../services/AuthService";
 import { LocalStorageKeys } from "shared/constants";
 
