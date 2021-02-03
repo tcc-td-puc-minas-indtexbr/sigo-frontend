@@ -5,7 +5,6 @@ import AuthService from "../../services/AuthService";
 import { LocalStorageKeys } from "shared/constants";
 
 type User = {
-  id: string,
   name: string,
   role: string,
   email: string,
@@ -24,7 +23,6 @@ type AuthProviderProps = {
 };
 
 const userInitialState = {
-  id: "",
   name: "",
   role: "",
   email: "",

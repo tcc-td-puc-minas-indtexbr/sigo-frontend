@@ -13,20 +13,11 @@ const Routes: React.FC = () => {
             path={route.path}
             exact={route.exact}
             component={() => {
-
-              if (isAuthenticated()) {
-                if (route.path === "/login")
+              const authenticatedUser = isAuthenticated();
+              if (route.public || (!route.public && authenticatedUser)) {
+                if (route.path === "/login" && authenticatedUser)
                   return <Redirect to="/" />
 
-                return (
-                  <route.layout>
-                    <route.component />
-                  </route.layout>
-                );
-              }
-
-              //TODO remove this duplication
-              if (route.public) {
                 return (
                   <route.layout>
                     <route.component />

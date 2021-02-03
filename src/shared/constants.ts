@@ -4,6 +4,6 @@ interface ILocalStorageKeys {
 };
 
 export const LocalStorageKeys: ILocalStorageKeys = {
-  user: "@storage/user",
-  token: "@storage/token",
+  user: "SIGO_AUTH_USER",
+  token: "SIGO_AUTH_TOKEN",
 };

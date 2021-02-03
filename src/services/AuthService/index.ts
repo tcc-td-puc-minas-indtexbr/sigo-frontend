@@ -35,7 +35,6 @@ class AuthService implements IAuthService {
           token: '0fa97dac-38d4-46d4-8fcc-e5423afdfeaf',
           isSuccess: true,
           user: {
-            id: '11c69e1b-f536-436a-9ddc-77faf9c42f77',
             name: 'Michael Scott',
             role: "admin",
             email: email,

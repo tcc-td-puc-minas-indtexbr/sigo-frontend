@@ -38,13 +38,13 @@ const Login = () => {
     setIsloading(true);
 
     const isLoginSuccess = await login(form);
-
-    if (!isLoginSuccess) {
-      setIsInvalid(true);
-    }
-
+    
+    setIsInvalid(!isLoginSuccess);
     setIsloading(false);
-    history.push("/");
+
+    if (isLoginSuccess) {
+      history.push("/");
+    }
   };
 
   return (
