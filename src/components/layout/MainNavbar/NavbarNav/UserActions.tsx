@@ -1,4 +1,4 @@
-import AuthContext from "../../../../store/AuthContext";
+import AuthContext from "store/AuthContext";
 import React, { useContext, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import {
@@ -28,7 +28,7 @@ const UserActions: React.FC = () => {
       <DropdownToggle caret tag={NavLink} className="text-nowrap px-3" style={{ cursor: "pointer" }}>
         <img
           className="user-avatar rounded-circle mr-2"
-          src={user.avatarUrl}
+          src={user.avatarUrl ?? "https://capenetworks.com/static/images/testimonials/user-icon.svg"}
           alt="User Avatar"
         />{" "}
         <span className="d-none d-md-inline-block">{ user.name }</span>

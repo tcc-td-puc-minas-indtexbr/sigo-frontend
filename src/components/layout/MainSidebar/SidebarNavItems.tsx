@@ -4,9 +4,9 @@ import { Nav } from "shards-react";
 import SidebarNavItem from "./SidebarNavItem";
 
 const menu = [{
-  title: "Blog Dashboard",
-  to: "/blog-overview",
-  htmlBefore: '<i class="material-icons">edit</i>',
+  title: "Gestão de Normas",
+  to: "/standard",
+  htmlBefore: '<i class="material-icons">table_chart</i>',
   htmlAfter: ""
 },
 {

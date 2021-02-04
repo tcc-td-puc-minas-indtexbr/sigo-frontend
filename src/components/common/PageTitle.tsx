@@ -1,9 +1,14 @@
 import React from "react";
 import classNames from "classnames";
-import PropTypes from "prop-types";
 import { Col } from "shards-react";
 
-const PageTitle = ({ title, subtitle, className, ...attrs }) => {
+type PageTitleProps = {
+  title: string,
+  subtitle: string,
+  className: string,
+};
+
+const PageTitle: React.FC<PageTitleProps> = ({ title, subtitle, className }) => {
   const classes = classNames(
     className,
     "text-center",
@@ -12,22 +17,11 @@ const PageTitle = ({ title, subtitle, className, ...attrs }) => {
   );
 
   return (
-    <Col xs="12" sm="4" className={classes} { ...attrs }>
+    <Col xs="12" sm="4" className={classes}>
       <span className="text-uppercase page-subtitle">{subtitle}</span>
       <h3 className="page-title">{title}</h3>
     </Col>
   )
-};
-
-PageTitle.propTypes = {
-  /**
-   * The page title.
-   */
-  title: PropTypes.string,
-  /**
-   * The page subtitle.
-   */
-  subtitle: PropTypes.string
 };
 
 export default PageTitle;

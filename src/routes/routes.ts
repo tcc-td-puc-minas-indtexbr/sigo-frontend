@@ -1,7 +1,7 @@
 import Layout from '../components/layout';
 import Empty from '../components/layout/empty';
 import Xpto from '../pages/Xpto';
-import Foo from '../pages/Foo';
+import Standard from '../pages/Standard';
 import Login from '../pages/Auth/Login';
 
 export type ComponentRoute = {
@@ -20,9 +20,9 @@ const routes: ComponentRoute[] = [
     component: Xpto
   },
   {
-    path: "/blog-overview",
+    path: "/standard",
     layout: Layout,
-    component: Foo
+    component: Standard
   },
   {
     path: "/blog-posts",
