@@ -1,4 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import PageTitle from 'components/common/PageTitle';
+import Table from 'components/datatable';
+import StandardService from 'services/StandardService';
+import Spinner from 'components/spinner';
 import {
   Row,
   Col,
@@ -8,43 +12,79 @@ import {
   Button,
 } from "shards-react";
 
-import PageTitle from 'components/common/PageTitle';
-import Table from 'components/datatable';
-import makeData from './makeData';
 
-const Foo: React.FC = () => {
+const _standardService = new StandardService();
+const Standard: React.FC = () => {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true); //TODO: Improve loading when we have an API
 
   const columns = React.useMemo(
     () => [
       {
-        Header: 'First Name',
-        accessor: 'firstName',
+        Header: 'Identification',
+        accessor: 'identification',
       },
       {
-        Header: 'Last Name',
-        accessor: 'lastName',
+        Header: 'Publish Date',
+        accessor: 'publication_date',
       },
       {
-        Header: 'Age',
-        accessor: 'age',
+        Header: 'Validity Start',
+        accessor: 'validity_start',
       },
       {
-        Header: 'Visits',
-        accessor: 'visits',
+        Header: 'Title',
+        accessor: 'title',
+      },
+      {
+        Header: 'Global Title Language',
+        accessor: 'title_global_language',
+      },
+      {
+        Header: 'Comite',
+        accessor: 'comite',
+      },
+      {
+        Header: 'Pages',
+        accessor: 'pages',
       },
       {
         Header: 'Status',
         accessor: 'status',
       },
       {
-        Header: 'Profile Progress',
-        accessor: 'progress',
+        Header: 'Language',
+        accessor: 'language',
       },
+      {
+        Header: 'Organization',
+        accessor: 'organization',
+      },
+      {
+        Header: 'Price',
+        accessor: 'price',
+      },
+      {
+        Header: 'Currency',
+        accessor: 'currency',
+      },
+      {
+        Header: 'Objective',
+        accessor: 'objective',
+      }
     ],
     []
-  )
+  );
 
-  const data = React.useMemo(() => makeData(1000), [])
+  useEffect(() => {
+    async function getData() {
+      const response = await _standardService.GetAll();
+      setData(response.data);
+      setLoading(false);
+    };
+
+    getData();
+  }, []);
 
   return (
     <>
@@ -62,14 +102,19 @@ const Foo: React.FC = () => {
             </CardHeader>
             <Col>
               <CardBody className="p-0 py-3" style={{ overflow: 'auto' }}>
-                <Table columns={columns} data={data} />
+                {/* TODO: Make a better alignment component */}
+                <div style={{ textAlign: 'center' }}> 
+                  {loading ?
+                    <Spinner />
+                    : data.length > 0 ? <Table columns={columns} data={data} /> : 'No data found'}
+                </div>
               </CardBody>
             </Col>
           </Card>
         </Col>
       </Row>
     </>
-  )
+  );
 }
 
-export default Foo;
+export default Standard;
