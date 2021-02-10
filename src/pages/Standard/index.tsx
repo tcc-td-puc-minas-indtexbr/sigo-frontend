@@ -1,5 +1,4 @@
 import React from 'react';
-import { MDBDataTable } from 'mdbreact';
 import {
   Row,
   Col,
@@ -9,12 +8,44 @@ import {
   Button,
 } from "shards-react";
 
-import { columnsConfig } from './standard-config';
-import { data } from './data';
 import PageTitle from 'components/common/PageTitle';
+import Table from './table';
+import makeData from './makeData';
 
 const Foo: React.FC = () => {
-  const treta = data;
+
+  const columns = React.useMemo(
+    () => [
+      {
+        Header: 'First Name',
+        accessor: 'firstName',
+      },
+      {
+        Header: 'Last Name',
+        accessor: 'lastName',
+      },
+      {
+        Header: 'Age',
+        accessor: 'age',
+      },
+      {
+        Header: 'Visits',
+        accessor: 'visits',
+      },
+      {
+        Header: 'Status',
+        accessor: 'status',
+      },
+      {
+        Header: 'Profile Progress',
+        accessor: 'progress',
+      },
+    ],
+    []
+  )
+
+  const data = React.useMemo(() => makeData(1000), [])
+
   return (
     <>
       <Row noGutters className="page-header py-4">
@@ -25,22 +56,13 @@ const Foo: React.FC = () => {
         <Col>
           <Card small className="mb-4">
             <CardHeader className="border-bottom">
-              <Button className="mb-2 mr-1">
+              <Button className="mb-0 mr-1">
                 Adicionar Norma
-              </Button>              
+              </Button>
             </CardHeader>
             <Col>
-              <CardBody className="p-0 pb-3">
-                <MDBDataTable
-                  className="table-responsive-md"
-                  striped
-                  bordered
-                  hover
-                  data={{
-                    columns: columnsConfig,
-                    data: [{ identification: "asasas" }]
-                  }}
-                />
+              <CardBody className="p-0 py-3" style={{ overflow: 'auto' }}>
+                <Table columns={columns} data={data} />
               </CardBody>
             </Col>
           </Card>

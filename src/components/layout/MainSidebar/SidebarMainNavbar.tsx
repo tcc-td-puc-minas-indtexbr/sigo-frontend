@@ -31,7 +31,8 @@ const SidebarMainNavbar: React.FC = () => {
             )}
           </div>
         </NavbarBrand>
-        <a href="/#"
+        {/* eslint-disable-next-line */}
+        <a href="#"
           className="toggle-sidebar d-sm-inline d-md-none d-lg-none"
           onClick={toggleSidebar}
         >

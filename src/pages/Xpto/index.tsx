@@ -1,14 +1,38 @@
-import React, { useContext } from 'react';
-import AppContext from '../../store/AppContext';
-import { Button } from "shards-react";
+import React from 'react';
+import PageTitle from 'components/common/PageTitle';
+import {
+  Row,
+  Col,
+  Card,
+  CardHeader,
+  CardBody,
+  Button
+} from "shards-react";
 
 const Xpto: React.FC = () => {
-  const { isSidebarVisible, toggleSidebar } = useContext(AppContext);
-
   return (
-    <div>
-      XPTO - {`${isSidebarVisible}`} - <Button onClick={() => toggleSidebar()}>Change sidebar state</Button>
-    </div>
+    <>
+      <Row noGutters className="page-header py-4">
+        <PageTitle title="Gestão de Normas" subtitle="" className="text-sm-left" />
+      </Row>
+
+      <Row>
+        <Col>
+          <Card small className="mb-4">
+            <CardHeader className="border-bottom">
+              <Button className="mb-0 mr-1">
+                Adicionar Norma
+              </Button>
+            </CardHeader>
+            <Col>
+              <CardBody className="p-0 pb-3" styles={{ overflow: "auto" }}>
+                XPTO
+              </CardBody>
+            </Col>
+          </Card>
+        </Col>
+      </Row>
+    </>
   );
 };
 
