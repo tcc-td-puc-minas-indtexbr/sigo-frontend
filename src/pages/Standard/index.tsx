@@ -9,7 +9,7 @@ import {
 } from "shards-react";
 
 import PageTitle from 'components/common/PageTitle';
-import Table from './table';
+import Table from 'components/datatable';
 import makeData from './makeData';
 
 const Foo: React.FC = () => {
