@@ -54,7 +54,7 @@ class StandardService implements IStandardService {
             }
           ]
         })
-      }, 2000);
+      }, 1000);
     });
   };
 };

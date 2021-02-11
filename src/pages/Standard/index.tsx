@@ -11,10 +11,12 @@ import {
   CardBody,
   Button,
 } from "shards-react";
+import { useHistory } from 'react-router-dom';
 
 
 const _standardService = new StandardService();
 const Standard: React.FC = () => {
+  const history = useHistory();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true); //TODO: Improve loading when we have an API
 
@@ -96,7 +98,7 @@ const Standard: React.FC = () => {
         <Col>
           <Card small className="mb-4">
             <CardHeader className="border-bottom">
-              <Button className="mb-0 mr-1">
+              <Button className="mb-0 mr-1" onClick={() => history.push('/standard-form')}>
                 Adicionar Norma
               </Button>
             </CardHeader>
