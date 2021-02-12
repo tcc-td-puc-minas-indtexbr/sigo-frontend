@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react';
 import {
   Form,
   InputGroup,
   InputGroupAddon,
   InputGroupText,
-  FormInput
-} from "shards-react";
+  FormInput,
+} from 'shards-react';
 
 const NavbarSearch: React.FC = () => (
   <Form className="main-navbar__search w-100 d-none d-md-flex d-lg-flex">

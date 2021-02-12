@@ -1,10 +1,10 @@
-import React from "react";
+import React from 'react';
 import {
   FormInput,
   InputGroup,
   InputGroupAddon,
-  InputGroupText
-} from "shards-react";
+  InputGroupText,
+} from 'shards-react';
 
 const InputGroups = () => (
   <div>

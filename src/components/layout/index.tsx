@@ -1,13 +1,13 @@
-import React from "react";
-import { ReactNodeLike } from "prop-types";
-import { Container, Row, Col } from "shards-react";
+import React from 'react';
+import { ReactNodeLike } from 'prop-types';
+import { Container, Row, Col } from 'shards-react';
 
-import MainNavbar from "./MainNavbar";
-import MainSidebar from "./MainSidebar";
-import MainFooter from "./MainFooter";
+import MainNavbar from './MainNavbar';
+import MainSidebar from './MainSidebar';
+import MainFooter from './MainFooter';
 
 type LayoutProps = {
-  children?: ReactNodeLike
+  children?: ReactNodeLike;
 };
 
 const Layout: React.FC<LayoutProps> = ({ children }) => (

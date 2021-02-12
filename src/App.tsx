@@ -3,11 +3,10 @@ import Routes from './routes';
 import { AppProvider } from './store/AppContext';
 import { AuthProvider } from './store/AuthContext';
 
-import "bootstrap/dist/css/bootstrap.min.css";
-import "./shards-dashboard/styles/shards-dashboards.1.1.0.min.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './shards-dashboard/styles/shards-dashboards.1.1.0.min.css';
 
 const App: React.FC = () => {
-
   return (
     <AuthProvider>
       <AppProvider>
@@ -15,6 +14,6 @@ const App: React.FC = () => {
       </AppProvider>
     </AuthProvider>
   );
-}
+};
 
 export default App;

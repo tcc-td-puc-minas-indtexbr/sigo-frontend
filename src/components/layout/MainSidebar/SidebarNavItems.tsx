@@ -1,19 +1,21 @@
-import React from "react";
-import { Nav } from "shards-react";
+import React from 'react';
+import { Nav } from 'shards-react';
 
-import SidebarNavItem from "./SidebarNavItem";
+import SidebarNavItem from './SidebarNavItem';
 
-const menu = [{
-  title: "Gestão de Normas",
-  to: "/standard",
-  htmlBefore: '<i class="material-icons">table_chart</i>',
-  htmlAfter: ""
-},
-{
-  title: "Blog Posts",
-  to: "/blog-posts",
-  htmlBefore: '<i class="material-icons">vertical_split</i>',
-}];
+const menu = [
+  {
+    title: 'Gestão de Normas',
+    to: '/standard',
+    htmlBefore: '<i class="material-icons">table_chart</i>',
+    htmlAfter: '',
+  },
+  {
+    title: 'Blog Posts',
+    to: '/blog-posts',
+    htmlBefore: '<i class="material-icons">vertical_split</i>',
+  },
+];
 
 const SidebarNavItems: React.FC = () => {
   return (
@@ -25,6 +27,6 @@ const SidebarNavItems: React.FC = () => {
       </Nav>
     </div>
   );
-}
+};
 
 export default SidebarNavItems;

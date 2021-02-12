@@ -12,19 +12,19 @@ import {
   FormInput,
   FormGroup,
   FormFeedback,
-} from "shards-react";
+} from 'shards-react';
 import Spinner from '../../../components/spinner';
 import AuthContext from '../../../store/AuthContext';
 
-const Login = () => {
+const Login: React.FC = () => {
   const { login } = useContext(AuthContext);
   const history = useHistory();
-  
+
   const [isLoading, setIsloading] = useState(false);
   const [isInvalid, setIsInvalid] = useState(false);
   const [form, setForm] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
 
   const setEmail = (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -38,12 +38,12 @@ const Login = () => {
     setIsloading(true);
 
     const isLoginSuccess = await login(form);
-    
+
     setIsInvalid(!isLoginSuccess);
     setIsloading(false);
 
     if (isLoginSuccess) {
-      history.push("/");
+      history.push('/');
     }
   };
 
@@ -57,7 +57,7 @@ const Login = () => {
           sm="12"
           tag="main"
         >
-          <Card style={{ maxWidth: "300px" }} className="mx-auto">
+          <Card style={{ maxWidth: '300px' }} className="mx-auto">
             <CardBody>
               <Col className="text-center pb-3">
                 <h4 className="pb-2">SIGO</h4>
@@ -72,7 +72,8 @@ const Login = () => {
                     placeholder="Email"
                     onChange={setEmail}
                     required
-                    invalid={isInvalid} />
+                    invalid={isInvalid}
+                  />
                 </FormGroup>
                 <FormGroup>
                   <label htmlFor="#password">Senha</label>
@@ -83,13 +84,18 @@ const Login = () => {
                     placeholder="Senha"
                     onChange={setPassword}
                     required
-                    invalid={isInvalid} />
+                    invalid={isInvalid}
+                  />
                   <FormFeedback>Email ou senha incorretos.</FormFeedback>
                 </FormGroup>
                 <Col className="text-center pt-2">
-                  {
-                    isLoading ? <Spinner /> : <Button type="submit" pill>Acessar conta</Button>
-                  }
+                  {isLoading ? (
+                    <Spinner />
+                  ) : (
+                    <Button type="submit" pill>
+                      Acessar conta
+                    </Button>
+                  )}
                 </Col>
               </Form>
             </CardBody>

@@ -1,12 +1,12 @@
-import React from "react";
-import { NavLink as RouteNavLink } from "react-router-dom";
-import { NavItem, NavLink } from "shards-react";
+import React from 'react';
+import { NavLink as RouteNavLink } from 'react-router-dom';
+import { NavItem, NavLink } from 'shards-react';
 
 type NavItemProps = {
-  title: string,
-  to: string,
-  htmlBefore?: string,
-  htmlAfter?: string
+  title: string;
+  to: string;
+  htmlBefore?: string;
+  htmlAfter?: string;
 };
 
 const SidebarNavItem: React.FC<{ item: NavItemProps }> = ({ item }) => {
@@ -28,7 +28,7 @@ const SidebarNavItem: React.FC<{ item: NavItemProps }> = ({ item }) => {
         )}
       </NavLink>
     </NavItem>
-  )
+  );
 };
 
 export default SidebarNavItem;

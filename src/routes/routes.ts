@@ -6,41 +6,41 @@ import StandardForm from 'pages/Standard/form';
 import Login from 'pages/Auth/Login';
 
 export type ComponentRoute = {
-  path: string,
-  exact?: boolean,
-  public?: boolean,
-  layout: React.FC,
-  component: React.FC
+  path: string;
+  exact?: boolean;
+  public?: boolean;
+  layout: React.FC;
+  component: React.FC;
 };
 
 const routes: ComponentRoute[] = [
   {
-    path: "/",
+    path: '/',
     exact: true,
     layout: Layout,
-    component: Xpto
+    component: Xpto,
   },
   {
-    path: "/standard",
+    path: '/standard',
     layout: Layout,
-    component: Standard
+    component: Standard,
   },
   {
-    path: "/standard-form",
+    path: '/standard-form',
     layout: Layout,
-    component: StandardForm
+    component: StandardForm,
   },
   {
-    path: "/blog-posts",
+    path: '/blog-posts',
     layout: Layout,
-    component: Xpto
+    component: Xpto,
   },
   {
-    path: "/login",
+    path: '/login',
     layout: Empty,
     public: true,
-    component: Login
-  }
+    component: Login,
+  },
 ];
 
 export default routes;

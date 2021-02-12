@@ -1,6 +1,6 @@
-import AuthContext from "store/AuthContext";
-import React, { useContext, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import AuthContext from 'store/AuthContext';
+import React, { useContext, useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import {
   Dropdown,
   DropdownToggle,
@@ -8,8 +8,8 @@ import {
   DropdownItem,
   Collapse,
   NavItem,
-  NavLink
-} from "shards-react";
+  NavLink,
+} from 'shards-react';
 
 const UserActions: React.FC = () => {
   const { logout, user } = useContext(AuthContext);
@@ -20,36 +20,50 @@ const UserActions: React.FC = () => {
 
   const signout = () => {
     logout();
-    history.push("/login");
-  }
+    history.push('/login');
+  };
 
   return (
     <NavItem tag={Dropdown} caret toggle={toggleUserActions}>
-      <DropdownToggle caret tag={NavLink} className="text-nowrap px-3" style={{ cursor: "pointer" }}>
+      <DropdownToggle
+        caret
+        tag={NavLink}
+        className="text-nowrap px-3"
+        style={{ cursor: 'pointer' }}
+      >
         <img
           className="user-avatar rounded-circle mr-2"
-          src={user.avatarUrl ?? "https://capenetworks.com/static/images/testimonials/user-icon.svg"}
+          src={
+            user.avatarUrl ??
+            'https://capenetworks.com/static/images/testimonials/user-icon.svg'
+          }
           alt="User Avatar"
-        />{" "}
-        <span className="d-none d-md-inline-block">{ user.name }</span>
+        />{' '}
+        <span className="d-none d-md-inline-block">{user.name}</span>
       </DropdownToggle>
-      <Collapse tag={DropdownMenu} right small open={visible} style={{ cursor: "pointer" }}>
+      <Collapse
+        tag={DropdownMenu}
+        right
+        small
+        open={visible}
+        style={{ cursor: 'pointer' }}
+      >
         <DropdownItem tag={Link} to="user-profile">
           <i className="material-icons">&#xE7FD;</i> Profile
-          </DropdownItem>
+        </DropdownItem>
         <DropdownItem tag={Link} to="edit-user-profile">
           <i className="material-icons">&#xE8B8;</i> Edit Profile
-          </DropdownItem>
+        </DropdownItem>
         <DropdownItem tag={Link} to="file-manager-list">
           <i className="material-icons">&#xE2C7;</i> Files
-          </DropdownItem>
+        </DropdownItem>
         <DropdownItem tag={Link} to="transaction-history">
           <i className="material-icons">&#xE896;</i> Transactions
-          </DropdownItem>
+        </DropdownItem>
         <DropdownItem divider />
         <DropdownItem onClick={signout} className="text-danger">
           <i className="material-icons text-danger">&#xE879;</i> Logout
-          </DropdownItem>
+        </DropdownItem>
       </Collapse>
     </NavItem>
   );

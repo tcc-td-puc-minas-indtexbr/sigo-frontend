@@ -1,7 +1,7 @@
 import React from 'react';
 import BTable from 'react-bootstrap/Table';
-import styled from 'styled-components'
-import { useTable, usePagination } from 'react-table'
+import styled from 'styled-components';
+import { useTable, usePagination } from 'react-table';
 
 const Pagination = styled.div`
   display: flex;
@@ -11,12 +11,15 @@ const Pagination = styled.div`
     display: block;
 
     .table-pagination {
-      margin-bottom: 1em
+      margin-bottom: 1em;
     }
   }
 `;
 
-const Table: React.FC<{ columns: any, data: any }> = ({ columns, data }) => {
+const Table: React.FC<{ columns: any[]; data: any[] }> = ({
+  columns,
+  data,
+}) => {
   const {
     getTableProps,
     getTableBodyProps,
@@ -38,52 +41,82 @@ const Table: React.FC<{ columns: any, data: any }> = ({ columns, data }) => {
       data,
       initialState: { pageIndex: 0 },
     },
-    usePagination
-  )
+    usePagination,
+  );
 
   return (
     <>
-      <BTable className="table table-bordered table-striped table-hover" {...getTableProps()}>
+      <BTable
+        className="table table-bordered table-striped table-hover"
+        {...getTableProps()}
+      >
         <thead>
-          {headerGroups.map(headerGroup => (
+          {headerGroups.map((headerGroup) => (
+            /* eslint-disable-next-line */
             <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map(column => (
+              {headerGroup.headers.map((column) => (
+                /* eslint-disable-next-line */
                 <th {...column.getHeaderProps()}>{column.render('Header')}</th>
               ))}
             </tr>
           ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {page.map((row, i) => {
-            prepareRow(row)
+          {page.map((row) => {
+            prepareRow(row);
             return (
+              /* eslint-disable-next-line */
               <tr {...row.getRowProps()}>
-                {row.cells.map(cell => {
-                  return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                {row.cells.map((cell) => {
+                  return (
+                    /* eslint-disable-next-line */
+                    <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                  );
                 })}
               </tr>
-            )
+            );
           })}
         </tbody>
       </BTable>
       <Pagination>
         <div className="table-pagination">
           <div className="btn-group" role="group" aria-label="pagination">
-            <button type="button" className="btn btn-outline-primary" onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+            <button
+              type="button"
+              className="btn btn-outline-primary"
+              onClick={() => gotoPage(0)}
+              disabled={!canPreviousPage}
+            >
               {'<<'}
             </button>
-            <button type="button" className="btn btn-outline-primary" onClick={() => previousPage()} disabled={!canPreviousPage}>
+            <button
+              type="button"
+              className="btn btn-outline-primary"
+              onClick={() => previousPage()}
+              disabled={!canPreviousPage}
+            >
               {'<'}
             </button>
-            <button type="button" className="btn btn-outline-primary" onClick={() => nextPage()} disabled={!canNextPage}>
+            <button
+              type="button"
+              className="btn btn-outline-primary"
+              onClick={() => nextPage()}
+              disabled={!canNextPage}
+            >
               {'>'}
             </button>
-            <button type="button" className="btn btn-outline-primary" onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
+            <button
+              type="button"
+              className="btn btn-outline-primary"
+              onClick={() => gotoPage(pageCount - 1)}
+              disabled={!canNextPage}
+            >
               {'>>'}
             </button>
           </div>
           <span>
-            {' '}Page{' '}
+            {' '}
+            Page{' '}
             <strong>
               {pageIndex + 1} of {pageOptions.length}
             </strong>{' '}
@@ -92,7 +125,11 @@ const Table: React.FC<{ columns: any, data: any }> = ({ columns, data }) => {
         <div>
           <div className="input-group">
             <div className="input-group-prepend">
-              <span className="input-group-text" id="inputGroup-sizing-sm" style={{ color: '#212529' }}>
+              <span
+                className="input-group-text"
+                id="inputGroup-sizing-sm"
+                style={{ color: '#212529' }}
+              >
                 <strong>Go to page:</strong>
               </span>
             </div>
@@ -100,18 +137,19 @@ const Table: React.FC<{ columns: any, data: any }> = ({ columns, data }) => {
               type="number"
               className="form-control"
               defaultValue={pageIndex + 1}
-              onChange={e => {
-                const page = e.target.value ? Number(e.target.value) - 1 : 0
-                gotoPage(page)
+              onChange={(e) => {
+                const page = e.target.value ? Number(e.target.value) - 1 : 0;
+                gotoPage(page);
               }}
             />
-            <select className="custom-select"
+            <select
+              className="custom-select"
               value={pageSize}
-              onChange={e => {
-                setPageSize(Number(e.target.value))
+              onChange={(e) => {
+                setPageSize(Number(e.target.value));
               }}
             >
-              {[10, 20, 30, 40, 50].map(pageSize => (
+              {[10, 20, 30, 40, 50].map((pageSize) => (
                 <option key={pageSize} value={pageSize}>
                   Show {pageSize}
                 </option>
@@ -121,7 +159,7 @@ const Table: React.FC<{ columns: any, data: any }> = ({ columns, data }) => {
         </div>
       </Pagination>
     </>
-  )
-}
+  );
+};
 
 export default Table;

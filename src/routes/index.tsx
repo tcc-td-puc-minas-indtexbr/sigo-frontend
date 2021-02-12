@@ -15,8 +15,8 @@ const Routes: React.FC = () => {
             component={() => {
               const authenticatedUser = isAuthenticated();
               if (route.public || (!route.public && authenticatedUser)) {
-                if (route.path === "/login" && authenticatedUser)
-                  return <Redirect to="/" />
+                if (route.path === '/login' && authenticatedUser)
+                  return <Redirect to="/" />;
 
                 return (
                   <route.layout>
@@ -25,13 +25,13 @@ const Routes: React.FC = () => {
                 );
               }
 
-              return <Redirect to="/login" />
+              return <Redirect to="/login" />;
             }}
           />
         );
       })}
     </Router>
   );
-}
+};
 
 export default Routes;

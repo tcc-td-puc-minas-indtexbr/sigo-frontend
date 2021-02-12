@@ -1,6 +1,6 @@
-import PageTitle from "components/common/PageTitle";
-import React from "react";
-import { useHistory } from "react-router-dom";
+import PageTitle from 'components/common/PageTitle';
+import React from 'react';
+import { useHistory } from 'react-router-dom';
 import {
   ListGroup,
   ListGroupItem,
@@ -11,8 +11,8 @@ import {
   FormSelect,
   Button,
   Card,
-  CardBody
-} from "shards-react";
+  CardBody,
+} from 'shards-react';
 
 const StandardForm: React.FC = () => {
   const history = useHistory();
@@ -20,7 +20,11 @@ const StandardForm: React.FC = () => {
   return (
     <>
       <Row noGutters className="page-header py-4">
-        <PageTitle title="Gestão de Normas" subtitle="Adicionar nova norma" className="text-sm-left" />
+        <PageTitle
+          title="Gestão de Normas"
+          subtitle="Adicionar nova norma"
+          className="text-sm-left"
+        />
       </Row>
 
       <Card small className="mb-4">
@@ -33,7 +37,9 @@ const StandardForm: React.FC = () => {
                     <Form>
                       <Row form>
                         <Col md="4" className="form-group">
-                          <label htmlFor="feIdentification">Identification</label>
+                          <label htmlFor="feIdentification">
+                            Identification
+                          </label>
                           <FormInput
                             id="feIdentification"
                             type="text"
@@ -49,7 +55,9 @@ const StandardForm: React.FC = () => {
                           />
                         </Col>
                         <Col md="4" className="form-group">
-                          <label htmlFor="feValidityStart">Validity Start</label>
+                          <label htmlFor="feValidityStart">
+                            Validity Start
+                          </label>
                           <FormInput
                             id="feValidityStart"
                             type="text"
@@ -64,7 +72,9 @@ const StandardForm: React.FC = () => {
                         </Col>
 
                         <Col md="6" className="form-group">
-                          <label htmlFor="feGlobalTitleLanguage">Global Title Language</label>
+                          <label htmlFor="feGlobalTitleLanguage">
+                            Global Title Language
+                          </label>
                           <FormInput
                             id="feGlobalTitleLanguage"
                             placeholder="Global Title Language"
@@ -111,7 +121,12 @@ const StandardForm: React.FC = () => {
                         </Col>
                       </Row>
                       <Button type="submit">Criar</Button>
-                      <Button className="ml-2" type="button" theme="white" onClick={() => history.goBack()}>
+                      <Button
+                        className="ml-2"
+                        type="button"
+                        theme="white"
+                        onClick={() => history.goBack()}
+                      >
                         Cancelar
                       </Button>
                     </Form>

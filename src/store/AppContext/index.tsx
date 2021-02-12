@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { ReactNodeLike } from "prop-types";
+import React, { useState } from 'react';
+import { ReactNodeLike } from 'prop-types';
 
 type AppContextProps = {
   isSidebarVisible: boolean;
@@ -12,7 +12,7 @@ type AppProviderProps = {
 
 const AppContext = React.createContext<AppContextProps>({
   isSidebarVisible: false,
-  toggleSidebar: () => void(0)
+  toggleSidebar: () => void 0,
 });
 
 export const AppProvider: React.FC<AppProviderProps> = (props) => {
@@ -25,6 +25,6 @@ export const AppProvider: React.FC<AppProviderProps> = (props) => {
       {props.children}
     </AppContext.Provider>
   );
-}
+};
 
 export default AppContext;

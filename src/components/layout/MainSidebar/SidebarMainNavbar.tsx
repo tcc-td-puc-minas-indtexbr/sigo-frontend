@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { Navbar, NavbarBrand } from "shards-react";
+import React, { useContext } from 'react';
+import { Navbar, NavbarBrand } from 'shards-react';
 import AppContext from '../../../store/AppContext';
 
 const SidebarMainNavbar: React.FC = () => {
@@ -14,13 +14,13 @@ const SidebarMainNavbar: React.FC = () => {
         <NavbarBrand
           className="w-100 mr-0"
           href="#"
-          style={{ lineHeight: "25px" }}
+          style={{ lineHeight: '25px' }}
         >
           <div className="d-table m-auto">
             <img
               id="main-logo"
               className="d-inline-block align-top mr-1"
-              style={{ maxWidth: "25px" }}
+              style={{ maxWidth: '25px' }}
               src="https://designrevision.com/demo/shards-dashboard-lite-react/static/media/shards-dashboards-logo.60a85991.svg"
               alt="Shards Dashboard"
             />
@@ -32,7 +32,8 @@ const SidebarMainNavbar: React.FC = () => {
           </div>
         </NavbarBrand>
         {/* eslint-disable-next-line */}
-        <a href="#"
+        <a
+          href="#"
           className="toggle-sidebar d-sm-inline d-md-none d-lg-none"
           onClick={toggleSidebar}
         >
@@ -41,6 +42,6 @@ const SidebarMainNavbar: React.FC = () => {
       </Navbar>
     </div>
   );
-}
+};
 
 export default SidebarMainNavbar;

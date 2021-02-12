@@ -1,5 +1,5 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 import {
   Card,
   CardHeader,
@@ -9,8 +9,8 @@ import {
   CardFooter,
   Row,
   Col,
-  FormSelect
-} from "shards-react";
+  FormSelect,
+} from 'shards-react';
 
 const TopReferrals = ({ title, referralData }) => (
   <Card small>
@@ -39,7 +39,7 @@ const TopReferrals = ({ title, referralData }) => (
           <FormSelect
             size="sm"
             value="last-week"
-            style={{ maxWidth: "130px" }}
+            style={{ maxWidth: '130px' }}
             onChange={() => {}}
           >
             <option value="last-week">Last Week</option>
@@ -67,45 +67,45 @@ TopReferrals.propTypes = {
   /**
    * The referral data.
    */
-  referralData: PropTypes.array
+  referralData: PropTypes.array,
 };
 
 TopReferrals.defaultProps = {
-  title: "Top Referrals",
+  title: 'Top Referrals',
   referralData: [
     {
-      title: "GitHub",
-      value: "19,291"
+      title: 'GitHub',
+      value: '19,291',
     },
     {
-      title: "Stack Overflow",
-      value: "11,201"
+      title: 'Stack Overflow',
+      value: '11,201',
     },
     {
-      title: "Hacker News",
-      value: "9,291"
+      title: 'Hacker News',
+      value: '9,291',
     },
     {
-      title: "Reddit",
-      value: "8,281"
+      title: 'Reddit',
+      value: '8,281',
     },
     {
-      title: "The Next Web",
-      value: "7,128"
+      title: 'The Next Web',
+      value: '7,128',
     },
     {
-      title: "Tech Crunch",
-      value: "6,218"
+      title: 'Tech Crunch',
+      value: '6,218',
     },
     {
-      title: "YouTube",
-      value: "1,218"
+      title: 'YouTube',
+      value: '1,218',
     },
     {
-      title: "Adobe",
-      value: "1,171"
-    }
-  ]
+      title: 'Adobe',
+      value: '1,171',
+    },
+  ],
 };
 
 export default TopReferrals;

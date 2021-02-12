@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   ListGroup,
   ListGroupItem,
@@ -9,8 +9,8 @@ import {
   FormGroup,
   FormCheckbox,
   FormSelect,
-  Button
-} from "shards-react";
+  Button,
+} from 'shards-react';
 
 const CompleteFormExample = () => (
   <ListGroup flush>
@@ -68,7 +68,7 @@ const CompleteFormExample = () => (
               </Col>
               <Col md="12" className="form-group">
                 <FormCheckbox>
-                  {/* eslint-disable-next-line */}I agree with your{" "}
+                  {/* eslint-disable-next-line */}I agree with your{' '}
                   <a href="#">Privacy Policy</a>.
                 </FormCheckbox>
               </Col>

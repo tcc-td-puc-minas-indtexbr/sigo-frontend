@@ -3,16 +3,8 @@ import PageTitle from 'components/common/PageTitle';
 import Table from 'components/datatable';
 import StandardService from 'services/StandardService';
 import Spinner from 'components/spinner';
-import {
-  Row,
-  Col,
-  Card,
-  CardHeader,
-  CardBody,
-  Button,
-} from "shards-react";
+import { Row, Col, Card, CardHeader, CardBody, Button } from 'shards-react';
 import { useHistory } from 'react-router-dom';
-
 
 const _standardService = new StandardService();
 const Standard: React.FC = () => {
@@ -73,9 +65,9 @@ const Standard: React.FC = () => {
       {
         Header: 'Objective',
         accessor: 'objective',
-      }
+      },
     ],
-    []
+    [],
   );
 
   useEffect(() => {
@@ -83,7 +75,7 @@ const Standard: React.FC = () => {
       const response = await _standardService.GetAll();
       setData(response.data);
       setLoading(false);
-    };
+    }
 
     getData();
   }, []);
@@ -91,24 +83,35 @@ const Standard: React.FC = () => {
   return (
     <>
       <Row noGutters className="page-header py-4">
-        <PageTitle title="Gestão de Normas" subtitle="" className="text-sm-left" />
+        <PageTitle
+          title="Gestão de Normas"
+          subtitle=""
+          className="text-sm-left"
+        />
       </Row>
 
       <Row>
         <Col>
           <Card small className="mb-4">
             <CardHeader className="border-bottom">
-              <Button className="mb-0 mr-1" onClick={() => history.push('/standard-form')}>
+              <Button
+                className="mb-0 mr-1"
+                onClick={() => history.push('/standard-form')}
+              >
                 Adicionar Norma
               </Button>
             </CardHeader>
             <Col>
               <CardBody className="p-0 py-3" style={{ overflow: 'auto' }}>
                 {/* TODO: Make a better alignment component */}
-                <div style={{ textAlign: 'center' }}> 
-                  {loading ?
+                <div style={{ textAlign: 'center' }}>
+                  {loading ? (
                     <Spinner />
-                    : data.length > 0 ? <Table columns={columns} data={data} /> : 'No data found'}
+                  ) : data.length > 0 ? (
+                    <Table columns={columns} data={data} />
+                  ) : (
+                    'No data found'
+                  )}
                 </div>
               </CardBody>
             </Col>
@@ -117,6 +120,6 @@ const Standard: React.FC = () => {
       </Row>
     </>
   );
-}
+};
 
 export default Standard;
