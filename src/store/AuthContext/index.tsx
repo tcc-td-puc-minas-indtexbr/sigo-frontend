@@ -66,7 +66,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = (props) => {
 
   useEffect(() => {
     const token = localStorage.getItem(LocalStorageKeys.token);
-    const user = localStorage.getItem(LocalStorageKeys.token);
+    const user = localStorage.getItem(LocalStorageKeys.user);
 
     if (token !== '' && token !== null && user !== '' && user !== null) {
       setUser(JSON.parse(user));

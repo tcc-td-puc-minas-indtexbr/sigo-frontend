@@ -33,10 +33,7 @@ const UserActions: React.FC = () => {
       >
         <img
           className="user-avatar rounded-circle mr-2"
-          src={
-            user.avatarUrl ??
-            'https://capenetworks.com/static/images/testimonials/user-icon.svg'
-          }
+          src="https://capenetworks.com/static/images/testimonials/user-icon.svg"
           alt="User Avatar"
         />{' '}
         <span className="d-none d-md-inline-block">{user.name}</span>
