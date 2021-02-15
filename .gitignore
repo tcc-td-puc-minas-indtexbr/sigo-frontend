@@ -28,6 +28,5 @@ yarn-error.log*
 
 debug.log
 /amplify/
-/src/aws-exports.js
 /public/env.js
 /imagedefinitions.json
