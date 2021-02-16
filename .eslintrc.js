@@ -30,12 +30,18 @@ module.exports = {
     "@typescript-eslint/no-empty-function": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-unused-vars": "off",
+    "@typescript-eslint/ban-types": "off",
     "react/prop-types": "off",
     "no-var": "error",
-    "prefer-const": 2,
-    "prettier/prettier": 2,
+    "prefer-const": "error",
+    "prettier/prettier": [
+      "error",
+      {
+        endOfLine: "auto",
+      },
+    ],
     "import/order": [
-      1,
+      "warn",
       {
         alphabetize: {
           order: "asc",

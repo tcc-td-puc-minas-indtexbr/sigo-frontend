@@ -1,3 +1,4 @@
+import { RoutesPath } from "./constants";
 import Layout from "components/layout";
 import Empty from "components/layout/empty";
 import Login from "pages/Auth/Login";
@@ -15,19 +16,25 @@ export type ComponentRoute = {
 
 const routes: ComponentRoute[] = [
   {
-    path: "/",
+    path: RoutesPath.index,
     exact: true,
     layout: Layout,
     component: Xpto,
   },
   {
-    path: "/standard",
+    path: RoutesPath.standard.index,
     exact: true,
     layout: Layout,
     component: Standard,
   },
   {
-    path: "/standard/form",
+    path: RoutesPath.standard.form,
+    exact: true,
+    layout: Layout,
+    component: StandardForm,
+  },
+  {
+    path: `${RoutesPath.standard.form}/:uuid`,
     exact: true,
     layout: Layout,
     component: StandardForm,
@@ -38,7 +45,7 @@ const routes: ComponentRoute[] = [
     component: Xpto,
   },
   {
-    path: "/login",
+    path: RoutesPath.login,
     layout: Empty,
     public: true,
     component: Login,

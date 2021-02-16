@@ -16,7 +16,13 @@ const Pagination = styled.div`
   }
 `;
 
-const Table: React.FC<{ columns: any[]; data: any[] }> = ({ columns, data }) => {
+type DataTableProps<T> = {
+  columns: any[];
+  data: T[];
+  getTrProps: (props: T) => void;
+};
+
+function DataTable<T extends {}>({ columns, data, getTrProps }: DataTableProps<T>) {
   const {
     getTableProps,
     getTableBodyProps,
@@ -50,7 +56,7 @@ const Table: React.FC<{ columns: any[]; data: any[] }> = ({ columns, data }) => 
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
                 /* eslint-disable-next-line */
-                <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+                <th {...column.getHeaderProps()}>{column.render("Header")}</th>
               ))}
             </tr>
           ))}
@@ -60,11 +66,15 @@ const Table: React.FC<{ columns: any[]; data: any[] }> = ({ columns, data }) => 
             prepareRow(row);
             return (
               /* eslint-disable-next-line */
-              <tr {...row.getRowProps()}>
+              <tr
+                {...row.getRowProps()}
+                onClick={() => getTrProps(row.original)}
+                style={{ cursor: "pointer" }}
+              >
                 {row.cells.map((cell) => {
                   return (
                     /* eslint-disable-next-line */
-                    <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
                   );
                 })}
               </tr>
@@ -154,6 +164,6 @@ const Table: React.FC<{ columns: any[]; data: any[] }> = ({ columns, data }) => 
       </Pagination>
     </>
   );
-};
+}
 
-export default Table;
+export default DataTable;

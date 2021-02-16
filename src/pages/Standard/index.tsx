@@ -1,84 +1,36 @@
+import { columnsConfig } from "./config";
+import { standardTestData } from "./makeData";
 import PageTitle from "components/common/PageTitle";
 import Table from "components/datatable";
 import Spinner from "components/spinner";
+import StandardDto from "models/StandardDto";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+import { RoutesPath } from "routes/constants";
 import StandardService from "services/StandardService";
 import { Row, Col, Card, CardHeader, CardBody, Button } from "shards-react";
 
-const _standardService = new StandardService();
 const Standard: React.FC = () => {
   const history = useHistory();
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<StandardDto[]>([]);
   const [loading, setLoading] = useState(true); //TODO: Improve loading when we have an API
 
-  const columns = React.useMemo(
-    () => [
-      {
-        Header: "Identification",
-        accessor: "identification",
-      },
-      {
-        Header: "Publish Date",
-        accessor: "publication_date",
-      },
-      {
-        Header: "Validity Start",
-        accessor: "validity_start",
-      },
-      {
-        Header: "Title",
-        accessor: "title",
-      },
-      {
-        Header: "Global Title Language",
-        accessor: "title_global_language",
-      },
-      {
-        Header: "Comite",
-        accessor: "comite",
-      },
-      {
-        Header: "Pages",
-        accessor: "pages",
-      },
-      {
-        Header: "Status",
-        accessor: "status",
-      },
-      {
-        Header: "Language",
-        accessor: "language",
-      },
-      {
-        Header: "Organization",
-        accessor: "organization",
-      },
-      {
-        Header: "Price",
-        accessor: "price",
-      },
-      {
-        Header: "Currency",
-        accessor: "currency",
-      },
-      {
-        Header: "Objective",
-        accessor: "objective",
-      },
-    ],
-    [],
-  );
+  const columns = React.useMemo(() => columnsConfig, []);
+  const standardService = React.useMemo(() => new StandardService(standardTestData), []);
 
   useEffect(() => {
     async function getData() {
-      const response = await _standardService.GetAll();
+      const response = await standardService.GetAll();
       setData(response.data);
       setLoading(false);
     }
 
     getData();
   }, []);
+
+  const navigateToStandard = (standardDto: StandardDto) => {
+    history.push(`${RoutesPath.standard.form}/${standardDto.uuid}`);
+  };
 
   return (
     <>
@@ -90,18 +42,17 @@ const Standard: React.FC = () => {
         <Col>
           <Card small className="mb-4">
             <CardHeader className="border-bottom">
-              <Button className="mb-0 mr-1" onClick={() => history.push("/standard-form")}>
+              <Button className="mb-0 mr-1" onClick={() => history.push(RoutesPath.standard.form)}>
                 Adicionar Norma
               </Button>
             </CardHeader>
             <Col>
               <CardBody className="p-0 py-3" style={{ overflow: "auto" }}>
-                {/* TODO: Make a better alignment component */}
                 <div style={{ textAlign: "center" }}>
                   {loading ? (
                     <Spinner />
                   ) : data.length > 0 ? (
-                    <Table columns={columns} data={data} />
+                    <Table columns={columns} data={data} getTrProps={navigateToStandard} />
                   ) : (
                     "No data found"
                   )}
