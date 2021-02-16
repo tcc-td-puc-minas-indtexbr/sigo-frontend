@@ -23,97 +23,57 @@ interface IAuthService {
 
 class AuthService implements IAuthService {
   Login(request: LoginRequest) {
-    const username = request.email;
-    const password = request.password;
-
-    return new Promise<Response>((resolve, reject) => {
-      Auth.signIn(username, password)
-        .then((cognitoUser) => {
-          console.log("successful sign in");
-          console.log(cognitoUser);
-
-          const token =
-            cognitoUser.Session || cognitoUser?.signInUserSession?.accessToken?.jwtToken;
-          const username = cognitoUser.username;
-          const roles =
-            cognitoUser?.signInUserSession?.accessToken?.payload["cognito:groups"] || "user";
-
-          const data: Response = {
-            token: token,
-            isSuccess: true,
-            user: {
-              id: username,
-              name: username,
-              roles: roles,
-              email: request.email,
-              avatarUrl:
-                "https://i1.wp.com/www.nonada.com.br/wp-content/uploads/2012/08/scarell1.jpg",
-            },
-          };
-
-          if (cognitoUser.challengeName == LOGIN_NEW_PASSWORD_REQUIRED) {
-            const requiredAttributes = {
-              name: request.email,
-            };
-            // User was signed up by an admin and must provide new
-            // password and required attributes, if any, to complete
-            // authentication.
-            Auth.completeNewPassword(cognitoUser, request.password, requiredAttributes)
-              .then((changed_data) => {
-                resolve(data);
-              })
-              .catch((err) => {
-                console.log(err);
-                resolve({
-                  token: "",
-                  isSuccess: false,
-                  user: undefined,
-                });
-              });
-          } else {
-            resolve(data);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-          resolve({
-            token: "",
-            isSuccess: false,
-            user: undefined,
-          });
-        });
+    return new Promise<Response>((resolve) => {
+      Auth.signIn(request.email, request.password)
+        .then((cognitoUser) => this.ConfirmNewPassword(request, cognitoUser, resolve))
+        .then((cognitoUser) => this.ExtractUserData(cognitoUser, request))
+        .then((userData) => resolve(userData))
+        .catch((err) => this.FailedAuthentication(resolve));
     });
   }
 
-  OldLogin(request: LoginRequest) {
-    const email = "michael@scott.com";
-
-    if (request.email !== email) {
-      return new Promise<Response>((resolve) => {
-        setTimeout(() => {
-          resolve({
-            token: "",
-            isSuccess: false,
-            user: undefined,
-          });
-        }, 1000);
-      });
+  // User was signed up by an admin and must provide new
+  // password and required attributes, if any, to complete
+  // authentication.
+  private ConfirmNewPassword(
+    request: LoginRequest,
+    cognitoUser: any, //damn aws types :)
+    resolve: (value: Response | PromiseLike<Response>) => void,
+  ) {
+    if (cognitoUser.challengeName == LOGIN_NEW_PASSWORD_REQUIRED) {
+      return Auth.completeNewPassword(cognitoUser, request.password, {
+        name: request.email,
+      })
+        .then((changed_data) => changed_data)
+        .catch((err) => this.FailedAuthentication(resolve));
     }
 
-    return new Promise<Response>((resolve) => {
-      setTimeout(() => {
-        resolve({
-          token: "0fa97dac-38d4-46d4-8fcc-e5423afdfeaf",
-          isSuccess: true,
-          user: {
-            name: "Michael Scott",
-            role: "admin",
-            email: email,
-            avatarUrl:
-              "https://i1.wp.com/www.nonada.com.br/wp-content/uploads/2012/08/scarell1.jpg",
-          },
-        });
-      }, 2000);
+    return cognitoUser;
+  }
+
+  private ExtractUserData(cognitoUser: any, request: LoginRequest) {
+    const token = cognitoUser.Session || cognitoUser?.signInUserSession?.accessToken?.jwtToken;
+    const username = cognitoUser.username;
+    const roles = cognitoUser?.signInUserSession?.accessToken?.payload["cognito:groups"] || "user";
+
+    return {
+      token: token,
+      isSuccess: true,
+      user: {
+        id: username,
+        name: username,
+        roles: roles,
+        email: request.email,
+        avatarUrl: "",
+      },
+    };
+  }
+
+  private FailedAuthentication(resolve: (value: Response | PromiseLike<Response>) => void) {
+    resolve({
+      token: "",
+      isSuccess: false,
+      user: undefined,
     });
   }
 }
