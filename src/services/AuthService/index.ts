@@ -25,7 +25,7 @@ class AuthService implements IAuthService {
   Login(request: LoginRequest) {
     return new Promise<Response>((resolve) => {
       Auth.signIn(request.email, request.password)
-        .then((cognitoUser) => this.ConfirmNewPassword(request, cognitoUser, resolve))
+        .then((cognitoUser) => this.ConfirmNewPassword(request, cognitoUser))
         .then((cognitoUser) => this.ExtractUserData(cognitoUser, request))
         .then((userData) => resolve(userData))
         .catch((err) => this.FailedAuthentication(resolve));
@@ -38,14 +38,11 @@ class AuthService implements IAuthService {
   private ConfirmNewPassword(
     request: LoginRequest,
     cognitoUser: any, //damn aws types :)
-    resolve: (value: Response | PromiseLike<Response>) => void,
   ) {
     if (cognitoUser.challengeName == LOGIN_NEW_PASSWORD_REQUIRED) {
       return Auth.completeNewPassword(cognitoUser, request.password, {
         name: request.email,
-      })
-        .then((changed_data) => changed_data)
-        .catch((err) => this.FailedAuthentication(resolve));
+      });
     }
 
     return cognitoUser;
