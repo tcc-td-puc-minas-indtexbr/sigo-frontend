@@ -24,7 +24,7 @@ class StandardService implements IStandardService {
           isSuccess: true,
           data: this._data,
         });
-      }, 1000);
+      }, 500);
     });
   }
 

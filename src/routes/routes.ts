@@ -2,6 +2,7 @@ import { RoutesPath } from "./constants";
 import Layout from "components/layout";
 import Empty from "components/layout/empty";
 import Login from "pages/Auth/Login";
+import Home from "pages/Home";
 import Standard from "pages/Standard";
 import StandardForm from "pages/Standard/form";
 import Xpto from "pages/Xpto";
@@ -19,7 +20,7 @@ const routes: ComponentRoute[] = [
     path: RoutesPath.index,
     exact: true,
     layout: Layout,
-    component: Xpto,
+    component: Home,
   },
   {
     path: RoutesPath.standard.index,
