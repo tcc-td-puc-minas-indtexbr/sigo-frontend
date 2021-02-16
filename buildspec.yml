@@ -46,4 +46,4 @@ artifacts:
   base-directory: build
   files:
 #    - imagedefinitions.json
-    - '*/*'
+    - '**/*'
