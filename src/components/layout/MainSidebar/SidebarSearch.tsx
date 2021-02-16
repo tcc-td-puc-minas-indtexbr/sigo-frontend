@@ -13,7 +13,7 @@ const SidebarSearch: React.FC = () => (
         </InputGroupText>
         <FormInput
           className="navbar-search"
-          placeholder="Search for something..."
+          placeholder="Pesquise por alguma coisa..."
           aria-label="Search"
         />
       </InputGroupAddon>

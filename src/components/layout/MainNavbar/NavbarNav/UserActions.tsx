@@ -39,7 +39,7 @@ const UserActions: React.FC = () => {
         <span className="d-none d-md-inline-block">{user.name}</span>
       </DropdownToggle>
       <Collapse tag={DropdownMenu} right small open={visible} style={{ cursor: "pointer" }}>
-        <DropdownItem tag={Link} to="user-profile">
+        {/* <DropdownItem tag={Link} to="user-profile">
           <i className="material-icons">&#xE7FD;</i> Profile
         </DropdownItem>
         <DropdownItem tag={Link} to="edit-user-profile">
@@ -51,9 +51,9 @@ const UserActions: React.FC = () => {
         <DropdownItem tag={Link} to="transaction-history">
           <i className="material-icons">&#xE896;</i> Transactions
         </DropdownItem>
-        <DropdownItem divider />
+        <DropdownItem divider /> */}
         <DropdownItem onClick={signout} className="text-danger">
-          <i className="material-icons text-danger">&#xE879;</i> Logout
+          <i className="material-icons text-danger">&#xE879;</i> Encerrar sessão
         </DropdownItem>
       </Collapse>
     </NavItem>

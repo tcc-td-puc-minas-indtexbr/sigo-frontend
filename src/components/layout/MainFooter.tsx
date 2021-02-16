@@ -4,11 +4,7 @@ import { Container, Row, Nav, NavItem, NavLink } from "shards-react";
 
 const menuItems = [
   {
-    title: "Home",
-    to: "#",
-  },
-  {
-    title: "About",
+    title: "Inicio",
     to: "#",
   },
 ];
@@ -27,7 +23,7 @@ const MainFooter: React.FC = () => (
           ))}
         </Nav>
         <span className="copyright ml-auto my-auto mr-2">
-          Copyright © {new Date().getFullYear()} IndTexBr
+          Direitos reservados © {new Date().getFullYear()} IndTexBr
         </span>
       </Row>
     </Container>

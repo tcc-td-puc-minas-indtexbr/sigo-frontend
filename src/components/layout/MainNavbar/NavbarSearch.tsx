@@ -9,7 +9,7 @@ const NavbarSearch: React.FC = () => (
           <i className="material-icons">search</i>
         </InputGroupText>
       </InputGroupAddon>
-      <FormInput className="navbar-search" placeholder="Search for something..." />
+      <FormInput className="navbar-search" placeholder="Pesquise por alguma coisa..." />
     </InputGroup>
   </Form>
 );

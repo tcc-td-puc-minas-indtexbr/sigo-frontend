@@ -12,12 +12,12 @@ const Notifications: React.FC = () => {
         <div className="nav-link-icon__wrapper">
           <i className="material-icons">&#xE7F4;</i>
           <Badge pill theme="danger">
-            2
+            0
           </Badge>
         </div>
       </NavLink>
       <Collapse open={visible} className="dropdown-menu dropdown-menu-small">
-        <DropdownItem>
+        {/* <DropdownItem>
           <div className="notification__icon-wrapper">
             <div className="notification__icon">
               <i className="material-icons">&#xE6E1;</i>
@@ -44,9 +44,9 @@ const Notifications: React.FC = () => {
               <span className="text-danger text-semibold">5.52%</span>. It could have been worse!
             </p>
           </div>
-        </DropdownItem>
+        </DropdownItem> */}
         <DropdownItem className="notification__all text-center">
-          View all Notifications
+          Você não possui nenhuma notificação.
         </DropdownItem>
       </Collapse>
     </NavItem>

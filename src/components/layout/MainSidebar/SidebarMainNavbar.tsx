@@ -20,9 +20,7 @@ const SidebarMainNavbar: React.FC = () => {
               src="https://designrevision.com/demo/shards-dashboard-lite-react/static/media/shards-dashboards-logo.60a85991.svg"
               alt="Shards Dashboard"
             />
-            {!isSidebarVisible && (
-              <span className="d-none d-md-inline ml-1">SIGO Bem Caminhoneiro</span>
-            )}
+            {!isSidebarVisible && <span className="d-none d-md-inline ml-1">SIGO</span>}
           </div>
         </NavbarBrand>
         {/* eslint-disable-next-line */}
