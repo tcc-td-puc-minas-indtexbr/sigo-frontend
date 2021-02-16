@@ -32,17 +32,22 @@ class AuthService implements IAuthService {
           console.log('successful sign in');
           console.log(cognitoUser);
 
-          const token = cognitoUser.Session;
+          const token =
+            cognitoUser.Session ||
+            cognitoUser?.signInUserSession?.accessToken?.jwtToken;
           const username = cognitoUser.username;
-          const userData = cognitoUser.challengeParam;
+          const roles =
+            cognitoUser?.signInUserSession?.accessToken?.payload[
+              'cognito:groups'
+            ] || 'user';
 
           const data: Response = {
             token: token,
             isSuccess: true,
             user: {
               id: username,
-              name: 'Michael Scott',
-              role: 'admin',
+              name: username,
+              roles: roles,
               email: request.email,
               avatarUrl:
                 'https://i1.wp.com/www.nonada.com.br/wp-content/uploads/2012/08/scarell1.jpg',
@@ -50,10 +55,17 @@ class AuthService implements IAuthService {
           };
 
           if (cognitoUser.challengeName == LOGIN_NEW_PASSWORD_REQUIRED) {
+            const requiredAttributes = {
+              name: request.email,
+            };
             // User was signed up by an admin and must provide new
             // password and required attributes, if any, to complete
             // authentication.
-            Auth.completeNewPassword(cognitoUser, request.password)
+            Auth.completeNewPassword(
+              cognitoUser,
+              request.password,
+              requiredAttributes,
+            )
               .then((changed_data) => {
                 resolve(data);
               })
@@ -65,27 +77,6 @@ class AuthService implements IAuthService {
                   user: undefined,
                 });
               });
-
-            // Auth.currentAuthenticatedUser()
-            //   .then((user) => {
-            //     return Auth.changePassword(
-            //       user,
-            //       request.password,
-            //       request.password,
-            //     );
-            //   })
-            //   .then((changed_data) => {
-            //     console.log(changed_data);
-            //     resolve(data);
-            //   })
-            //   .catch((err) => {
-            //     console.log(err);
-            //     resolve({
-            //       token: '',
-            //       isSuccess: false,
-            //       user: undefined,
-            //     });
-            //   });
           } else {
             resolve(data);
           }
