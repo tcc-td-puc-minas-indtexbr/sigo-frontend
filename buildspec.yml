@@ -19,8 +19,8 @@ phases:
 #      - ./bin/aws/ecr-docker-tag.sh $ACCOUNT_ID
   post_build:
     commands:
-#      - echo Execute a CloudFront invalidation
-#      - aws cloudfront create-invalidation --distribution-id E2KXPUVCJYGEFQ --paths "*"
+      - echo Execute a CloudFront invalidation
+      - aws cloudfront create-invalidation --distribution-id E2KXPUVCJYGEFQ --paths "*"
 #      - TODO An error occurred (AccessDenied) when calling the CreateInvalidation operation: User: arn:aws:sts::xxxxxxx:assumed-role/codebuild-ecs-service-role/AWSCodeBuild-01316fcf-eedc-4924-963d-ad2ac34bd500 is not authorized to perform: cloudfront:CreateInvalidation on resource: arn:aws:cloudfront::xxxxxx:distribution/E2KXPUVCJYGEFQ
 #      - echo Loging in ECR
 #      - PASSWORD=$(aws ecr get-login-password --region sa-east-1)
