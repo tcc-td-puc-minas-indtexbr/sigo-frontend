@@ -22,11 +22,13 @@ const routes: ComponentRoute[] = [
   },
   {
     path: "/standard",
+    exact: true,
     layout: Layout,
     component: Standard,
   },
   {
-    path: "/standard-form",
+    path: "/standard/form",
+    exact: true,
     layout: Layout,
     component: StandardForm,
   },
