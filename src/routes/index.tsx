@@ -1,7 +1,7 @@
-import React from 'react';
-import { BrowserRouter as Router, Redirect, Route } from 'react-router-dom';
-import routes from './routes';
-import { isAuthenticated } from '../store/AuthContext/isAuthenticated';
+import routes from "./routes";
+import { isAuthenticated } from "../store/AuthContext/isAuthenticated";
+import React from "react";
+import { BrowserRouter as Router, Redirect, Route } from "react-router-dom";
 
 const Routes: React.FC = () => {
   return (
@@ -15,8 +15,7 @@ const Routes: React.FC = () => {
             component={() => {
               const authenticatedUser = isAuthenticated();
               if (route.public || (!route.public && authenticatedUser)) {
-                if (route.path === '/login' && authenticatedUser)
-                  return <Redirect to="/" />;
+                if (route.path === "/login" && authenticatedUser) return <Redirect to="/" />;
 
                 return (
                   <route.layout>

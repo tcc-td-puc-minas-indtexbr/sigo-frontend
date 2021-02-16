@@ -1,10 +1,9 @@
-import React from 'react';
-import { ReactNodeLike } from 'prop-types';
-import { Container, Row, Col } from 'shards-react';
-
-import MainNavbar from './MainNavbar';
-import MainSidebar from './MainSidebar';
-import MainFooter from './MainFooter';
+import MainFooter from "./MainFooter";
+import MainNavbar from "./MainNavbar";
+import MainSidebar from "./MainSidebar";
+import { ReactNodeLike } from "prop-types";
+import React from "react";
+import { Container, Row, Col } from "shards-react";
 
 type LayoutProps = {
   children?: ReactNodeLike;

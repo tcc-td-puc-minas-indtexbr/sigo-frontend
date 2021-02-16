@@ -1,6 +1,6 @@
-import PageTitle from 'components/common/PageTitle';
-import React from 'react';
-import { useHistory } from 'react-router-dom';
+import PageTitle from "components/common/PageTitle";
+import React from "react";
+import { useHistory } from "react-router-dom";
 import {
   ListGroup,
   ListGroupItem,
@@ -12,7 +12,7 @@ import {
   Button,
   Card,
   CardBody,
-} from 'shards-react';
+} from "shards-react";
 
 const StandardForm: React.FC = () => {
   const history = useHistory();
@@ -37,9 +37,7 @@ const StandardForm: React.FC = () => {
                     <Form>
                       <Row form>
                         <Col md="4" className="form-group">
-                          <label htmlFor="feIdentification">
-                            Identification
-                          </label>
+                          <label htmlFor="feIdentification">Identification</label>
                           <FormInput
                             id="feIdentification"
                             type="text"
@@ -48,16 +46,10 @@ const StandardForm: React.FC = () => {
                         </Col>
                         <Col md="4" className="form-group">
                           <label htmlFor="fePublishDate">Publish Date</label>
-                          <FormInput
-                            id="fePublishDate"
-                            type="text"
-                            placeholder="Publish Date"
-                          />
+                          <FormInput id="fePublishDate" type="text" placeholder="Publish Date" />
                         </Col>
                         <Col md="4" className="form-group">
-                          <label htmlFor="feValidityStart">
-                            Validity Start
-                          </label>
+                          <label htmlFor="feValidityStart">Validity Start</label>
                           <FormInput
                             id="feValidityStart"
                             type="text"
@@ -72,9 +64,7 @@ const StandardForm: React.FC = () => {
                         </Col>
 
                         <Col md="6" className="form-group">
-                          <label htmlFor="feGlobalTitleLanguage">
-                            Global Title Language
-                          </label>
+                          <label htmlFor="feGlobalTitleLanguage">Global Title Language</label>
                           <FormInput
                             id="feGlobalTitleLanguage"
                             placeholder="Global Title Language"

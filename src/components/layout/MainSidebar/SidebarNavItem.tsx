@@ -1,6 +1,6 @@
-import React from 'react';
-import { NavLink as RouteNavLink } from 'react-router-dom';
-import { NavItem, NavLink } from 'shards-react';
+import React from "react";
+import { NavLink as RouteNavLink } from "react-router-dom";
+import { NavItem, NavLink } from "shards-react";
 
 type NavItemProps = {
   title: string;

@@ -1,11 +1,10 @@
-import React, { useContext } from 'react';
-import classNames from 'classnames';
-import { Col } from 'shards-react';
-import AppContext from '../../../store/AppContext';
-
-import SidebarMainNavbar from './SidebarMainNavbar';
-import SidebarSearch from './SidebarSearch';
-import SidebarNavItems from './SidebarNavItems';
+import SidebarMainNavbar from "./SidebarMainNavbar";
+import SidebarNavItems from "./SidebarNavItems";
+import SidebarSearch from "./SidebarSearch";
+import AppContext from "../../../store/AppContext";
+import classNames from "classnames";
+import React, { useContext } from "react";
+import { Col } from "shards-react";
 
 const MainSidebar: React.FC = () => {
   const { isSidebarVisible } = useContext(AppContext);
@@ -13,12 +12,7 @@ const MainSidebar: React.FC = () => {
   return (
     <Col
       tag="aside"
-      className={classNames(
-        'main-sidebar',
-        'px-0',
-        'col-12',
-        isSidebarVisible && 'open',
-      )}
+      className={classNames("main-sidebar", "px-0", "col-12", isSidebarVisible && "open")}
       lg={{ size: 2 }}
       md={{ size: 3 }}
     >

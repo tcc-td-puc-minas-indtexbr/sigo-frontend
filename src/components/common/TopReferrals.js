@@ -1,5 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
+import React from "react";
 import {
   Card,
   CardHeader,
@@ -10,7 +10,7 @@ import {
   Row,
   Col,
   FormSelect,
-} from 'shards-react';
+} from "shards-react";
 
 const TopReferrals = ({ title, referralData }) => (
   <Card small>
@@ -24,9 +24,7 @@ const TopReferrals = ({ title, referralData }) => (
         {referralData.map((item, idx) => (
           <ListGroupItem key={idx} className="d-flex px-3">
             <span className="text-semibold text-fiord-blue">{item.title}</span>
-            <span className="ml-auto text-right text-semibold text-reagent-gray">
-              {item.value}
-            </span>
+            <span className="ml-auto text-right text-semibold text-reagent-gray">{item.value}</span>
           </ListGroupItem>
         ))}
       </ListGroup>
@@ -36,12 +34,7 @@ const TopReferrals = ({ title, referralData }) => (
       <Row>
         {/* Time Span */}
         <Col>
-          <FormSelect
-            size="sm"
-            value="last-week"
-            style={{ maxWidth: '130px' }}
-            onChange={() => {}}
-          >
+          <FormSelect size="sm" value="last-week" style={{ maxWidth: "130px" }} onChange={() => {}}>
             <option value="last-week">Last Week</option>
             <option value="today">Today</option>
             <option value="last-month">Last Month</option>
@@ -71,39 +64,39 @@ TopReferrals.propTypes = {
 };
 
 TopReferrals.defaultProps = {
-  title: 'Top Referrals',
+  title: "Top Referrals",
   referralData: [
     {
-      title: 'GitHub',
-      value: '19,291',
+      title: "GitHub",
+      value: "19,291",
     },
     {
-      title: 'Stack Overflow',
-      value: '11,201',
+      title: "Stack Overflow",
+      value: "11,201",
     },
     {
-      title: 'Hacker News',
-      value: '9,291',
+      title: "Hacker News",
+      value: "9,291",
     },
     {
-      title: 'Reddit',
-      value: '8,281',
+      title: "Reddit",
+      value: "8,281",
     },
     {
-      title: 'The Next Web',
-      value: '7,128',
+      title: "The Next Web",
+      value: "7,128",
     },
     {
-      title: 'Tech Crunch',
-      value: '6,218',
+      title: "Tech Crunch",
+      value: "6,218",
     },
     {
-      title: 'YouTube',
-      value: '1,218',
+      title: "YouTube",
+      value: "1,218",
     },
     {
-      title: 'Adobe',
-      value: '1,171',
+      title: "Adobe",
+      value: "1,171",
     },
   ],
 };

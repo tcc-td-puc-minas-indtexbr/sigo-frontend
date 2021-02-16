@@ -1,15 +1,15 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Container, Row, Nav, NavItem, NavLink } from 'shards-react';
+import React from "react";
+import { Link } from "react-router-dom";
+import { Container, Row, Nav, NavItem, NavLink } from "shards-react";
 
 const menuItems = [
   {
-    title: 'Home',
-    to: '#',
+    title: "Home",
+    to: "#",
   },
   {
-    title: 'About',
-    to: '#',
+    title: "About",
+    to: "#",
   },
 ];
 

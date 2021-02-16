@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { ReactNodeLike } from 'prop-types';
-import LoginRequest from '../../models/Request/LoginRequest';
-import AuthService from '../../services/AuthService';
-import { LocalStorageKeys } from 'shared/constants';
+import LoginRequest from "../../models/Request/LoginRequest";
+import AuthService from "../../services/AuthService";
+import { ReactNodeLike } from "prop-types";
+import React, { useEffect, useState } from "react";
+import { LocalStorageKeys } from "shared/constants";
 
 type User = {
   name: string;
@@ -23,14 +23,14 @@ type AuthProviderProps = {
 };
 
 const userInitialState = {
-  name: '',
-  role: '',
-  email: '',
-  avatarUrl: '',
+  name: "",
+  role: "",
+  email: "",
+  avatarUrl: "",
 };
 
 const AuthContext = React.createContext<AuthContextProps>({
-  token: '',
+  token: "",
   user: userInitialState,
   login: () => Promise.resolve(false),
   logout: () => void 0,
@@ -38,7 +38,7 @@ const AuthContext = React.createContext<AuthContextProps>({
 
 export const AuthProvider: React.FC<AuthProviderProps> = (props) => {
   const authService = new AuthService();
-  const [token, setToken] = useState<string>('');
+  const [token, setToken] = useState<string>("");
   const [user, setUser] = useState<User>(userInitialState);
 
   const login = async (request: LoginRequest) => {
@@ -47,10 +47,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = (props) => {
     if (!response.isSuccess) return false;
 
     localStorage.setItem(LocalStorageKeys.user, JSON.stringify(response.user));
-    localStorage.setItem(
-      LocalStorageKeys.token,
-      JSON.stringify(response.token),
-    );
+    localStorage.setItem(LocalStorageKeys.token, JSON.stringify(response.token));
     setUser(response.user);
     setToken(response.token);
 
@@ -58,17 +55,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = (props) => {
   };
 
   const logout = () => {
-    localStorage.setItem(LocalStorageKeys.user, '');
-    localStorage.setItem(LocalStorageKeys.token, '');
+    localStorage.setItem(LocalStorageKeys.user, "");
+    localStorage.setItem(LocalStorageKeys.token, "");
     setUser(userInitialState);
-    setToken('');
+    setToken("");
   };
 
   useEffect(() => {
     const token = localStorage.getItem(LocalStorageKeys.token);
     const user = localStorage.getItem(LocalStorageKeys.user);
 
-    if (token !== '' && token !== null && user !== '' && user !== null) {
+    if (token !== "" && token !== null && user !== "" && user !== null) {
       setUser(JSON.parse(user));
       setToken(token);
     }

@@ -1,7 +1,7 @@
-import React from 'react';
-import BTable from 'react-bootstrap/Table';
-import styled from 'styled-components';
-import { useTable, usePagination } from 'react-table';
+import React from "react";
+import BTable from "react-bootstrap/Table";
+import { useTable, usePagination } from "react-table";
+import styled from "styled-components";
 
 const Pagination = styled.div`
   display: flex;
@@ -16,10 +16,7 @@ const Pagination = styled.div`
   }
 `;
 
-const Table: React.FC<{ columns: any[]; data: any[] }> = ({
-  columns,
-  data,
-}) => {
+const Table: React.FC<{ columns: any[]; data: any[] }> = ({ columns, data }) => {
   const {
     getTableProps,
     getTableBodyProps,
@@ -46,10 +43,7 @@ const Table: React.FC<{ columns: any[]; data: any[] }> = ({
 
   return (
     <>
-      <BTable
-        className="table table-bordered table-striped table-hover"
-        {...getTableProps()}
-      >
+      <BTable className="table table-bordered table-striped table-hover" {...getTableProps()}>
         <thead>
           {headerGroups.map((headerGroup) => (
             /* eslint-disable-next-line */
@@ -87,7 +81,7 @@ const Table: React.FC<{ columns: any[]; data: any[] }> = ({
               onClick={() => gotoPage(0)}
               disabled={!canPreviousPage}
             >
-              {'<<'}
+              {"<<"}
             </button>
             <button
               type="button"
@@ -95,7 +89,7 @@ const Table: React.FC<{ columns: any[]; data: any[] }> = ({
               onClick={() => previousPage()}
               disabled={!canPreviousPage}
             >
-              {'<'}
+              {"<"}
             </button>
             <button
               type="button"
@@ -103,7 +97,7 @@ const Table: React.FC<{ columns: any[]; data: any[] }> = ({
               onClick={() => nextPage()}
               disabled={!canNextPage}
             >
-              {'>'}
+              {">"}
             </button>
             <button
               type="button"
@@ -111,15 +105,15 @@ const Table: React.FC<{ columns: any[]; data: any[] }> = ({
               onClick={() => gotoPage(pageCount - 1)}
               disabled={!canNextPage}
             >
-              {'>>'}
+              {">>"}
             </button>
           </div>
           <span>
-            {' '}
-            Page{' '}
+            {" "}
+            Page{" "}
             <strong>
               {pageIndex + 1} of {pageOptions.length}
-            </strong>{' '}
+            </strong>{" "}
           </span>
         </div>
         <div>
@@ -128,7 +122,7 @@ const Table: React.FC<{ columns: any[]; data: any[] }> = ({
               <span
                 className="input-group-text"
                 id="inputGroup-sizing-sm"
-                style={{ color: '#212529' }}
+                style={{ color: "#212529" }}
               >
                 <strong>Go to page:</strong>
               </span>

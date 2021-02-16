@@ -1,6 +1,5 @@
-import AuthContext from 'store/AuthContext';
-import React, { useContext, useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import React, { useContext, useState } from "react";
+import { Link, useHistory } from "react-router-dom";
 import {
   Dropdown,
   DropdownToggle,
@@ -9,7 +8,8 @@ import {
   Collapse,
   NavItem,
   NavLink,
-} from 'shards-react';
+} from "shards-react";
+import AuthContext from "store/AuthContext";
 
 const UserActions: React.FC = () => {
   const { logout, user } = useContext(AuthContext);
@@ -20,7 +20,7 @@ const UserActions: React.FC = () => {
 
   const signout = () => {
     logout();
-    history.push('/login');
+    history.push("/login");
   };
 
   return (
@@ -29,22 +29,16 @@ const UserActions: React.FC = () => {
         caret
         tag={NavLink}
         className="text-nowrap px-3"
-        style={{ cursor: 'pointer' }}
+        style={{ cursor: "pointer" }}
       >
         <img
           className="user-avatar rounded-circle mr-2"
           src="https://capenetworks.com/static/images/testimonials/user-icon.svg"
           alt="User Avatar"
-        />{' '}
+        />{" "}
         <span className="d-none d-md-inline-block">{user.name}</span>
       </DropdownToggle>
-      <Collapse
-        tag={DropdownMenu}
-        right
-        small
-        open={visible}
-        style={{ cursor: 'pointer' }}
-      >
+      <Collapse tag={DropdownMenu} right small open={visible} style={{ cursor: "pointer" }}>
         <DropdownItem tag={Link} to="user-profile">
           <i className="material-icons">&#xE7FD;</i> Profile
         </DropdownItem>

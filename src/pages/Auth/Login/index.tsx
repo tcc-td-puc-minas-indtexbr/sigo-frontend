@@ -1,5 +1,7 @@
-import React, { useContext, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import Spinner from "../../../components/spinner";
+import AuthContext from "../../../store/AuthContext";
+import React, { useContext, useState } from "react";
+import { useHistory } from "react-router-dom";
 import {
   Container,
   Row,
@@ -12,9 +14,7 @@ import {
   FormInput,
   FormGroup,
   FormFeedback,
-} from 'shards-react';
-import Spinner from '../../../components/spinner';
-import AuthContext from '../../../store/AuthContext';
+} from "shards-react";
 
 const Login: React.FC = () => {
   const { login } = useContext(AuthContext);
@@ -23,8 +23,8 @@ const Login: React.FC = () => {
   const [isLoading, setIsloading] = useState(false);
   const [isInvalid, setIsInvalid] = useState(false);
   const [form, setForm] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
 
   const setEmail = (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -43,21 +43,15 @@ const Login: React.FC = () => {
     setIsloading(false);
 
     if (isLoginSuccess) {
-      history.push('/');
+      history.push("/");
     }
   };
 
   return (
     <Container fluid>
       <Row className="vh-100">
-        <Col
-          className="mx-auto my-auto"
-          lg={{ size: 10 }}
-          md={{ size: 9 }}
-          sm="12"
-          tag="main"
-        >
-          <Card style={{ maxWidth: '300px' }} className="mx-auto">
+        <Col className="mx-auto my-auto" lg={{ size: 10 }} md={{ size: 9 }} sm="12" tag="main">
+          <Card style={{ maxWidth: "300px" }} className="mx-auto">
             <CardBody>
               <Col className="text-center pb-3">
                 <h4 className="pb-2">SIGO</h4>

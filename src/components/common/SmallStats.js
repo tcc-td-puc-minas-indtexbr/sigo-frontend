@@ -1,10 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import shortid from 'shortid';
-import { Card, CardBody } from 'shards-react';
-
-import Chart from '../../utils/chart';
+import Chart from "../../utils/chart";
+import classNames from "classnames";
+import PropTypes from "prop-types";
+import React from "react";
+import { Card, CardBody } from "shards-react";
+import shortid from "shortid";
 
 class SmallStats extends React.Component {
   constructor(props) {
@@ -62,7 +61,7 @@ class SmallStats extends React.Component {
 
     const chartConfig = {
       ...{
-        type: 'line',
+        type: "line",
         data: {
           ...{
             labels: this.props.chartLabels,
@@ -82,48 +81,40 @@ class SmallStats extends React.Component {
   render() {
     const { variation, label, value, percentage, increase } = this.props;
 
-    const cardClasses = classNames(
-      'stats-small',
-      variation && `stats-small--${variation}`,
-    );
+    const cardClasses = classNames("stats-small", variation && `stats-small--${variation}`);
 
-    const cardBodyClasses = classNames(
-      variation === '1' ? 'p-0 d-flex' : 'px-0 pb-0',
-    );
+    const cardBodyClasses = classNames(variation === "1" ? "p-0 d-flex" : "px-0 pb-0");
 
     const innerWrapperClasses = classNames(
-      'd-flex',
-      variation === '1' ? 'flex-column m-auto' : 'px-3',
+      "d-flex",
+      variation === "1" ? "flex-column m-auto" : "px-3",
     );
 
-    const dataFieldClasses = classNames(
-      'stats-small__data',
-      variation === '1' && 'text-center',
-    );
+    const dataFieldClasses = classNames("stats-small__data", variation === "1" && "text-center");
 
     const labelClasses = classNames(
-      'stats-small__label',
-      'text-uppercase',
-      variation !== '1' && 'mb-1',
+      "stats-small__label",
+      "text-uppercase",
+      variation !== "1" && "mb-1",
     );
 
     const valueClasses = classNames(
-      'stats-small__value',
-      'count',
-      variation === '1' ? 'my-3' : 'm-0',
+      "stats-small__value",
+      "count",
+      variation === "1" ? "my-3" : "m-0",
     );
 
     const innerDataFieldClasses = classNames(
-      'stats-small__data',
-      variation !== '1' && 'text-right align-items-center',
+      "stats-small__data",
+      variation !== "1" && "text-right align-items-center",
     );
 
     const percentageClasses = classNames(
-      'stats-small__percentage',
-      `stats-small__percentage--${increase ? 'increase' : 'decrease'}`,
+      "stats-small__percentage",
+      `stats-small__percentage--${increase ? "increase" : "decrease"}`,
     );
 
-    const canvasHeight = variation === '1' ? 120 : 60;
+    const canvasHeight = variation === "1" ? 120 : 60;
 
     return (
       <Card small className={cardClasses}>
@@ -191,7 +182,7 @@ SmallStats.defaultProps = {
   increase: true,
   percentage: 0,
   value: 0,
-  label: 'Label',
+  label: "Label",
   chartOptions: Object.create(null),
   chartConfig: Object.create(null),
   chartData: [],

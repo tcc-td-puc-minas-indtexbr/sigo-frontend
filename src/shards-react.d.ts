@@ -1,1 +1,1 @@
-declare module 'shards-react';
+declare module "shards-react";

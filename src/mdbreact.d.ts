@@ -1,1 +1,1 @@
-declare module 'mdbreact';
+declare module "mdbreact";

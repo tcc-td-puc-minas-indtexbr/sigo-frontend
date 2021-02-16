@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import PageTitle from 'components/common/PageTitle';
-import Table from 'components/datatable';
-import StandardService from 'services/StandardService';
-import Spinner from 'components/spinner';
-import { Row, Col, Card, CardHeader, CardBody, Button } from 'shards-react';
-import { useHistory } from 'react-router-dom';
+import PageTitle from "components/common/PageTitle";
+import Table from "components/datatable";
+import Spinner from "components/spinner";
+import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
+import StandardService from "services/StandardService";
+import { Row, Col, Card, CardHeader, CardBody, Button } from "shards-react";
 
 const _standardService = new StandardService();
 const Standard: React.FC = () => {
@@ -15,56 +15,56 @@ const Standard: React.FC = () => {
   const columns = React.useMemo(
     () => [
       {
-        Header: 'Identification',
-        accessor: 'identification',
+        Header: "Identification",
+        accessor: "identification",
       },
       {
-        Header: 'Publish Date',
-        accessor: 'publication_date',
+        Header: "Publish Date",
+        accessor: "publication_date",
       },
       {
-        Header: 'Validity Start',
-        accessor: 'validity_start',
+        Header: "Validity Start",
+        accessor: "validity_start",
       },
       {
-        Header: 'Title',
-        accessor: 'title',
+        Header: "Title",
+        accessor: "title",
       },
       {
-        Header: 'Global Title Language',
-        accessor: 'title_global_language',
+        Header: "Global Title Language",
+        accessor: "title_global_language",
       },
       {
-        Header: 'Comite',
-        accessor: 'comite',
+        Header: "Comite",
+        accessor: "comite",
       },
       {
-        Header: 'Pages',
-        accessor: 'pages',
+        Header: "Pages",
+        accessor: "pages",
       },
       {
-        Header: 'Status',
-        accessor: 'status',
+        Header: "Status",
+        accessor: "status",
       },
       {
-        Header: 'Language',
-        accessor: 'language',
+        Header: "Language",
+        accessor: "language",
       },
       {
-        Header: 'Organization',
-        accessor: 'organization',
+        Header: "Organization",
+        accessor: "organization",
       },
       {
-        Header: 'Price',
-        accessor: 'price',
+        Header: "Price",
+        accessor: "price",
       },
       {
-        Header: 'Currency',
-        accessor: 'currency',
+        Header: "Currency",
+        accessor: "currency",
       },
       {
-        Header: 'Objective',
-        accessor: 'objective',
+        Header: "Objective",
+        accessor: "objective",
       },
     ],
     [],
@@ -83,34 +83,27 @@ const Standard: React.FC = () => {
   return (
     <>
       <Row noGutters className="page-header py-4">
-        <PageTitle
-          title="Gestão de Normas"
-          subtitle=""
-          className="text-sm-left"
-        />
+        <PageTitle title="Gestão de Normas" subtitle="" className="text-sm-left" />
       </Row>
 
       <Row>
         <Col>
           <Card small className="mb-4">
             <CardHeader className="border-bottom">
-              <Button
-                className="mb-0 mr-1"
-                onClick={() => history.push('/standard-form')}
-              >
+              <Button className="mb-0 mr-1" onClick={() => history.push("/standard-form")}>
                 Adicionar Norma
               </Button>
             </CardHeader>
             <Col>
-              <CardBody className="p-0 py-3" style={{ overflow: 'auto' }}>
+              <CardBody className="p-0 py-3" style={{ overflow: "auto" }}>
                 {/* TODO: Make a better alignment component */}
-                <div style={{ textAlign: 'center' }}>
+                <div style={{ textAlign: "center" }}>
                   {loading ? (
                     <Spinner />
                   ) : data.length > 0 ? (
                     <Table columns={columns} data={data} />
                   ) : (
-                    'No data found'
+                    "No data found"
                   )}
                 </div>
               </CardBody>

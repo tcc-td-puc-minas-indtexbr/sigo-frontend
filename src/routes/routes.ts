@@ -1,9 +1,9 @@
-import Layout from 'components/layout';
-import Empty from 'components/layout/empty';
-import Xpto from 'pages/Xpto';
-import Standard from 'pages/Standard';
-import StandardForm from 'pages/Standard/form';
-import Login from 'pages/Auth/Login';
+import Layout from "components/layout";
+import Empty from "components/layout/empty";
+import Login from "pages/Auth/Login";
+import Standard from "pages/Standard";
+import StandardForm from "pages/Standard/form";
+import Xpto from "pages/Xpto";
 
 export type ComponentRoute = {
   path: string;
@@ -15,28 +15,28 @@ export type ComponentRoute = {
 
 const routes: ComponentRoute[] = [
   {
-    path: '/',
+    path: "/",
     exact: true,
     layout: Layout,
     component: Xpto,
   },
   {
-    path: '/standard',
+    path: "/standard",
     layout: Layout,
     component: Standard,
   },
   {
-    path: '/standard-form',
+    path: "/standard-form",
     layout: Layout,
     component: StandardForm,
   },
   {
-    path: '/blog-posts',
+    path: "/blog-posts",
     layout: Layout,
     component: Xpto,
   },
   {
-    path: '/login',
+    path: "/login",
     layout: Empty,
     public: true,
     component: Login,

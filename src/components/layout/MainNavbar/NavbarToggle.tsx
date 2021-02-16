@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import AppContext from '../../../store/AppContext';
+import AppContext from "../../../store/AppContext";
+import React, { useContext } from "react";
 
 const NavbarToggle: React.FC = () => {
   const { toggleSidebar } = useContext(AppContext);

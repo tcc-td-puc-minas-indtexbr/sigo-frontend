@@ -1,6 +1,6 @@
-import React from 'react';
-import classNames from 'classnames';
-import { Col } from 'shards-react';
+import classNames from "classnames";
+import React from "react";
+import { Col } from "shards-react";
 
 type PageTitleProps = {
   title: string;
@@ -8,17 +8,8 @@ type PageTitleProps = {
   className: string;
 };
 
-const PageTitle: React.FC<PageTitleProps> = ({
-  title,
-  subtitle,
-  className,
-}: PageTitleProps) => {
-  const classes = classNames(
-    className,
-    'text-center',
-    'text-md-left',
-    'mb-sm-0',
-  );
+const PageTitle: React.FC<PageTitleProps> = ({ title, subtitle, className }: PageTitleProps) => {
+  const classes = classNames(className, "text-center", "text-md-left", "mb-sm-0");
 
   return (
     <Col xs="12" sm="4" className={classes}>

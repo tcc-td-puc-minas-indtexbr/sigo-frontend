@@ -1,5 +1,5 @@
-import React from 'react';
-import { ReactNodeLike } from 'prop-types';
+import { ReactNodeLike } from "prop-types";
+import React from "react";
 
 type EmptyLayoutProps = {
   children?: ReactNodeLike;

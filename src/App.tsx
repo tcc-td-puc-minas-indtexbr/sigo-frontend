@@ -1,13 +1,13 @@
-import React from 'react';
-import Routes from './routes';
-import { AppProvider } from './store/AppContext';
-import { AuthProvider } from './store/AuthContext';
-import pack from '../package.json';
+import Routes from "./routes";
+import { AppProvider } from "./store/AppContext";
+import { AuthProvider } from "./store/AuthContext";
+import pack from "../package.json";
+import React from "react";
 
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './shards-dashboard/styles/shards-dashboards.1.1.0.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./shards-dashboard/styles/shards-dashboards.1.1.0.min.css";
 
-console.log('App Version: ', pack.version);
+console.log("App Version: ", pack.version);
 
 const App: React.FC = () => {
   return (
