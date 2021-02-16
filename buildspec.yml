@@ -43,7 +43,7 @@ phases:
 #      - 'target/unit/clover.xml'
 #    file-format: 'CLOVERXML'
 artifacts:
-  base-directory: ./build
+  base-directory: build
   files:
 #    - imagedefinitions.json
     - '*/*'
