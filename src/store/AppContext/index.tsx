@@ -3,7 +3,7 @@ import React, { useState } from "react";
 
 type AppContextProps = {
   isSidebarVisible: boolean;
-  toggleSidebar: () => void;
+  toggleSidebar: (makeVisible?: boolean) => void;
 };
 
 type AppProviderProps = {
@@ -12,13 +12,14 @@ type AppProviderProps = {
 
 const AppContext = React.createContext<AppContextProps>({
   isSidebarVisible: false,
-  toggleSidebar: () => void 0,
+  toggleSidebar: (makeVisible?: boolean) => void 0,
 });
 
 export const AppProvider: React.FC<AppProviderProps> = (props) => {
   const [isSidebarVisible, setIsSidebarVisible] = useState<boolean>(false);
 
-  const toggleSidebar = () => setIsSidebarVisible(!isSidebarVisible);
+  const toggleSidebar = (makeVisible?: boolean) =>
+    setIsSidebarVisible(makeVisible !== undefined ? makeVisible : !isSidebarVisible);
 
   return (
     <AppContext.Provider value={{ isSidebarVisible, toggleSidebar }}>

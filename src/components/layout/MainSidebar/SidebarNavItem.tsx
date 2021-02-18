@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import { NavLink as RouteNavLink } from "react-router-dom";
 import { NavItem, NavLink } from "shards-react";
+import AppContext from "store/AppContext";
 
 type NavItemProps = {
   title: string;
@@ -10,9 +11,11 @@ type NavItemProps = {
 };
 
 const SidebarNavItem: React.FC<{ item: NavItemProps }> = ({ item }) => {
+  const { toggleSidebar } = useContext(AppContext);
+
   return (
     <NavItem>
-      <NavLink tag={RouteNavLink} to={item.to}>
+      <NavLink tag={RouteNavLink} to={item.to} onClick={() => toggleSidebar(false)}>
         {item.htmlBefore && (
           <div
             className="d-inline-block item-icon-wrapper"

@@ -1,4 +1,4 @@
-interface IStandardRoutes {
+interface IPageWithForm {
   index: string;
   form: string;
 }
@@ -6,7 +6,8 @@ interface IStandardRoutes {
 interface IRoutesPath {
   index: string;
   login: string;
-  standard: IStandardRoutes;
+  standard: IPageWithForm;
+  consultancy: IPageWithForm;
 }
 
 export const RoutesPath: IRoutesPath = {
@@ -15,5 +16,9 @@ export const RoutesPath: IRoutesPath = {
   standard: {
     index: "/standard",
     form: "/standard/form",
+  },
+  consultancy: {
+    index: "/consultancy",
+    form: "/consultancy/form",
   },
 };

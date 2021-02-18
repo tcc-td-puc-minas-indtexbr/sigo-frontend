@@ -2,10 +2,10 @@ import { RoutesPath } from "./constants";
 import Layout from "components/layout";
 import Empty from "components/layout/empty";
 import Login from "pages/Auth/Login";
+import Consultancy from "pages/Consultancy";
 import Home from "pages/Home";
 import Standard from "pages/Standard";
 import StandardForm from "pages/Standard/form";
-import Xpto from "pages/Xpto";
 
 export type ComponentRoute = {
   path: string;
@@ -41,9 +41,10 @@ const routes: ComponentRoute[] = [
     component: StandardForm,
   },
   {
-    path: "/blog-posts",
+    path: RoutesPath.consultancy.index,
+    exact: true,
     layout: Layout,
-    component: Xpto,
+    component: Consultancy,
   },
   {
     path: RoutesPath.login,

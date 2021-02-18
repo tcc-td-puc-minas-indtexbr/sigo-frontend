@@ -11,7 +11,7 @@ const SidebarMainNavbar: React.FC = () => {
         className="align-items-stretch bg-white flex-md-nowrap border-bottom p-0"
         type="light"
       >
-        <NavbarBrand className="w-100 mr-0" href="#" style={{ lineHeight: "25px" }}>
+        <NavbarBrand className="w-100 mr-0" href="/" style={{ lineHeight: "25px" }}>
           <div className="d-table m-auto">
             <img
               id="main-logo"
@@ -27,7 +27,7 @@ const SidebarMainNavbar: React.FC = () => {
         <a
           href="#"
           className="toggle-sidebar d-sm-inline d-md-none d-lg-none"
-          onClick={toggleSidebar}
+          onClick={() => toggleSidebar()}
         >
           <i className="material-icons">&#xE5C4;</i>
         </a>

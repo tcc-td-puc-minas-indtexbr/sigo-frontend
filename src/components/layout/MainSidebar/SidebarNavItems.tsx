@@ -1,18 +1,19 @@
 import SidebarNavItem from "./SidebarNavItem";
 import React from "react";
+import { RoutesPath } from "routes/constants";
 import { Nav } from "shards-react";
 
 const menu = [
   {
     title: "Gestão de Normas",
-    to: "/standard",
+    to: RoutesPath.standard.index,
     htmlBefore: '<i class="material-icons">table_chart</i>',
     htmlAfter: "",
   },
   {
-    title: "Blog Posts",
-    to: "/blog-posts",
-    htmlBefore: '<i class="material-icons">vertical_split</i>',
+    title: "Consultorias e Assessorias",
+    to: RoutesPath.consultancy.index,
+    htmlBefore: '<i class="material-icons">table_view</i>',
   },
 ];
 
