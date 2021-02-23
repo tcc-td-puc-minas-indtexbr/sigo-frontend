@@ -64,11 +64,11 @@ const StandardForm: React.FC = () => {
                       <Form>
                         <Row form>
                           <Col md="4" className="form-group">
-                            <label htmlFor="feIdentification">Identification</label>
+                            <label htmlFor="feIdentification">Identificação</label>
                             <FormInput
                               id="feIdentification"
                               type="text"
-                              placeholder="Identification"
+                              placeholder="Identificação"
                               value={formData.identification}
                               onChange={(e: any) =>
                                 setFormData({ ...formData, identification: e.target.value })
@@ -76,11 +76,11 @@ const StandardForm: React.FC = () => {
                             />
                           </Col>
                           <Col md="4" className="form-group">
-                            <label htmlFor="fePublishDate">Publish Date</label>
+                            <label htmlFor="fePublishDate">Data de Publicação</label>
                             <FormInput
                               id="fePublishDate"
                               type="text"
-                              placeholder="Publish Date"
+                              placeholder="Data de Publicação"
                               value={formData.publication_date}
                               onChange={(e: any) =>
                                 setFormData({ ...formData, publication_date: e.target.value })
@@ -88,11 +88,11 @@ const StandardForm: React.FC = () => {
                             />
                           </Col>
                           <Col md="4" className="form-group">
-                            <label htmlFor="feValidityStart">Validity Start</label>
+                            <label htmlFor="feValidityStart">Data de Válidade</label>
                             <FormInput
                               id="feValidityStart"
                               type="text"
-                              placeholder="Validity Start"
+                              placeholder="Data de Válidade"
                               value={formData.validity_start}
                               onChange={(e: any) =>
                                 setFormData({ ...formData, validity_start: e.target.value })
@@ -102,10 +102,10 @@ const StandardForm: React.FC = () => {
                         </Row>
                         <Row form>
                           <Col md="6" className="form-group">
-                            <label htmlFor="feTitle">Title</label>
+                            <label htmlFor="feTitle">Título</label>
                             <FormInput
                               id="feTitle"
-                              placeholder="Title"
+                              placeholder="Título"
                               value={formData.title}
                               onChange={(e: any) =>
                                 setFormData({ ...formData, title: e.target.value })
@@ -114,10 +114,10 @@ const StandardForm: React.FC = () => {
                           </Col>
 
                           <Col md="6" className="form-group">
-                            <label htmlFor="feGlobalTitleLanguage">Global Title Language</label>
+                            <label htmlFor="feGlobalTitleLanguage">Título Global</label>
                             <FormInput
                               id="feGlobalTitleLanguage"
-                              placeholder="Global Title Language"
+                              placeholder="Título Global"
                               value={formData.title_global_language}
                               onChange={(e: any) =>
                                 setFormData({
@@ -130,9 +130,10 @@ const StandardForm: React.FC = () => {
                         </Row>
                         <Row form>
                           <Col md="4" className="form-group">
-                            <label htmlFor="feComite">Comite</label>
+                            <label htmlFor="feComite">Comitê</label>
                             <FormInput
                               id="feComite"
+                              placeholder="Comitê"
                               value={formData.comite}
                               onChange={(e: any) =>
                                 setFormData({ ...formData, comite: e.target.value })
@@ -140,9 +141,10 @@ const StandardForm: React.FC = () => {
                             />
                           </Col>
                           <Col md="4" className="form-group">
-                            <label htmlFor="feObjective">Objective</label>
+                            <label htmlFor="feObjective">Objetivo</label>
                             <FormInput
                               id="feObjective"
+                              placeholder="Objetivo"
                               value={formData.objective}
                               onChange={(e: any) =>
                                 setFormData({ ...formData, objective: e.target.value })
@@ -150,10 +152,12 @@ const StandardForm: React.FC = () => {
                             />
                           </Col>
                           <Col md="2" className="form-group">
-                            <label htmlFor="fePages">Pages</label>
+                            <label htmlFor="fePages">Páginas</label>
                             <FormInput
                               id="fePages"
+                              placeholder="Páginas"
                               value={formData.pages}
+                              type="number"
                               onChange={(e: any) =>
                                 setFormData({ ...formData, pages: e.target.value })
                               }
@@ -164,14 +168,16 @@ const StandardForm: React.FC = () => {
                             <FormSelect id="feStatus">
                               <option>Choose...</option>
                               <option>...</option>
+                              <option>XPTÓ</option>
                             </FormSelect>
                           </Col>
                         </Row>
                         <Row form>
                           <Col md="3" className="form-group">
-                            <label htmlFor="feOrganization">Organization</label>
+                            <label htmlFor="feOrganization">Organização</label>
                             <FormInput
                               id="feOrganization"
+                              placeholder="Organização"
                               value={formData.organization}
                               onChange={(e: any) =>
                                 setFormData({ ...formData, organization: e.target.value })
@@ -179,9 +185,10 @@ const StandardForm: React.FC = () => {
                             />
                           </Col>
                           <Col md="3" className="form-group">
-                            <label htmlFor="feLanguage">Language</label>
+                            <label htmlFor="feLanguage">Idioma</label>
                             <FormInput
                               id="feLanguage"
+                              placeholder="Idioma"
                               value={formData.language}
                               onChange={(e: any) =>
                                 setFormData({ ...formData, language: e.target.value })
@@ -189,9 +196,10 @@ const StandardForm: React.FC = () => {
                             />
                           </Col>
                           <Col md="3" className="form-group">
-                            <label htmlFor="fePrice">Price</label>
+                            <label htmlFor="fePrice">Preço</label>
                             <FormInput
                               id="fePrice"
+                              placeholder="Preço"
                               value={formData.price}
                               onChange={(e: any) =>
                                 setFormData({ ...formData, price: e.target.value })
@@ -199,14 +207,13 @@ const StandardForm: React.FC = () => {
                             />
                           </Col>
                           <Col md="3" className="form-group">
-                            <label htmlFor="feCurrency">Currency</label>
-                            <FormInput
-                              id="feCurrency"
-                              value={formData.currency}
-                              onChange={(e: any) =>
-                                setFormData({ ...formData, currency: e.target.value })
-                              }
-                            />
+                            <label htmlFor="feCurrency">Moeda</label>
+                            <FormSelect id="feCurrency">
+                              <option>BRL</option>
+                              <option>USD</option>
+                              <option>EUR</option>
+                              <option>PLN</option>
+                            </FormSelect>
                           </Col>
                         </Row>
                         <Button type="submit">{isEditingMode ? "Atualizar" : "Criar"}</Button>

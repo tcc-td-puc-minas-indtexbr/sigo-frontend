@@ -7,7 +7,7 @@ interface IRoutesPath {
   index: string;
   login: string;
   standard: IPageWithForm;
-  consultancy: IPageWithForm;
+  consulting: IPageWithForm;
 }
 
 export const RoutesPath: IRoutesPath = {
@@ -17,8 +17,8 @@ export const RoutesPath: IRoutesPath = {
     index: "/standard",
     form: "/standard/form",
   },
-  consultancy: {
-    index: "/consultancy",
-    form: "/consultancy/form",
+  consulting: {
+    index: "/consulting",
+    form: "/consulting/form",
   },
 };

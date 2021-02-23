@@ -12,7 +12,7 @@ const menu = [
   },
   {
     title: "Consultorias e Assessorias",
-    to: RoutesPath.consultancy.index,
+    to: RoutesPath.consulting.index,
     htmlBefore: '<i class="material-icons">table_view</i>',
   },
 ];

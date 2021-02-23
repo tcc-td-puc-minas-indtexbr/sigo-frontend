@@ -2,7 +2,8 @@ import { RoutesPath } from "./constants";
 import Layout from "components/layout";
 import Empty from "components/layout/empty";
 import Login from "pages/Auth/Login";
-import Consultancy from "pages/Consultancy";
+import Consulting from "pages/Consulting";
+import ConsultingForm from "pages/Consulting/form";
 import Home from "pages/Home";
 import Standard from "pages/Standard";
 import StandardForm from "pages/Standard/form";
@@ -41,10 +42,22 @@ const routes: ComponentRoute[] = [
     component: StandardForm,
   },
   {
-    path: RoutesPath.consultancy.index,
+    path: RoutesPath.consulting.index,
     exact: true,
     layout: Layout,
-    component: Consultancy,
+    component: Consulting,
+  },
+  {
+    path: RoutesPath.consulting.form,
+    exact: true,
+    layout: Layout,
+    component: ConsultingForm,
+  },
+  {
+    path: `${RoutesPath.consulting.form}/:uuid`,
+    exact: true,
+    layout: Layout,
+    component: ConsultingForm,
   },
   {
     path: RoutesPath.login,
