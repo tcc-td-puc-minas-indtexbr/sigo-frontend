@@ -5,9 +5,9 @@ type ConsultingDto = {
   company: string;
   companyName: string;
   cnpj: string;
-  agreementDate: string;
-  startDate: string;
-  endDate: string;
+  agreementDate: Date;
+  startDate: Date;
+  endDate: Date;
 };
 
 export const emptyConsultingDto = {
@@ -17,9 +17,9 @@ export const emptyConsultingDto = {
   company: "",
   companyName: "",
   cnpj: "",
-  agreementDate: "",
-  startDate: "",
-  endDate: "",
+  agreementDate: new Date(Date.now()),
+  startDate: new Date(Date.now()),
+  endDate: new Date(Date.now()),
 };
 
 export default ConsultingDto;

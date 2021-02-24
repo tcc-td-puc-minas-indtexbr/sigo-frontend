@@ -18,6 +18,17 @@ import {
   CardBody,
   DatePicker,
 } from "shards-react";
+import styled from "styled-components";
+
+const DatePickerWrapper = styled.div`
+  .react-datepicker-wrapper {
+    width: 100% !important;
+  }
+
+  .react-datepicker__input-container {
+    width: 100% !important;
+  }
+`;
 
 const ConsultingForm: React.FC = () => {
   const history = useHistory();
@@ -119,36 +130,41 @@ const ConsultingForm: React.FC = () => {
                         <Row form>
                           <Col md="4" className="form-group">
                             <label htmlFor="feAgreementDate">Data do Contrato</label>
-                            <DatePicker
-                              size="sm"
-                              selected={formData.startDate}
-                              onChange={
-                                (e: any) => console.log(e.target.value)
-                                // setFormData({ ...formData, startDate: e.target.value })
-                              }
-                              placeholderText="Data do Contrato"
-                              dropdownMode="select"
-                            />
+                            <DatePickerWrapper>
+                              <DatePicker
+                                size="md"
+                                selected={formData.agreementDate}
+                                onChange={(e: any) =>
+                                  setFormData({ ...formData, agreementDate: e })
+                                }
+                                placeholderText="Data do Contrato"
+                                dropdownMode="select"
+                              />
+                            </DatePickerWrapper>
                           </Col>
                           <Col md="4" className="form-group">
                             <label htmlFor="feStartDate">Data de Início</label>
-                            <FormInput
-                              id="feStartDate"
-                              value={formData.startDate}
-                              onChange={(e: any) =>
-                                setFormData({ ...formData, startDate: e.target.value })
-                              }
-                            />
+                            <DatePickerWrapper>
+                              <DatePicker
+                                size="md"
+                                selected={formData.startDate}
+                                onChange={(e: any) => setFormData({ ...formData, startDate: e })}
+                                placeholderText="Data de Início"
+                                dropdownMode="select"
+                              />
+                            </DatePickerWrapper>
                           </Col>
                           <Col md="4" className="form-group">
                             <label htmlFor="feEndDate">Data de Término</label>
-                            <FormInput
-                              id="feEndDate"
-                              value={formData.endDate}
-                              onChange={(e: any) =>
-                                setFormData({ ...formData, endDate: e.target.value })
-                              }
-                            />
+                            <DatePickerWrapper>
+                              <DatePicker
+                                size="md"
+                                selected={formData.endDate}
+                                onChange={(e: any) => setFormData({ ...formData, endDate: e })}
+                                placeholderText="Data de Término"
+                                dropdownMode="select"
+                              />
+                            </DatePickerWrapper>
                           </Col>
                         </Row>
                         <Button type="submit">{isEditingMode ? "Atualizar" : "Criar"}</Button>

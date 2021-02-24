@@ -6,8 +6,8 @@ export const consultanciesTestData = [
     company: "Company Razao Social Ltda.",
     companyName: "Company Exemplo",
     cnpj: "93.559.097/0001-58",
-    agreementDate: "2021-02-23",
-    startDate: "2021-03-01",
-    endDate: "2021-07-31",
+    agreementDate: new Date("2021-02-23"),
+    startDate: new Date("2021-03-01"),
+    endDate: new Date("2021-07-31"),
   },
 ];
