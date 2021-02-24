@@ -30,7 +30,7 @@ const DatePickerWrapper = styled.div`
   }
 `;
 
-const ConsultingForm: React.FC = () => {
+export default function ConsultingForm() {
   const history = useHistory();
   const { uuid } = useParams<{ uuid?: string }>();
   const isEditingMode = uuid !== undefined;
@@ -195,6 +195,4 @@ const ConsultingForm: React.FC = () => {
       </Card>
     </>
   );
-};
-
-export default ConsultingForm;
+}

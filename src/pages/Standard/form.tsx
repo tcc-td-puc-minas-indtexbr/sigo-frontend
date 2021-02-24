@@ -18,7 +18,7 @@ import {
   CardBody,
 } from "shards-react";
 
-const StandardForm: React.FC = () => {
+export default function StandardForm() {
   const history = useHistory();
   const { uuid } = useParams<{ uuid?: string }>();
   const isEditingMode = uuid !== undefined;
@@ -241,6 +241,4 @@ const StandardForm: React.FC = () => {
       </Card>
     </>
   );
-};
-
-export default StandardForm;
+}

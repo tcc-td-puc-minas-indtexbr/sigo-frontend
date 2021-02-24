@@ -4,13 +4,13 @@ import PageTitle from "components/common/PageTitle";
 import Table from "components/datatable";
 import Spinner from "components/spinner";
 import StandardDto from "models/StandardDto";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { RoutesPath } from "routes/constants";
 import StandardService from "services/StandardService";
 import { Row, Col, Card, CardHeader, CardBody, Button } from "shards-react";
 
-const Standard: React.FC = () => {
+export default function Standard() {
   const history = useHistory();
   const [data, setData] = useState<StandardDto[]>([]);
   const [loading, setLoading] = useState(true); //TODO: Improve loading when we have an API
@@ -28,9 +28,9 @@ const Standard: React.FC = () => {
     getData();
   }, []);
 
-  const navigateToStandard = (standardDto: StandardDto) => {
+  const navigateToStandard = useCallback((standardDto: StandardDto) => {
     history.push(`${RoutesPath.standard.form}/${standardDto.uuid}`);
-  };
+  }, []);
 
   return (
     <>
@@ -43,7 +43,7 @@ const Standard: React.FC = () => {
           <Card small className="mb-4">
             <CardHeader className="border-bottom">
               <Button className="mb-0 mr-1" onClick={() => history.push(RoutesPath.standard.form)}>
-                Adicionar Norma
+                Adicionar
               </Button>
             </CardHeader>
             <Col>
@@ -64,6 +64,4 @@ const Standard: React.FC = () => {
       </Row>
     </>
   );
-};
-
-export default Standard;
+}

@@ -4,13 +4,13 @@ import PageTitle from "components/common/PageTitle";
 import Table from "components/datatable";
 import Spinner from "components/spinner";
 import ConsultingDto from "models/ConsultingDto";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { RoutesPath } from "routes/constants";
 import ConsultingService from "services/ConsultingService";
 import { Row, Col, Card, CardHeader, CardBody, Button } from "shards-react";
 
-const Consultancy: React.FC = () => {
+export default function Consulting() {
   const history = useHistory();
   const [data, setData] = useState<ConsultingDto[]>([]);
   const [loading, setLoading] = useState(true); //TODO: Improve loading when we have an API
@@ -20,7 +20,6 @@ const Consultancy: React.FC = () => {
 
   useEffect(() => {
     async function getData() {
-      debugger;
       const response = await consultingService.GetAll();
       setData(response.data);
       setLoading(false);
@@ -29,9 +28,9 @@ const Consultancy: React.FC = () => {
     getData();
   }, []);
 
-  const navigateToConsultancy = (consultingDto: ConsultingDto) => {
+  const navigateToConsultancy = useCallback((consultingDto: ConsultingDto) => {
     history.push(`${RoutesPath.consulting.form}/${consultingDto.uuid}`);
-  };
+  }, []);
 
   return (
     <>
@@ -68,6 +67,4 @@ const Consultancy: React.FC = () => {
       </Row>
     </>
   );
-};
-
-export default Consultancy;
+}
