@@ -34,14 +34,14 @@ const ConsultingForm: React.FC = () => {
   const history = useHistory();
   const { uuid } = useParams<{ uuid?: string }>();
   const isEditingMode = uuid !== undefined;
-  const standardService = React.useMemo(() => new ConsultingService(consultanciesTestData), []);
+  const consultingService = React.useMemo(() => new ConsultingService(consultanciesTestData), []);
   const [formData, setFormData] = useState<ConsultingDto>(emptyConsultingDto);
   const [loading, setLoading] = useState(true); //TODO: fix this shit loading and div center inside loading statement
 
   useEffect(() => {
     async function getStandard() {
       if (uuid !== undefined) {
-        const response = await standardService.GetByUuid(uuid);
+        const response = await consultingService.GetByUuid(uuid);
         setFormData(response ?? emptyConsultingDto); //TODO what should we do when id is not found
       }
 
@@ -139,6 +139,7 @@ const ConsultingForm: React.FC = () => {
                                 }
                                 placeholderText="Data do Contrato"
                                 dropdownMode="select"
+                                dateFormat="dd/MM/yyyy"
                               />
                             </DatePickerWrapper>
                           </Col>
@@ -151,6 +152,7 @@ const ConsultingForm: React.FC = () => {
                                 onChange={(e: any) => setFormData({ ...formData, startDate: e })}
                                 placeholderText="Data de Início"
                                 dropdownMode="select"
+                                dateFormat="dd/MM/yyyy"
                               />
                             </DatePickerWrapper>
                           </Col>
@@ -163,6 +165,7 @@ const ConsultingForm: React.FC = () => {
                                 onChange={(e: any) => setFormData({ ...formData, endDate: e })}
                                 placeholderText="Data de Término"
                                 dropdownMode="select"
+                                dateFormat="dd/MM/yyyy"
                               />
                             </DatePickerWrapper>
                           </Col>

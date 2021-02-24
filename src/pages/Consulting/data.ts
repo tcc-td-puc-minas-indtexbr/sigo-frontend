@@ -1,4 +1,6 @@
-export const consultanciesTestData = [
+import ConsultingDto from "models/ConsultingDto";
+
+export const consultanciesTestData: ConsultingDto[] = [
   {
     id: 1,
     uuid: "99e72128-7622-11eb-9439-0242ac130002",

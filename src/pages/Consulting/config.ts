@@ -18,13 +18,22 @@ export const columnsConfig = [
   {
     Header: "Data do Contrato",
     accessor: "agreementDate",
+    Cell: ({ value }: { value: Date }) => {
+      return `${value.toLocaleDateString("pt-BR")}`;
+    },
   },
   {
     Header: "Data de Início",
     accessor: "startDate",
+    Cell: ({ value }: { value: Date }) => {
+      return `${value.toLocaleDateString("pt-BR")}`;
+    },
   },
   {
     Header: "Data de Término",
     accessor: "endDate",
+    Cell: ({ value }: { value: Date }) => {
+      return `${value.toLocaleDateString("pt-BR")}`;
+    },
   },
 ];

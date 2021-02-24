@@ -1,11 +1,37 @@
+import { columnsConfig } from "./config";
+import { consultanciesTestData } from "./data";
 import PageTitle from "components/common/PageTitle";
-import React from "react";
+import Table from "components/datatable";
+import Spinner from "components/spinner";
+import ConsultingDto from "models/ConsultingDto";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { RoutesPath } from "routes/constants";
+import ConsultingService from "services/ConsultingService";
 import { Row, Col, Card, CardHeader, CardBody, Button } from "shards-react";
 
 const Consultancy: React.FC = () => {
   const history = useHistory();
+  const [data, setData] = useState<ConsultingDto[]>([]);
+  const [loading, setLoading] = useState(true); //TODO: Improve loading when we have an API
+
+  const columns = React.useMemo(() => columnsConfig, []);
+  const consultingService = React.useMemo(() => new ConsultingService(consultanciesTestData), []);
+
+  useEffect(() => {
+    async function getData() {
+      debugger;
+      const response = await consultingService.GetAll();
+      setData(response.data);
+      setLoading(false);
+    }
+
+    getData();
+  }, []);
+
+  const navigateToConsultancy = (consultingDto: ConsultingDto) => {
+    history.push(`${RoutesPath.consulting.form}/${consultingDto.uuid}`);
+  };
 
   return (
     <>
@@ -25,8 +51,16 @@ const Consultancy: React.FC = () => {
               </Button>
             </CardHeader>
             <Col>
-              <CardBody className="p-0 pb-3" styles={{ overflow: "auto" }}>
-                Consultorias e Assessorias
+              <CardBody className="p-0 py-3" style={{ overflow: "auto" }}>
+                <div style={{ textAlign: "center" }}>
+                  {loading ? (
+                    <Spinner />
+                  ) : data.length > 0 ? (
+                    <Table columns={columns} data={data} getTrProps={navigateToConsultancy} />
+                  ) : (
+                    "No data found"
+                  )}
+                </div>
               </CardBody>
             </Col>
           </Card>
