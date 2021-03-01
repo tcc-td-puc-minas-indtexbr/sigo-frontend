@@ -43,6 +43,11 @@ export default function ConsultingForm() {
     buttonsClicked: false,
   });
 
+  const toogleButtonsClicked = (isClicked: boolean) =>
+    setLoading({ ...loading, buttonsClicked: isClicked });
+  const addSuccessToast = (message: string) => addToast(message, { appearance: "success" });
+  const addErrorToast = () => addToast("Alguma coisa deu errado :(", { appearance: "error" });
+
   useEffect(() => {
     async function getStandard() {
       if (uuid !== undefined) {
@@ -65,41 +70,38 @@ export default function ConsultingForm() {
   async function submitForm(e: any) {
     e.preventDefault();
 
-    let service = undefined;
-
-    toogleButtonsClicked(true);
-    if (isEditingMode) {
-      service = consultingService.update(formData.uuid, formData);
-    } else {
-      service = consultingService.create(formData);
+    function success() {
+      addSuccessToast(`Registro ${isEditingMode ? "atualizado" : "salvo"} com sucesso!`);
     }
 
-    service
-      .then((_response) =>
-        addSuccessToast(`Registro ${isEditingMode ? "atualizado" : "salvo"} com sucesso!`),
-      )
-      .catch((_err) => addErrorToast())
-      .finally(() => toogleButtonsClicked(false));
+    const service = isEditingMode
+      ? () => consultingService.update(formData.uuid, formData).then(success)
+      : () => consultingService.create(formData).then(success);
+
+    executeAsync(service);
   }
 
   async function deleteRecord(e: any) {
     e.preventDefault();
 
-    toogleButtonsClicked(true);
-    await consultingService
-      .delete(formData.uuid)
-      .then((_response) => {
-        addSuccessToast("Registro excluído com sucesso!");
-        history.goBack();
-      })
-      .catch((_err) => addErrorToast())
-      .finally(() => toogleButtonsClicked(false));
+    function success() {
+      addSuccessToast("Registro excluído com sucesso!");
+      history.goBack();
+    }
+
+    executeAsync(() => consultingService.delete(formData.uuid).then(success));
   }
 
-  const toogleButtonsClicked = (isClicked: boolean) =>
-    setLoading({ ...loading, buttonsClicked: isClicked });
-  const addSuccessToast = (message: string) => addToast(message, { appearance: "success" });
-  const addErrorToast = () => addToast("Alguma coisa deu errado :(", { appearance: "error" });
+  async function executeAsync<T>(execute: () => Promise<T>) {
+    try {
+      toogleButtonsClicked(true);
+      return await execute();
+    } catch (error) {
+      addErrorToast();
+    } finally {
+      toogleButtonsClicked(false);
+    }
+  }
 
   return (
     <>
@@ -135,7 +137,7 @@ export default function ConsultingForm() {
                                 setFormData({ ...formData, businessArea: e.target.value })
                               }
                             >
-                              <option value="" selected disabled hidden>
+                              <option value="" disabled hidden>
                                 Selecione uma opção
                               </option>
                               <option>E-commerce</option>
