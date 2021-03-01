@@ -1,7 +1,6 @@
-import { standardTestData } from "./makeData";
 import PageTitle from "components/common/PageTitle";
 import { Spinner } from "components/spinner";
-import StandardDto, { emptyStandardDto } from "models/StandardDto";
+import { StandardModel, emptyStandardModel } from "models/Standard";
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import StandardService from "services/StandardService";
@@ -16,21 +15,24 @@ import {
   Button,
   Card,
   CardBody,
+  DatePicker,
 } from "shards-react";
+import { DatePickerWrapper } from "shared/styles";
 
 export default function StandardForm() {
   const history = useHistory();
   const { uuid } = useParams<{ uuid?: string }>();
   const isEditingMode = uuid !== undefined;
-  const standardService = React.useMemo(() => new StandardService(standardTestData), []);
-  const [formData, setFormData] = useState<StandardDto>(emptyStandardDto);
-  const [loading, setLoading] = useState(true); //TODO: fix this shit loading and div center inside loading statement
+
+  const standardService = React.useMemo(() => new StandardService(), []);
+  const [formData, setFormData] = useState<StandardModel>(emptyStandardModel);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function getStandard() {
       if (uuid !== undefined) {
-        const response = await standardService.GetByUuid(uuid);
-        setFormData(response ?? emptyStandardDto);
+        const response = await standardService.get(uuid);
+        setFormData(response ?? emptyStandardModel);
       }
 
       setLoading(false);
@@ -70,34 +72,42 @@ export default function StandardForm() {
                               type="text"
                               placeholder="Identificação"
                               value={formData.identification}
-                              onChange={(e: any) =>
+                              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                                 setFormData({ ...formData, identification: e.target.value })
                               }
                             />
                           </Col>
                           <Col md="4" className="form-group">
                             <label htmlFor="fePublishDate">Data de Publicação</label>
-                            <FormInput
-                              id="fePublishDate"
-                              type="text"
-                              placeholder="Data de Publicação"
-                              value={formData.publication_date}
-                              onChange={(e: any) =>
-                                setFormData({ ...formData, publication_date: e.target.value })
-                              }
-                            />
+                            <DatePickerWrapper>
+                              <DatePicker
+                                required
+                                size="md"
+                                selected={formData.publicationDate}
+                                onChange={(e: Date) =>
+                                  setFormData({ ...formData, publicationDate: e })
+                                }
+                                placeholderText="Data de Publicação"
+                                dropdownMode="select"
+                                dateFormat="dd/MM/yyyy"
+                              />
+                            </DatePickerWrapper>
                           </Col>
                           <Col md="4" className="form-group">
                             <label htmlFor="feValidityStart">Data de Válidade</label>
-                            <FormInput
-                              id="feValidityStart"
-                              type="text"
-                              placeholder="Data de Válidade"
-                              value={formData.validity_start}
-                              onChange={(e: any) =>
-                                setFormData({ ...formData, validity_start: e.target.value })
-                              }
-                            />
+                            <DatePickerWrapper>
+                              <DatePicker
+                                required
+                                size="md"
+                                selected={formData.validityStart}
+                                onChange={(e: Date) =>
+                                  setFormData({ ...formData, validityStart: e })
+                                }
+                                placeholderText="Data de Válidade"
+                                dropdownMode="select"
+                                dateFormat="dd/MM/yyyy"
+                              />
+                            </DatePickerWrapper>
                           </Col>
                         </Row>
                         <Row form>
@@ -107,7 +117,7 @@ export default function StandardForm() {
                               id="feTitle"
                               placeholder="Título"
                               value={formData.title}
-                              onChange={(e: any) =>
+                              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                                 setFormData({ ...formData, title: e.target.value })
                               }
                             />
@@ -118,11 +128,11 @@ export default function StandardForm() {
                             <FormInput
                               id="feGlobalTitleLanguage"
                               placeholder="Título Global"
-                              value={formData.title_global_language}
-                              onChange={(e: any) =>
+                              value={formData.titleGlobalLanguage}
+                              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                                 setFormData({
                                   ...formData,
-                                  title_global_language: e.target.value,
+                                  titleGlobalLanguage: e.target.value,
                                 })
                               }
                             />
@@ -135,7 +145,7 @@ export default function StandardForm() {
                               id="feComite"
                               placeholder="Comitê"
                               value={formData.comite}
-                              onChange={(e: any) =>
+                              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                                 setFormData({ ...formData, comite: e.target.value })
                               }
                             />
@@ -146,7 +156,7 @@ export default function StandardForm() {
                               id="feObjective"
                               placeholder="Objetivo"
                               value={formData.objective}
-                              onChange={(e: any) =>
+                              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                                 setFormData({ ...formData, objective: e.target.value })
                               }
                             />
@@ -158,17 +168,25 @@ export default function StandardForm() {
                               placeholder="Páginas"
                               value={formData.pages}
                               type="number"
-                              onChange={(e: any) =>
-                                setFormData({ ...formData, pages: e.target.value })
+                              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                setFormData({ ...formData, pages: +e.target.value })
                               }
                             />
                           </Col>
                           <Col md="2" className="form-group">
                             <label htmlFor="feStatus">Status</label>
-                            <FormSelect id="feStatus">
-                              <option>Choose...</option>
-                              <option>...</option>
-                              <option>XPTÓ</option>
+                            <FormSelect
+                              id="feStatus"
+                              value={formData.status}
+                              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                setFormData({ ...formData, status: e.target.value })
+                              }
+                            >
+                              <option value="" disabled hidden>
+                                Selecione uma opção
+                              </option>
+                              <option>Atual</option>
+                              <option>Arquivado</option>
                             </FormSelect>
                           </Col>
                         </Row>
@@ -179,7 +197,7 @@ export default function StandardForm() {
                               id="feOrganization"
                               placeholder="Organização"
                               value={formData.organization}
-                              onChange={(e: any) =>
+                              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                                 setFormData({ ...formData, organization: e.target.value })
                               }
                             />
@@ -190,7 +208,7 @@ export default function StandardForm() {
                               id="feLanguage"
                               placeholder="Idioma"
                               value={formData.language}
-                              onChange={(e: any) =>
+                              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                                 setFormData({ ...formData, language: e.target.value })
                               }
                             />
@@ -201,14 +219,23 @@ export default function StandardForm() {
                               id="fePrice"
                               placeholder="Preço"
                               value={formData.price}
-                              onChange={(e: any) =>
-                                setFormData({ ...formData, price: e.target.value })
+                              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                setFormData({ ...formData, price: +e.target.value })
                               }
                             />
                           </Col>
                           <Col md="3" className="form-group">
                             <label htmlFor="feCurrency">Moeda</label>
-                            <FormSelect id="feCurrency">
+                            <FormSelect
+                              id="feCurrency"
+                              value={formData.currency}
+                              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                setFormData({ ...formData, currency: e.target.value })
+                              }
+                            >
+                              <option value="" disabled hidden>
+                                Selecione uma opção
+                              </option>
                               <option>BRL</option>
                               <option>USD</option>
                               <option>EUR</option>

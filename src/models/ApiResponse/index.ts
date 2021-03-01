@@ -60,3 +60,22 @@ export type ConsultingDto = {
   startDate: string;
   endDate: string;
 };
+
+export type StandardDto = {
+  comite: string;
+  currency: string;
+  file: string;
+  identification: string;
+  language: string;
+  objective: string | null;
+  organization: string;
+  pages: number;
+  price: number;
+  publication_date: string;
+  status: string;
+  title: string;
+  title_global_language: string;
+  url: string;
+  uuid: string;
+  validity_start: string;
+};

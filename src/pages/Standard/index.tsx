@@ -1,9 +1,8 @@
 import { columnsConfig } from "./config";
-import { standardTestData } from "./makeData";
 import PageTitle from "components/common/PageTitle";
 import Table from "components/datatable";
 import { Spinner } from "components/spinner";
-import StandardDto from "models/StandardDto";
+import { StandardModel } from "models/Standard";
 import React, { useCallback, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { RoutesPath } from "routes/constants";
@@ -12,23 +11,23 @@ import { Row, Col, Card, CardHeader, CardBody, Button } from "shards-react";
 
 export default function Standard() {
   const history = useHistory();
-  const [data, setData] = useState<StandardDto[]>([]);
+  const [data, setData] = useState<StandardModel[]>([]);
   const [loading, setLoading] = useState(true); //TODO: Improve loading when we have an API
 
   const columns = React.useMemo(() => columnsConfig, []);
-  const standardService = React.useMemo(() => new StandardService(standardTestData), []);
+  const standardService = React.useMemo(() => new StandardService(), []);
 
   useEffect(() => {
     async function getData() {
-      const response = await standardService.GetAll();
-      setData(response.data);
+      const response = await standardService.getAll();
+      setData(response);
       setLoading(false);
     }
 
     getData();
   }, []);
 
-  const navigateToStandard = useCallback((standardDto: StandardDto) => {
+  const navigateToStandard = useCallback((standardDto: StandardModel) => {
     history.push(`${RoutesPath.standard.form}/${standardDto.uuid}`);
   }, []);
 

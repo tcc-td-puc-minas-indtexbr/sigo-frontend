@@ -1,7 +1,9 @@
+import { DatePickerWrapper } from "../../shared/styles";
 import PageTitle from "components/common/PageTitle";
 import { Spinner } from "components/spinner";
 import { ConsultingModel, emptyConsultingModel } from "models/Consulting";
 import React, { useEffect, useMemo, useState } from "react";
+import { SyntheticEvent } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { useToasts } from "react-toast-notifications";
 import ConsultingService from "services/ConsultingService";
@@ -18,17 +20,6 @@ import {
   ListGroupItem,
   Row,
 } from "shards-react";
-import styled from "styled-components";
-
-const DatePickerWrapper = styled.div`
-  .react-datepicker-wrapper {
-    width: 100% !important;
-  }
-
-  .react-datepicker__input-container {
-    width: 100% !important;
-  }
-`;
 
 export default function ConsultingForm() {
   const { addToast } = useToasts();
@@ -67,7 +58,7 @@ export default function ConsultingForm() {
     getStandard();
   }, []);
 
-  async function submitForm(e: any) {
+  async function submitForm(e: SyntheticEvent) {
     e.preventDefault();
 
     const service = isEditingMode
@@ -77,7 +68,7 @@ export default function ConsultingForm() {
     executeAsync(service, `Registro ${isEditingMode ? "atualizado" : "salvo"} com sucesso!`);
   }
 
-  async function deleteRecord(e: any) {
+  async function deleteRecord(e: SyntheticEvent) {
     e.preventDefault();
 
     executeAsync(() => consultingService.delete(formData.uuid), "Registro excluído com sucesso!");
@@ -130,7 +121,7 @@ export default function ConsultingForm() {
                               required
                               id="feBusinessArea"
                               value={formData.businessArea}
-                              onChange={(e: any) =>
+                              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                                 setFormData({ ...formData, businessArea: e.target.value })
                               }
                             >
@@ -151,7 +142,7 @@ export default function ConsultingForm() {
                               id="feCompany"
                               placeholder="Razão Social"
                               value={formData.company}
-                              onChange={(e: any) =>
+                              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                                 setFormData({ ...formData, company: e.target.value })
                               }
                             />
@@ -164,7 +155,7 @@ export default function ConsultingForm() {
                               id="feCompanyName"
                               placeholder="Nome Fantasia"
                               value={formData.companyName}
-                              onChange={(e: any) =>
+                              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                                 setFormData({
                                   ...formData,
                                   companyName: e.target.value,
@@ -180,7 +171,7 @@ export default function ConsultingForm() {
                               id="feCnpj"
                               placeholder="CNPJ"
                               value={formData.cnpj}
-                              onChange={(e: any) =>
+                              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                                 setFormData({
                                   ...formData,
                                   cnpj: e.target.value,
@@ -197,7 +188,7 @@ export default function ConsultingForm() {
                                 required
                                 size="md"
                                 selected={formData.agreementDate}
-                                onChange={(e: any) =>
+                                onChange={(e: Date) =>
                                   setFormData({ ...formData, agreementDate: e })
                                 }
                                 placeholderText="Data do Contrato"
@@ -213,7 +204,7 @@ export default function ConsultingForm() {
                                 required
                                 size="md"
                                 selected={formData.startDate}
-                                onChange={(e: any) => setFormData({ ...formData, startDate: e })}
+                                onChange={(e: Date) => setFormData({ ...formData, startDate: e })}
                                 placeholderText="Data de Início"
                                 dropdownMode="select"
                                 dateFormat="dd/MM/yyyy"
@@ -227,7 +218,7 @@ export default function ConsultingForm() {
                                 required
                                 size="md"
                                 selected={formData.endDate}
-                                onChange={(e: any) => setFormData({ ...formData, endDate: e })}
+                                onChange={(e: Date) => setFormData({ ...formData, endDate: e })}
                                 placeholderText="Data de Término"
                                 dropdownMode="select"
                                 dateFormat="dd/MM/yyyy"

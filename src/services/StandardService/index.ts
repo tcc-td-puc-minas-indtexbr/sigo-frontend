@@ -1,41 +1,29 @@
-import StandardDto from "models/StandardDto";
+import { StandardDto } from "models/ApiResponse";
+import { StandardModel } from "models/Standard";
+import { BaseService } from "services/BaseService";
+import { dateToString } from "shared/dates";
 
-type Response = {
-  isSuccess: boolean;
-  data: StandardDto[];
-};
-
-interface IStandardService {
-  GetAll: () => Promise<Response>;
-  GetByUuid: (uuid: string) => Promise<StandardDto | undefined>;
-}
-
-class StandardService implements IStandardService {
-  _data: StandardDto[];
-
-  constructor(data: StandardDto[]) {
-    this._data = data;
+class StandardService extends BaseService<StandardModel, StandardDto> {
+  constructor() {
+    super(process.env.REACT_APP_API_STANDARD_MANAGER ?? "", "/v1/standard");
   }
 
-  GetAll() {
-    return new Promise<Response>((resolve) => {
-      setTimeout(() => {
-        resolve({
-          isSuccess: true,
-          data: this._data,
-        });
-      }, 500);
-    });
+  protected toModel(item: StandardDto): StandardModel {
+    return {
+      ...item,
+      publicationDate: new Date(item.publication_date),
+      validityStart: new Date(item.validity_start),
+      titleGlobalLanguage: item.title_global_language,
+    };
   }
 
-  GetByUuid(uuid: string) {
-    return new Promise<StandardDto | undefined>((resolve) => {
-      const standard = this._data.find((x) => x.uuid === uuid);
-
-      setTimeout(() => {
-        resolve(standard);
-      }, 300);
-    });
+  protected toDto(item: StandardModel): StandardDto {
+    return {
+      ...item,
+      publication_date: dateToString(item.publicationDate),
+      validity_start: dateToString(item.validityStart),
+      title_global_language: item.titleGlobalLanguage,
+    };
   }
 }
 
