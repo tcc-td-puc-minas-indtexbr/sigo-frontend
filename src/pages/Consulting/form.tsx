@@ -70,32 +70,29 @@ export default function ConsultingForm() {
   async function submitForm(e: any) {
     e.preventDefault();
 
-    function success() {
-      addSuccessToast(`Registro ${isEditingMode ? "atualizado" : "salvo"} com sucesso!`);
-    }
-
     const service = isEditingMode
-      ? () => consultingService.update(formData.uuid, formData).then(success)
-      : () => consultingService.create(formData).then(success);
+      ? () => consultingService.update(formData.uuid, formData)
+      : () => consultingService.create(formData);
 
-    executeAsync(service);
+    executeAsync(service, `Registro ${isEditingMode ? "atualizado" : "salvo"} com sucesso!`);
   }
 
   async function deleteRecord(e: any) {
     e.preventDefault();
 
-    function success() {
-      addSuccessToast("Registro excluído com sucesso!");
-      history.goBack();
-    }
-
-    executeAsync(() => consultingService.delete(formData.uuid).then(success));
+    executeAsync(() => consultingService.delete(formData.uuid), "Registro excluído com sucesso!");
   }
 
-  async function executeAsync<T>(execute: () => Promise<T>) {
+  async function executeAsync<T>(
+    execute: () => Promise<T>,
+    successMessage: string,
+    errorMessage?: string,
+  ) {
     try {
       toogleButtonsClicked(true);
-      return await execute();
+      return await execute()
+        .then(() => addSuccessToast(successMessage))
+        .then(() => history.goBack());
     } catch (error) {
       addErrorToast();
     } finally {
