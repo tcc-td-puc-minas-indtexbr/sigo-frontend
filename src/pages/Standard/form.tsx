@@ -1,8 +1,9 @@
 import PageTitle from "components/common/PageTitle";
 import { Spinner } from "components/spinner";
 import { StandardModel, emptyStandardModel } from "models/Standard";
-import React, { useEffect, useState } from "react";
+import React, { SyntheticEvent, useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
+import { useToasts } from "react-toast-notifications";
 import StandardService from "services/StandardService";
 import {
   ListGroup,
@@ -21,25 +22,70 @@ import { DatePickerWrapper } from "shared/styles";
 
 export default function StandardForm() {
   const history = useHistory();
+  const { addToast } = useToasts();
   const { uuid } = useParams<{ uuid?: string }>();
   const isEditingMode = uuid !== undefined;
 
   const standardService = React.useMemo(() => new StandardService(), []);
   const [formData, setFormData] = useState<StandardModel>(emptyStandardModel);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState({
+    dataLoading: true,
+    buttonsClicked: false,
+  });
+
+  const toogleButtonsClicked = (isClicked: boolean) =>
+    setLoading({ ...loading, buttonsClicked: isClicked });
 
   useEffect(() => {
-    async function getStandard() {
+    async function loadStandard() {
       if (uuid !== undefined) {
-        const response = await standardService.get(uuid);
-        setFormData(response ?? emptyStandardModel);
+        await standardService
+          .get(uuid)
+          .then((response) => setFormData(response))
+          .catch((err) => {
+            addToast("Não foi possível exibir o registro selecionado.", { appearance: "error" });
+            history.goBack();
+          });
       }
 
-      setLoading(false);
+      setLoading({ ...loading, dataLoading: false });
     }
 
-    getStandard();
+    loadStandard();
   }, []);
+
+  async function submitForm(e: SyntheticEvent) {
+    e.preventDefault();
+
+    const service = isEditingMode
+      ? () => standardService.update(formData.uuid, formData)
+      : () => standardService.create(formData);
+
+    executeAsync(service, `Registro ${isEditingMode ? "atualizado" : "salvo"} com sucesso!`);
+  }
+
+  async function deleteRecord(e: SyntheticEvent) {
+    e.preventDefault();
+
+    executeAsync(() => standardService.delete(formData.uuid), "Registro excluído com sucesso!");
+  }
+
+  async function executeAsync<T>(
+    execute: () => Promise<T>,
+    successMessage: string,
+    errorMessage?: string,
+  ) {
+    try {
+      toogleButtonsClicked(true);
+      return await execute()
+        .then(() => addToast(successMessage, { appearance: "success" }))
+        .then(() => history.goBack());
+    } catch (error) {
+      addToast(errorMessage || "Alguma coisa deu errado 😟", { appearance: "error" });
+    } finally {
+      toogleButtonsClicked(false);
+    }
+  }
 
   return (
     <>
@@ -58,7 +104,7 @@ export default function StandardForm() {
               <ListGroupItem className="p-0">
                 <Row>
                   <Col>
-                    {loading ? (
+                    {loading.dataLoading ? (
                       <div style={{ textAlign: "center" }}>
                         <Spinner />
                       </div>
@@ -243,9 +289,22 @@ export default function StandardForm() {
                             </FormSelect>
                           </Col>
                         </Row>
-                        <Button type="submit">{isEditingMode ? "Atualizar" : "Criar"}</Button>
+                        <Button
+                          type="submit"
+                          onClick={submitForm}
+                          disabled={loading.buttonsClicked ? true : false}
+                        >
+                          {isEditingMode ? "Atualizar" : "Criar"}
+                        </Button>
                         {isEditingMode && (
-                          <Button className="ml-2" type="button" theme="danger" outline>
+                          <Button
+                            className="ml-2"
+                            type="button"
+                            theme="danger"
+                            onClick={deleteRecord}
+                            disabled={loading.buttonsClicked ? true : false}
+                            outline
+                          >
                             Excluir
                           </Button>
                         )}
@@ -253,9 +312,10 @@ export default function StandardForm() {
                           className="ml-2"
                           type="button"
                           theme="white"
+                          disabled={loading.buttonsClicked ? true : false}
                           onClick={() => history.goBack()}
                         >
-                          Cancelar
+                          Voltar
                         </Button>
                       </Form>
                     )}

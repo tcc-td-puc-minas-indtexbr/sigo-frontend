@@ -22,8 +22,8 @@ import {
 } from "shards-react";
 
 export default function ConsultingForm() {
-  const { addToast } = useToasts();
   const history = useHistory();
+  const { addToast } = useToasts();
   const { uuid } = useParams<{ uuid?: string }>();
   const isEditingMode = uuid !== undefined;
 
@@ -36,26 +36,23 @@ export default function ConsultingForm() {
 
   const toogleButtonsClicked = (isClicked: boolean) =>
     setLoading({ ...loading, buttonsClicked: isClicked });
-  const addSuccessToast = (message: string) => addToast(message, { appearance: "success" });
-  const addErrorToast = () => addToast("Alguma coisa deu errado :(", { appearance: "error" });
 
   useEffect(() => {
-    async function getStandard() {
+    async function loadConsulting() {
       if (uuid !== undefined) {
-        const response = await consultingService.get(uuid);
-
-        if (response !== undefined) {
-          setFormData(response);
-        } else {
-          history.goBack();
-          addErrorToast();
-        }
+        await consultingService
+          .get(uuid)
+          .then((response) => setFormData(response))
+          .catch((err) => {
+            addToast("Não foi possível exibir o registro selecionado.", { appearance: "error" });
+            history.goBack();
+          });
       }
 
       setLoading({ ...loading, dataLoading: false });
     }
 
-    getStandard();
+    loadConsulting();
   }, []);
 
   async function submitForm(e: SyntheticEvent) {
@@ -82,10 +79,10 @@ export default function ConsultingForm() {
     try {
       toogleButtonsClicked(true);
       return await execute()
-        .then(() => addSuccessToast(successMessage))
+        .then(() => addToast(successMessage, { appearance: "success" }))
         .then(() => history.goBack());
     } catch (error) {
-      addErrorToast();
+      addToast(errorMessage || "Alguma coisa deu errado 😟", { appearance: "error" });
     } finally {
       toogleButtonsClicked(false);
     }
