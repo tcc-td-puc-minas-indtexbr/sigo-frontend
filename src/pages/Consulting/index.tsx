@@ -1,10 +1,9 @@
 import { columnsConfig } from "./config";
-import { consultanciesTestData } from "./data";
 import PageTitle from "components/common/PageTitle";
 import Table from "components/datatable";
-import Spinner from "components/spinner";
-import ConsultingDto from "models/ConsultingDto";
-import React, { useCallback, useEffect, useState } from "react";
+import { Spinner } from "components/spinner";
+import { ConsultingModel } from "models/Consulting";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { RoutesPath } from "routes/constants";
 import ConsultingService from "services/ConsultingService";
@@ -12,23 +11,23 @@ import { Row, Col, Card, CardHeader, CardBody, Button } from "shards-react";
 
 export default function Consulting() {
   const history = useHistory();
-  const [data, setData] = useState<ConsultingDto[]>([]);
+  const [data, setData] = useState<ConsultingModel[]>([]);
   const [loading, setLoading] = useState(true); //TODO: Improve loading when we have an API
 
+  const consultingService = useMemo(() => new ConsultingService(), []);
   const columns = React.useMemo(() => columnsConfig, []);
-  const consultingService = React.useMemo(() => new ConsultingService(consultanciesTestData), []);
 
   useEffect(() => {
     async function getData() {
-      const response = await consultingService.GetAll();
-      setData(response.data);
+      const response = await consultingService.getAll();
+      setData(response);
       setLoading(false);
     }
 
     getData();
   }, []);
 
-  const navigateToConsultancy = useCallback((consultingDto: ConsultingDto) => {
+  const navigateToConsultancy = useCallback((consultingDto: ConsultingModel) => {
     history.push(`${RoutesPath.consulting.form}/${consultingDto.uuid}`);
   }, []);
 

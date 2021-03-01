@@ -1,5 +1,4 @@
-type ConsultingDto = {
-  id: number;
+export type ConsultingModel = {
   uuid: string;
   businessArea: string;
   company: string;
@@ -10,8 +9,7 @@ type ConsultingDto = {
   endDate: Date;
 };
 
-export const emptyConsultingDto = {
-  id: 0,
+export const emptyConsultingModel = {
   uuid: "",
   businessArea: "",
   company: "",
@@ -21,5 +19,3 @@ export const emptyConsultingDto = {
   startDate: new Date(Date.now()),
   endDate: new Date(Date.now()),
 };
-
-export default ConsultingDto;

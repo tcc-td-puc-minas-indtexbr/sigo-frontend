@@ -1,5 +1,4 @@
-import Spinner from "../../../components/spinner";
-import AuthContext from "../../../store/AuthContext";
+import { Spinner } from "components/spinner";
 import React, { useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
 import {
@@ -15,6 +14,7 @@ import {
   FormGroup,
   FormFeedback,
 } from "shards-react";
+import AuthContext from "store/AuthContext";
 
 const Login: React.FC = () => {
   const { login } = useContext(AuthContext);

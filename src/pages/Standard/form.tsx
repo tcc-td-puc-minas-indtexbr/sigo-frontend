@@ -1,6 +1,6 @@
 import { standardTestData } from "./makeData";
 import PageTitle from "components/common/PageTitle";
-import Spinner from "components/spinner";
+import { Spinner } from "components/spinner";
 import StandardDto, { emptyStandardDto } from "models/StandardDto";
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";

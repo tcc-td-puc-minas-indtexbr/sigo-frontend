@@ -2,7 +2,7 @@ import { columnsConfig } from "./config";
 import { standardTestData } from "./makeData";
 import PageTitle from "components/common/PageTitle";
 import Table from "components/datatable";
-import Spinner from "components/spinner";
+import { Spinner } from "components/spinner";
 import StandardDto from "models/StandardDto";
 import React, { useCallback, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";

@@ -1,41 +1,29 @@
-import ConsultingDto from "models/ConsultingDto";
+import { ConsultingDto } from "models/ApiResponse";
+import { ConsultingModel } from "models/Consulting";
+import { BaseService } from "services/BaseService";
+import { dateToString } from "shared/dates";
 
-type Response = {
-  isSuccess: boolean;
-  data: ConsultingDto[];
-};
-
-interface IConsultingService {
-  GetAll: () => Promise<Response>;
-  GetByUuid: (uuid: string) => Promise<ConsultingDto | undefined>;
-}
-
-class ConsultingService implements IConsultingService {
-  _data: ConsultingDto[];
-
-  constructor(data: ConsultingDto[]) {
-    this._data = data;
+class ConsultingService extends BaseService<ConsultingModel, ConsultingDto> {
+  constructor() {
+    super(process.env.REACT_APP_API_CONSULTING_MANAGER ?? "", "/v1/consulting");
   }
 
-  GetAll() {
-    return new Promise<Response>((resolve) => {
-      setTimeout(() => {
-        resolve({
-          isSuccess: true,
-          data: this._data,
-        });
-      }, 500);
-    });
+  protected toModel(item: ConsultingDto): ConsultingModel {
+    return {
+      ...item,
+      startDate: new Date(item.startDate),
+      endDate: new Date(item.endDate),
+      agreementDate: new Date(item.agreementDate),
+    };
   }
 
-  GetByUuid(uuid: string) {
-    return new Promise<ConsultingDto | undefined>((resolve) => {
-      const standard = this._data.find((x) => x.uuid === uuid);
-
-      setTimeout(() => {
-        resolve(standard);
-      }, 300);
-    });
+  protected toDto(item: ConsultingModel): ConsultingDto {
+    return {
+      ...item,
+      startDate: dateToString(item.startDate),
+      endDate: dateToString(item.endDate),
+      agreementDate: dateToString(item.agreementDate),
+    };
   }
 }
 

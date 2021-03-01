@@ -1,4 +1,4 @@
-import Auth, { CognitoUser } from "@aws-amplify/auth";
+import Auth from "@aws-amplify/auth";
 import Amplify from "aws-amplify";
 import aws_exports from "aws-exports";
 
