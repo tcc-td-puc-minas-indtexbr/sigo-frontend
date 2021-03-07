@@ -1,10 +1,11 @@
 import PageTitle from "components/common/PageTitle";
 import { Spinner } from "components/spinner";
 import { StandardModel, emptyStandardModel } from "models/Standard";
-import React, { SyntheticEvent, useEffect, useState } from "react";
+import React, { SyntheticEvent, useEffect, useRef, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { useToasts } from "react-toast-notifications";
 import StandardService from "services/StandardService";
+import { UploaderService } from "services/UploaderService";
 import {
   ListGroup,
   ListGroupItem,
@@ -27,7 +28,12 @@ export default function StandardForm() {
   const isEditingMode = uuid !== undefined;
 
   const standardService = React.useMemo(() => new StandardService(), []);
+  const uploaderService = React.useMemo(() => new UploaderService(), []);
   const [formData, setFormData] = useState<StandardModel>(emptyStandardModel);
+
+  const [standardFile, setStandardFile] = useState<File | null>(null);
+  const standardFileRef = useRef<HTMLInputElement>(null);
+
   const [loading, setLoading] = useState({
     dataLoading: true,
     buttonsClicked: false,
@@ -54,8 +60,33 @@ export default function StandardForm() {
     loadStandard();
   }, []);
 
+  function onStandardFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    if (!e.target.files || !e.target.files[0] || !standardFileRef.current?.value) {
+      addToast("Erro ao selecionar arquivo!", { appearance: "error" });
+      return;
+    }
+
+    const firstFile = e.target.files[0];
+
+    if (!firstFile.name.endsWith(".pdf")) {
+      addToast("O arquivo deve estar no formato PDF", { appearance: "error" });
+
+      standardFileRef.current.value = "";
+
+      return;
+    }
+
+    setStandardFile(firstFile);
+  }
+
+  function generateUrl(fileName: string) {
+    return `https://services.hagatus.com.br/sigo-reader/v1/read/standard/${fileName}`;
+  }
+
   async function submitForm(e: SyntheticEvent) {
     e.preventDefault();
+
+    await uploadFile();
 
     const service = isEditingMode
       ? () => standardService.update(formData.uuid, formData)
@@ -68,6 +99,20 @@ export default function StandardForm() {
     e.preventDefault();
 
     executeAsync(() => standardService.delete(formData.uuid), "Registro excluído com sucesso!");
+  }
+
+  async function uploadFile() {
+    if (standardFile) {
+      const fileName = encodeURI(standardFile.name);
+      setFormData({ ...formData, url: generateUrl(fileName) });
+
+      const formDataFile = new FormData();
+      formDataFile.append("file", standardFile);
+
+      await uploaderService
+        .uploadStandard(fileName, formDataFile)
+        .catch((err) => console.error(err));
+    }
   }
 
   async function executeAsync<T>(
@@ -111,8 +156,8 @@ export default function StandardForm() {
                     ) : (
                       <Form>
                         <Row form>
-                          <Col md="4" className="form-group">
-                            <label htmlFor="feIdentification">Identificação</label>
+                          <Col md="6" className="form-group">
+                            <label htmlFor="feIdentification">Identificação da Norma</label>
                             <FormInput
                               id="feIdentification"
                               type="text"
@@ -123,7 +168,72 @@ export default function StandardForm() {
                               }
                             />
                           </Col>
-                          <Col md="4" className="form-group">
+                          <Col md="6" className="form-group">
+                            <label>Norma</label>
+                            <div className="input-group">
+                              <div className="input-group-prepend">
+                                <Button
+                                  outline
+                                  type="button"
+                                  theme="success"
+                                  disabled={
+                                    formData.url === "" || standardFile !== null ? true : false
+                                  }
+                                  onClick={() => window.open(formData.url)}
+                                  style={
+                                    formData.url === "" || standardFile !== null
+                                      ? { cursor: "not-allowed" }
+                                      : {}
+                                  }
+                                >
+                                  <i className="fa fa-download"></i> Baixar arquivo
+                                </Button>
+                              </div>
+                              <div className="custom-file">
+                                <input
+                                  type="file"
+                                  className="custom-file-input"
+                                  id="feStandardFile"
+                                  aria-describedby="inputGroupStandardFile"
+                                  onChange={onStandardFileChange}
+                                  ref={standardFileRef}
+                                />
+                                <label className="custom-file-label" htmlFor="feStandardFile">
+                                  {standardFile === null
+                                    ? "Escolher arquivo..."
+                                    : standardFile.name}
+                                </label>
+                              </div>
+                            </div>
+                          </Col>
+                        </Row>
+                        <Row form>
+                          <Col md="3" className="form-group">
+                            <label htmlFor="feTitle">Título</label>
+                            <FormInput
+                              id="feTitle"
+                              placeholder="Título"
+                              value={formData.title}
+                              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                setFormData({ ...formData, title: e.target.value })
+                              }
+                            />
+                          </Col>
+                          <Col md="3" className="form-group">
+                            <label htmlFor="feGlobalTitleLanguage">Título Global</label>
+                            <FormInput
+                              id="feGlobalTitleLanguage"
+                              placeholder="Título Global"
+                              value={formData.titleGlobalLanguage}
+                              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                setFormData({
+                                  ...formData,
+                                  titleGlobalLanguage: e.target.value,
+                                })
+                              }
+                            />
+                          </Col>
+                          <Col md="3" className="form-group">
                             <label htmlFor="fePublishDate">Data de Publicação</label>
                             <DatePickerWrapper>
                               <DatePicker
@@ -139,7 +249,7 @@ export default function StandardForm() {
                               />
                             </DatePickerWrapper>
                           </Col>
-                          <Col md="4" className="form-group">
+                          <Col md="3" className="form-group">
                             <label htmlFor="feValidityStart">Data de Válidade</label>
                             <DatePickerWrapper>
                               <DatePicker
@@ -154,34 +264,6 @@ export default function StandardForm() {
                                 dateFormat="dd/MM/yyyy"
                               />
                             </DatePickerWrapper>
-                          </Col>
-                        </Row>
-                        <Row form>
-                          <Col md="6" className="form-group">
-                            <label htmlFor="feTitle">Título</label>
-                            <FormInput
-                              id="feTitle"
-                              placeholder="Título"
-                              value={formData.title}
-                              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                setFormData({ ...formData, title: e.target.value })
-                              }
-                            />
-                          </Col>
-
-                          <Col md="6" className="form-group">
-                            <label htmlFor="feGlobalTitleLanguage">Título Global</label>
-                            <FormInput
-                              id="feGlobalTitleLanguage"
-                              placeholder="Título Global"
-                              value={formData.titleGlobalLanguage}
-                              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                setFormData({
-                                  ...formData,
-                                  titleGlobalLanguage: e.target.value,
-                                })
-                              }
-                            />
                           </Col>
                         </Row>
                         <Row form>

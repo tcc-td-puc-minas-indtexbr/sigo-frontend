@@ -10,7 +10,7 @@ import { ToastProvider } from "react-toast-notifications";
 export default function App() {
   return (
     <AuthProvider>
-      <ToastProvider placement="bottom-right" autoDismiss={true} autoDismissTimeout={3000}>
+      <ToastProvider placement="bottom-right" autoDismiss={true} autoDismissTimeout={5000}>
         <AppProvider>
           <Routes />
         </AppProvider>

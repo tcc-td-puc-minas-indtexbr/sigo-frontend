@@ -11,8 +11,8 @@ interface IBaseService<TModel> {
 }
 
 export abstract class BaseService<TModel, TDto> implements IBaseService<TModel> {
-  _api: AxiosInstance;
-  _endpoint: string;
+  protected _api: AxiosInstance;
+  protected _endpoint: string;
 
   constructor(baseUrl: string, endpoint: string) {
     this._api = buildApiInstanceForURL(baseUrl);

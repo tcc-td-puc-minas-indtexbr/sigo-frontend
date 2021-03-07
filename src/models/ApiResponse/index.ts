@@ -50,6 +50,10 @@ export type ApiDeletionResponse = {
   success: boolean;
 };
 
+export type UploadResponse = {
+  message: string;
+};
+
 export type ConsultingDto = {
   uuid: string;
   businessArea: string;
