@@ -76,6 +76,8 @@ export default function StandardForm() {
       return;
     }
 
+    const url = generateUrl(encodeURI(firstFile.name));
+    setFormData({ ...formData, url: url });
     setStandardFile(firstFile);
   }
 
@@ -86,13 +88,14 @@ export default function StandardForm() {
   async function submitForm(e: SyntheticEvent) {
     e.preventDefault();
 
-    await uploadFile();
-
     const service = isEditingMode
       ? () => standardService.update(formData.uuid, formData)
       : () => standardService.create(formData);
 
-    executeAsync(service, `Registro ${isEditingMode ? "atualizado" : "salvo"} com sucesso!`);
+    executeAsync(
+      () => uploadFile().then(service),
+      `Registro ${isEditingMode ? "atualizado" : "salvo"} com sucesso!`,
+    );
   }
 
   async function deleteRecord(e: SyntheticEvent) {
@@ -103,15 +106,13 @@ export default function StandardForm() {
 
   async function uploadFile() {
     if (standardFile) {
-      const fileName = encodeURI(standardFile.name);
-      setFormData({ ...formData, url: generateUrl(fileName) });
-
       const formDataFile = new FormData();
       formDataFile.append("file", standardFile);
 
       await uploaderService
-        .uploadStandard(fileName, formDataFile)
-        .catch((err) => console.error(err));
+        .uploadStandard(encodeURI(standardFile.name), formDataFile)
+        .then((_) => addToast("Arquivo enviado com sucesso!", { appearance: "success" }))
+        .catch((_) => addToast("Erro ao enviar arquivo 😟", { appearance: "error" }));
     }
   }
 
