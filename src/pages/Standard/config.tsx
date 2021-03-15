@@ -55,7 +55,10 @@ function DownloadFile({ value }: { value: string }) {
       type="button"
       theme="success"
       disabled={value === "" ? true : false}
-      onClick={() => window.open(value)}
+      onClick={(e: React.ChangeEvent<HTMLInputElement>) => {
+        e.stopPropagation();
+        window.open(value, "_blank", "noopener,noreferrer");
+      }}
       style={value === "" ? { cursor: "not-allowed" } : {}}
     >
       <i className="fa fa-download"></i>
