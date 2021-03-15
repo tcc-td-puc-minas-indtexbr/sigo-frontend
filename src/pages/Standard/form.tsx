@@ -18,6 +18,7 @@ import {
   Card,
   CardBody,
   DatePicker,
+  FormTextarea,
 } from "shards-react";
 import { DatePickerWrapper } from "shared/styles";
 
@@ -77,7 +78,7 @@ export default function StandardForm() {
     }
 
     const url = generateUrl(encodeURI(firstFile.name));
-    setFormData({ ...formData, url: url });
+    setFormData({ ...formData, file: url });
     setStandardFile(firstFile);
   }
 
@@ -157,19 +158,30 @@ export default function StandardForm() {
                     ) : (
                       <Form>
                         <Row form>
-                          <Col md="6" className="form-group">
+                          <Col md="3" className="form-group">
                             <label htmlFor="feIdentification">Identificação da Norma</label>
                             <FormInput
                               id="feIdentification"
                               type="text"
-                              placeholder="Identificação"
+                              placeholder="Identificação: ISO 9001:2020"
                               value={formData.identification}
                               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                                 setFormData({ ...formData, identification: e.target.value })
                               }
                             />
                           </Col>
-                          <Col md="6" className="form-group">
+                          <Col md="3" className="form-group">
+                            <label htmlFor="feTitle">Link</label>
+                            <FormInput
+                              id="feUrl"
+                              placeholder="url: http://iso.org"
+                              value={formData.url}
+                              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                setFormData({ ...formData, url: e.target.value })
+                              }
+                            />
+                          </Col>
+                          <Col md="3" className="form-group">
                             <label>Norma</label>
                             <div className="input-group">
                               <div className="input-group-prepend">
@@ -178,11 +190,17 @@ export default function StandardForm() {
                                   type="button"
                                   theme="success"
                                   disabled={
-                                    formData.url === "" || standardFile !== null ? true : false
+                                    formData.file === "" || standardFile !== null ? true : false
                                   }
-                                  onClick={() => window.open(formData.url)}
+                                  onClick={() => {
+                                    if (!formData.file.match(/http/)) {
+                                      formData.file = generateUrl(formData.file);
+                                    }
+                                    //console.log(formData.file);
+                                    window.open(formData.file);
+                                  }}
                                   style={
-                                    formData.url === "" || standardFile !== null
+                                    formData.file === "" || standardFile !== null
                                       ? { cursor: "not-allowed" }
                                       : {}
                                   }
@@ -190,6 +208,17 @@ export default function StandardForm() {
                                   <i className="fa fa-download"></i> Baixar arquivo
                                 </Button>
                               </div>
+                              <FormInput
+                                id="feFile"
+                                placeholder="filename"
+                                value={formData.file}
+                                disabled={true}
+                              />
+                            </div>
+                          </Col>
+                          <Col md="3" className="form-group">
+                            <label>Atualizar</label>
+                            <div className="input-group">
                               <div className="custom-file">
                                 <input
                                   type="file"
@@ -209,7 +238,7 @@ export default function StandardForm() {
                           </Col>
                         </Row>
                         <Row form>
-                          <Col md="3" className="form-group">
+                          <Col md="6" className="form-group">
                             <label htmlFor="feTitle">Título</label>
                             <FormInput
                               id="feTitle"
@@ -220,20 +249,7 @@ export default function StandardForm() {
                               }
                             />
                           </Col>
-                          <Col md="3" className="form-group">
-                            <label htmlFor="feGlobalTitleLanguage">Título Global</label>
-                            <FormInput
-                              id="feGlobalTitleLanguage"
-                              placeholder="Título Global"
-                              value={formData.titleGlobalLanguage}
-                              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                setFormData({
-                                  ...formData,
-                                  titleGlobalLanguage: e.target.value,
-                                })
-                              }
-                            />
-                          </Col>
+
                           <Col md="3" className="form-group">
                             <label htmlFor="fePublishDate">Data de Publicação</label>
                             <DatePickerWrapper>
@@ -268,7 +284,21 @@ export default function StandardForm() {
                           </Col>
                         </Row>
                         <Row form>
-                          <Col md="4" className="form-group">
+                          <Col md="6" className="form-group">
+                            <label htmlFor="feGlobalTitleLanguage">Título Global</label>
+                            <FormInput
+                              id="feGlobalTitleLanguage"
+                              placeholder="Título Global"
+                              value={formData.titleGlobalLanguage}
+                              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                setFormData({
+                                  ...formData,
+                                  titleGlobalLanguage: e.target.value,
+                                })
+                              }
+                            />
+                          </Col>
+                          <Col md="3" className="form-group">
                             <label htmlFor="feComite">Comitê</label>
                             <FormInput
                               id="feComite"
@@ -279,18 +309,8 @@ export default function StandardForm() {
                               }
                             />
                           </Col>
-                          <Col md="4" className="form-group">
-                            <label htmlFor="feObjective">Objetivo</label>
-                            <FormInput
-                              id="feObjective"
-                              placeholder="Objetivo"
-                              value={formData.objective}
-                              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                setFormData({ ...formData, objective: e.target.value })
-                              }
-                            />
-                          </Col>
-                          <Col md="2" className="form-group">
+
+                          <Col md="1" className="form-group">
                             <label htmlFor="fePages">Páginas</label>
                             <FormInput
                               id="fePages"
@@ -314,13 +334,29 @@ export default function StandardForm() {
                               <option value="" disabled hidden>
                                 Selecione uma opção
                               </option>
-                              <option>Atual</option>
+                              <option>Em Vigor</option>
                               <option>Arquivado</option>
+                              <option>Cancelada</option>
+                              <option>Aprovada</option>
+                              <option>Em análise</option>
                             </FormSelect>
                           </Col>
                         </Row>
                         <Row form>
-                          <Col md="3" className="form-group">
+                          <Col md="12" className="form-group">
+                            <label htmlFor="feObjective">Objetivo</label>
+                            <FormTextarea
+                              id="feObjective"
+                              placeholder="Objetivo"
+                              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                setFormData({ ...formData, objective: e.target.value })
+                              }
+                              value={formData.objective}
+                            />
+                          </Col>
+                        </Row>
+                        <Row form>
+                          <Col md="6" className="form-group">
                             <label htmlFor="feOrganization">Organização</label>
                             <FormInput
                               id="feOrganization"
@@ -331,7 +367,7 @@ export default function StandardForm() {
                               }
                             />
                           </Col>
-                          <Col md="3" className="form-group">
+                          <Col md="2" className="form-group">
                             <label htmlFor="feLanguage">Idioma</label>
                             <FormInput
                               id="feLanguage"
@@ -342,7 +378,7 @@ export default function StandardForm() {
                               }
                             />
                           </Col>
-                          <Col md="3" className="form-group">
+                          <Col md="2" className="form-group">
                             <label htmlFor="fePrice">Preço</label>
                             <FormInput
                               id="fePrice"
@@ -353,7 +389,7 @@ export default function StandardForm() {
                               }
                             />
                           </Col>
-                          <Col md="3" className="form-group">
+                          <Col md="2" className="form-group">
                             <label htmlFor="feCurrency">Moeda</label>
                             <FormSelect
                               id="feCurrency"

@@ -14,7 +14,7 @@ export const columnsConfig = [
     },
   },
   {
-    Header: "Data de Válidade",
+    Header: "Data de Validade",
     accessor: "validityStart",
     Cell: ({ value }: { value: Date }) => {
       return `${value.toLocaleDateString("pt-BR")}`;

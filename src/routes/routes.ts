@@ -7,6 +7,9 @@ import ConsultingForm from "pages/Consulting/form";
 import Home from "pages/Home";
 import Standard from "pages/Standard";
 import StandardForm from "pages/Standard/form";
+import StandardUpdate from "pages/StandardUpdate";
+import StandardUpdateForm from "pages/StandardUpdate/form";
+import StandardUpdateCheck from "pages/StandardUpdate/check";
 
 export type ComponentRoute = {
   path: string;
@@ -40,6 +43,30 @@ const routes: ComponentRoute[] = [
     exact: true,
     layout: Layout,
     component: StandardForm,
+  },
+  {
+    path: RoutesPath.standardUpdate.index,
+    exact: true,
+    layout: Layout,
+    component: StandardUpdate,
+  },
+  {
+    path: RoutesPath.standardUpdate.form,
+    exact: true,
+    layout: Layout,
+    component: StandardUpdateForm,
+  },
+  {
+    path: RoutesPath.standardUpdate.check,
+    exact: true,
+    layout: Layout,
+    component: StandardUpdateCheck,
+  },
+  {
+    path: `${RoutesPath.standardUpdate.form}/:uuid`,
+    exact: true,
+    layout: Layout,
+    component: StandardUpdateForm,
   },
   {
     path: RoutesPath.consulting.index,

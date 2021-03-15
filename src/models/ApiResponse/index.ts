@@ -83,3 +83,13 @@ export type StandardDto = {
   uuid: string;
   validity_start: string;
 };
+
+export type StandardUpdateDto = {
+  publication_date: string;
+  identification: string;
+  uuid: string;
+  link: string;
+  description: string;
+  synchronized: string;
+  title: string;
+};

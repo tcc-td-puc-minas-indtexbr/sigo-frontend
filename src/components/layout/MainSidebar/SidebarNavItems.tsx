@@ -11,6 +11,12 @@ const menu = [
     htmlAfter: "",
   },
   {
+    title: "Gestão de Normas - Atualizações",
+    to: RoutesPath.standardUpdate.index,
+    htmlBefore: '<i class="material-icons">system_update</i>',
+    htmlAfter: "",
+  },
+  {
     title: "Consultorias e Assessorias",
     to: RoutesPath.consulting.index,
     htmlBefore: '<i class="material-icons">table_view</i>',
