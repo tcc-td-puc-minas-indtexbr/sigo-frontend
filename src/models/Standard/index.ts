@@ -1,7 +1,7 @@
 export type StandardModel = {
   comite: string;
   currency: string;
-  file: string; // **
+  file: string;
   identification: string;
   language: string;
   objective: string | null;
@@ -12,7 +12,7 @@ export type StandardModel = {
   status: string;
   title: string;
   titleGlobalLanguage: string;
-  url: string; // **
+  url: string;
   uuid: string;
   validityStart: Date;
 };

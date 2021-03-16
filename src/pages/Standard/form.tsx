@@ -21,6 +21,7 @@ import {
   FormTextarea,
 } from "shards-react";
 import { DatePickerWrapper } from "shared/styles";
+import slugify from "slugify";
 
 export default function StandardForm() {
   const history = useHistory();
@@ -77,7 +78,7 @@ export default function StandardForm() {
       return;
     }
 
-    const url = generateUrl(encodeURI(firstFile.name));
+    const url = generateUrl(slugify(firstFile.name, "_"));
     setFormData({ ...formData, file: url });
     setStandardFile(firstFile);
   }
@@ -111,7 +112,7 @@ export default function StandardForm() {
       formDataFile.append("file", standardFile);
 
       await uploaderService
-        .uploadStandard(encodeURI(standardFile.name), formDataFile)
+        .uploadStandard(slugify(standardFile.name, "_"), formDataFile)
         .then((_) => addToast("Arquivo enviado com sucesso!", { appearance: "success" }))
         .catch((_) => addToast("Erro ao enviar arquivo 😟", { appearance: "error" }));
     }

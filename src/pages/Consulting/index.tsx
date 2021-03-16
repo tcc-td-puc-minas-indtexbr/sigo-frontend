@@ -12,7 +12,7 @@ import { Row, Col, Card, CardHeader, CardBody, Button } from "shards-react";
 export default function Consulting() {
   const history = useHistory();
   const [data, setData] = useState<ConsultingModel[]>([]);
-  const [loading, setLoading] = useState(true); //TODO: Improve loading when we have an API
+  const [loading, setLoading] = useState(true);
 
   const consultingService = useMemo(() => new ConsultingService(), []);
   const columns = React.useMemo(() => columnsConfig, []);

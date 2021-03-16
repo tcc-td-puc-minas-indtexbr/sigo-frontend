@@ -42,7 +42,7 @@ export const columnsConfig = [
   },
   {
     Header: "Baixar",
-    accessor: "url",
+    accessor: "file",
     Cell: DownloadFile,
   },
 ];
