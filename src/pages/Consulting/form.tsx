@@ -1,9 +1,9 @@
-import { DatePickerWrapper } from "../../shared/styles";
 import PageTitle from "components/common/PageTitle";
 import { Spinner } from "components/spinner";
 import { ConsultingModel, emptyConsultingModel } from "models/Consulting";
 import React, { useEffect, useMemo, useState } from "react";
 import { SyntheticEvent } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { useHistory, useParams } from "react-router-dom";
 import { useToasts } from "react-toast-notifications";
 import ConsultingService from "services/ConsultingService";
@@ -20,47 +20,51 @@ import {
   ListGroupItem,
   Row,
 } from "shards-react";
+import { DatePickerWrapper } from "shared/styles";
 
 export default function ConsultingForm() {
   const history = useHistory();
+
   const { addToast } = useToasts();
   const { uuid } = useParams<{ uuid?: string }>();
   const isEditingMode = uuid !== undefined;
 
-  const consultingService = useMemo(() => new ConsultingService(), []);
-  const [formData, setFormData] = useState<ConsultingModel>(emptyConsultingModel);
+  const { register, handleSubmit, errors, control, reset } = useForm<ConsultingModel>({
+    defaultValues: emptyConsultingModel,
+  });
+
   const [loading, setLoading] = useState({
     dataLoading: true,
     buttonsClicked: false,
   });
 
+  const consultingService = useMemo(() => new ConsultingService(), []);
+
   const toogleButtonsClicked = (isClicked: boolean) =>
     setLoading({ ...loading, buttonsClicked: isClicked });
 
-  useEffect(() => {
-    async function loadConsulting() {
-      if (uuid !== undefined) {
-        await consultingService
-          .get(uuid)
-          .then((response) => setFormData(response))
-          .catch((err) => {
-            addToast("Não foi possível exibir o registro selecionado.", { appearance: "error" });
-            history.goBack();
-          });
-      }
-
-      setLoading({ ...loading, dataLoading: false });
+  async function loadConsulting() {
+    if (uuid !== undefined) {
+      await consultingService
+        .get(uuid)
+        .then((response) => reset({ ...response }))
+        .catch((err) => {
+          addToast("Não foi possível exibir o registro selecionado.", { appearance: "error" });
+          history.goBack();
+        });
     }
 
+    setLoading({ ...loading, dataLoading: false });
+  }
+
+  useEffect(() => {
     loadConsulting();
   }, []);
 
-  async function submitForm(e: SyntheticEvent) {
-    e.preventDefault();
-
+  async function onSubmit(model: ConsultingModel) {
     const service = isEditingMode
-      ? () => consultingService.update(formData.uuid, formData)
-      : () => consultingService.create(formData);
+      ? () => consultingService.update(model.uuid, model)
+      : () => consultingService.create(model);
 
     executeAsync(service, `Registro ${isEditingMode ? "atualizado" : "salvo"} com sucesso!`);
   }
@@ -68,7 +72,9 @@ export default function ConsultingForm() {
   async function deleteRecord(e: SyntheticEvent) {
     e.preventDefault();
 
-    executeAsync(() => consultingService.delete(formData.uuid), "Registro excluído com sucesso!");
+    if (uuid) {
+      executeAsync(() => consultingService.delete(uuid), "Registro excluído com sucesso!");
+    }
   }
 
   async function executeAsync<T>(
@@ -106,21 +112,24 @@ export default function ConsultingForm() {
                 <Row>
                   <Col>
                     {loading.dataLoading ? (
-                      <div style={{ textAlign: "center" }}>
-                        <Spinner />
-                      </div>
+                      <Spinner />
                     ) : (
-                      <Form>
+                      <Form onSubmit={handleSubmit(onSubmit)}>
+                        <input
+                          type="hidden"
+                          id="id"
+                          name="uuid"
+                          defaultValue={uuid}
+                          ref={register}
+                        />
                         <Row form>
                           <Col md="4" className="form-group">
-                            <label htmlFor="feBusinessArea">Área de Negócio</label>
+                            <label htmlFor="businessArea">Área de Negócio</label>
                             <FormSelect
-                              required
-                              id="feBusinessArea"
-                              value={formData.businessArea}
-                              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                setFormData({ ...formData, businessArea: e.target.value })
-                              }
+                              id="businessArea"
+                              name="businessArea"
+                              innerRef={register({ required: true })}
+                              invalid={errors.businessArea ? true : false}
                             >
                               <option value="" disabled hidden>
                                 Selecione uma opção
@@ -133,124 +142,132 @@ export default function ConsultingForm() {
                         </Row>
                         <Row form>
                           <Col md="4" className="form-group">
-                            <label htmlFor="feCompany">Razão Social</label>
+                            <label htmlFor="company">Razão Social</label>
                             <FormInput
-                              required
-                              id="feCompany"
+                              id="company"
+                              name="company"
                               placeholder="Razão Social"
-                              value={formData.company}
-                              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                setFormData({ ...formData, company: e.target.value })
-                              }
+                              innerRef={register({ required: true })}
+                              invalid={errors.company ? true : false}
                             />
                           </Col>
 
                           <Col md="4" className="form-group">
-                            <label htmlFor="feCompanyName">Nome Fantasia</label>
+                            <label htmlFor="companyName">Nome Fantasia</label>
                             <FormInput
-                              required
-                              id="feCompanyName"
+                              id="companyName"
+                              name="companyName"
                               placeholder="Nome Fantasia"
-                              value={formData.companyName}
-                              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                setFormData({
-                                  ...formData,
-                                  companyName: e.target.value,
-                                })
-                              }
+                              innerRef={register({ required: true })}
+                              invalid={errors.companyName ? true : false}
                             />
                           </Col>
 
                           <Col md="4" className="form-group">
-                            <label htmlFor="feCnpj">CNPJ</label>
+                            <label htmlFor="cnpj">CNPJ</label>
                             <FormInput
-                              required
-                              id="feCnpj"
+                              id="cnpj"
+                              name="cnpj"
                               placeholder="CNPJ"
-                              value={formData.cnpj}
-                              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                setFormData({
-                                  ...formData,
-                                  cnpj: e.target.value,
-                                })
-                              }
+                              innerRef={register({ required: true })}
+                              invalid={errors.cnpj ? true : false}
                             />
                           </Col>
                         </Row>
                         <Row form>
                           <Col md="4" className="form-group">
-                            <label htmlFor="feAgreementDate">Data do Contrato</label>
-                            <DatePickerWrapper>
-                              <DatePicker
-                                required
-                                size="md"
-                                selected={formData.agreementDate}
-                                onChange={(e: Date) =>
-                                  setFormData({ ...formData, agreementDate: e })
-                                }
-                                placeholderText="Data do Contrato"
-                                dropdownMode="select"
-                                dateFormat="dd/MM/yyyy"
-                              />
-                            </DatePickerWrapper>
+                            <label htmlFor="agreementDate">Data do Contrato</label>
+                            <Controller
+                              name="agreementDate"
+                              control={control}
+                              rules={{ required: true }}
+                              render={({ onChange, value }) => (
+                                <DatePickerWrapper>
+                                  <DatePicker
+                                    size="md"
+                                    id="agreementDate"
+                                    selected={value}
+                                    onChange={onChange}
+                                    placeholderText="Data do Contrato"
+                                    dropdownMode="select"
+                                    dateFormat="dd/MM/yyyy"
+                                    className={errors.agreementDate && "is-invalid"}
+                                  />
+                                </DatePickerWrapper>
+                              )}
+                            />
                           </Col>
                           <Col md="4" className="form-group">
-                            <label htmlFor="feStartDate">Data de Início</label>
-                            <DatePickerWrapper>
-                              <DatePicker
-                                required
-                                size="md"
-                                selected={formData.startDate}
-                                onChange={(e: Date) => setFormData({ ...formData, startDate: e })}
-                                placeholderText="Data de Início"
-                                dropdownMode="select"
-                                dateFormat="dd/MM/yyyy"
-                              />
-                            </DatePickerWrapper>
+                            <label htmlFor="startDate">Data de Início</label>
+                            <Controller
+                              name="startDate"
+                              control={control}
+                              rules={{ required: true }}
+                              render={({ onChange, value }) => (
+                                <DatePickerWrapper>
+                                  <DatePicker
+                                    size="md"
+                                    id="startDate"
+                                    selected={value}
+                                    onChange={onChange}
+                                    placeholderText="Data de Início"
+                                    dropdownMode="select"
+                                    dateFormat="dd/MM/yyyy"
+                                    className={errors.startDate && "is-invalid"}
+                                  />
+                                </DatePickerWrapper>
+                              )}
+                            />
                           </Col>
                           <Col md="4" className="form-group">
-                            <label htmlFor="feEndDate">Data de Término</label>
-                            <DatePickerWrapper>
-                              <DatePicker
-                                required
-                                size="md"
-                                selected={formData.endDate}
-                                onChange={(e: Date) => setFormData({ ...formData, endDate: e })}
-                                placeholderText="Data de Término"
-                                dropdownMode="select"
-                                dateFormat="dd/MM/yyyy"
-                              />
-                            </DatePickerWrapper>
+                            <label htmlFor="endDate">Data de Término</label>
+                            <Controller
+                              name="endDate"
+                              control={control}
+                              rules={{ required: true }}
+                              render={({ onChange, value }) => (
+                                <DatePickerWrapper>
+                                  <DatePicker
+                                    size="md"
+                                    id="endDate"
+                                    selected={value}
+                                    onChange={onChange}
+                                    placeholderText="Data de Término"
+                                    dropdownMode="select"
+                                    dateFormat="dd/MM/yyyy"
+                                    className={errors.endDate && "is-invalid"}
+                                  />
+                                </DatePickerWrapper>
+                              )}
+                            />
                           </Col>
                         </Row>
-                        <Button
-                          type="submit"
-                          onClick={submitForm}
-                          disabled={loading.buttonsClicked ? true : false}
-                        >
-                          {isEditingMode ? "Atualizar" : "Criar"}
-                        </Button>
-                        {isEditingMode && (
+                        <>
+                          <Button type="submit" disabled={loading.buttonsClicked ? true : false}>
+                            {isEditingMode ? "Atualizar" : "Criar"}
+                          </Button>
+                          {isEditingMode && (
+                            <Button
+                              className="ml-2"
+                              type="button"
+                              theme="danger"
+                              onClick={deleteRecord}
+                              disabled={loading.buttonsClicked ? true : false}
+                              outline
+                            >
+                              Excluir
+                            </Button>
+                          )}
                           <Button
                             className="ml-2"
                             type="button"
-                            theme="danger"
-                            onClick={deleteRecord}
+                            theme="white"
                             disabled={loading.buttonsClicked ? true : false}
-                            outline
+                            onClick={() => history.goBack()}
                           >
-                            Excluir
+                            Voltar
                           </Button>
-                        )}
-                        <Button
-                          className="ml-2"
-                          type="button"
-                          theme="white"
-                          disabled={loading.buttonsClicked ? true : false}
-                          onClick={() => history.goBack()}
-                        >
-                          Voltar
-                        </Button>
+                        </>
                       </Form>
                     )}
                   </Col>
