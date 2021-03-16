@@ -10,9 +10,8 @@ const MainNavbar: React.FC = () => {
     <div className={classNames("main-navbar", "bg-white", "sticky-top")}>
       <Container fluid className="p-0">
         <Navbar type="light" className="align-items-stretch flex-md-nowrap p-0">
-          <NavbarSearch />
-          <NavbarNav />
           <NavbarToggle />
+          <NavbarNav />
         </Navbar>
       </Container>
     </div>
