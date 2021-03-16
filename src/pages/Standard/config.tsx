@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Tooltip, Button } from "shards-react";
+import React from "react";
+import { Button } from "shards-react";
 
 export const columnsConfig = [
   {

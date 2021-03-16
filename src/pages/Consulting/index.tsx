@@ -3,7 +3,7 @@ import PageTitle from "components/common/PageTitle";
 import Table from "components/datatable";
 import { Spinner } from "components/spinner";
 import { ConsultingModel } from "models/Consulting";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { RoutesPath } from "routes/constants";
 import ConsultingService from "services/ConsultingService";
@@ -18,13 +18,22 @@ export default function Consulting() {
   const columns = React.useMemo(() => columnsConfig, []);
 
   useEffect(() => {
+    let isSubscribed = true;
+
     async function getData() {
       const response = await consultingService.getAll();
-      setData(response);
-      setLoading(false);
+
+      if (isSubscribed) {
+        setData(response);
+        setLoading(false);
+      }
     }
 
     getData();
+
+    return () => {
+      isSubscribed = false;
+    };
   }, []);
 
   const navigateToConsultancy = useCallback((consultingDto: ConsultingModel) => {

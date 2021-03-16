@@ -18,13 +18,22 @@ export default function Standard() {
   const standardService = React.useMemo(() => new StandardService(), []);
 
   useEffect(() => {
+    let isSubscribed = true;
+
     async function getData() {
       const response = await standardService.getAll();
-      setData(response);
-      setLoading(false);
+
+      if (isSubscribed) {
+        setData(response);
+        setLoading(false);
+      }
     }
 
     getData();
+
+    return () => {
+      isSubscribed = false;
+    };
   }, []);
 
   const navigateToStandard = useCallback((standardDto: StandardModel) => {

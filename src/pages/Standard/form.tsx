@@ -2,6 +2,7 @@ import PageTitle from "components/common/PageTitle";
 import { Spinner } from "components/spinner";
 import { StandardModel, emptyStandardModel } from "models/Standard";
 import React, { SyntheticEvent, useEffect, useRef, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { useHistory, useParams } from "react-router-dom";
 import { useToasts } from "react-toast-notifications";
 import StandardService from "services/StandardService";
@@ -25,41 +26,60 @@ import slugify from "slugify";
 
 export default function StandardForm() {
   const history = useHistory();
+
   const { addToast } = useToasts();
   const { uuid } = useParams<{ uuid?: string }>();
   const isEditingMode = uuid !== undefined;
 
-  const standardService = React.useMemo(() => new StandardService(), []);
-  const uploaderService = React.useMemo(() => new UploaderService(), []);
-  const [formData, setFormData] = useState<StandardModel>(emptyStandardModel);
+  const {
+    register,
+    handleSubmit,
+    errors,
+    control,
+    reset,
+    setValue,
+    getValues,
+  } = useForm<StandardModel>({ defaultValues: emptyStandardModel });
 
-  const [standardFile, setStandardFile] = useState<File | null>(null);
   const standardFileRef = useRef<HTMLInputElement>(null);
-
+  const [standardFile, setStandardFile] = useState<File | null>(null);
   const [loading, setLoading] = useState({
     dataLoading: true,
     buttonsClicked: false,
   });
 
+  const standardService = React.useMemo(() => new StandardService(), []);
+  const uploaderService = React.useMemo(() => new UploaderService(), []);
+
   const toogleButtonsClicked = (isClicked: boolean) =>
     setLoading({ ...loading, buttonsClicked: isClicked });
 
   useEffect(() => {
+    let isSubscribed = true;
+
     async function loadStandard() {
       if (uuid !== undefined) {
         await standardService
           .get(uuid)
-          .then((response) => setFormData(response))
-          .catch((err) => {
-            addToast("Não foi possível exibir o registro selecionado.", { appearance: "error" });
-            history.goBack();
+          .then((response) => isSubscribed && reset(response))
+          .catch((_) => {
+            if (isSubscribed) {
+              addToast("Não foi possível exibir o registro selecionado.", { appearance: "error" });
+              history.goBack();
+            }
           });
       }
 
-      setLoading({ ...loading, dataLoading: false });
+      if (isSubscribed) {
+        setLoading({ ...loading, dataLoading: false });
+      }
     }
 
     loadStandard();
+
+    return () => {
+      isSubscribed = false;
+    };
   }, []);
 
   function onStandardFileChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -78,8 +98,6 @@ export default function StandardForm() {
       return;
     }
 
-    const url = generateUrl(slugify(firstFile.name, "_"));
-    setFormData({ ...formData, file: url });
     setStandardFile(firstFile);
   }
 
@@ -87,12 +105,16 @@ export default function StandardForm() {
     return `https://services.hagatus.com.br/sigo-reader/v1/read/standard/${fileName}`;
   }
 
-  async function submitForm(e: SyntheticEvent) {
-    e.preventDefault();
+  function onSubmit(model: StandardModel) {
+    let data = { ...model };
+
+    if (standardFile) {
+      data = { ...model, file: generateUrl(slugify(standardFile.name, "_")) };
+    }
 
     const service = isEditingMode
-      ? () => standardService.update(formData.uuid, formData)
-      : () => standardService.create(formData);
+      ? () => standardService.update(data.uuid, data)
+      : () => standardService.create(data);
 
     executeAsync(
       () => uploadFile().then(service),
@@ -100,10 +122,12 @@ export default function StandardForm() {
     );
   }
 
-  async function deleteRecord(e: SyntheticEvent) {
+  function deleteRecord(e: SyntheticEvent) {
     e.preventDefault();
 
-    executeAsync(() => standardService.delete(formData.uuid), "Registro excluído com sucesso!");
+    if (uuid) {
+      executeAsync(() => standardService.delete(uuid), "Registro excluído com sucesso!");
+    }
   }
 
   async function uploadFile() {
@@ -135,6 +159,10 @@ export default function StandardForm() {
     }
   }
 
+  function isAllowedToDownloadFile() {
+    return getValues().file === "" || standardFile !== null;
+  }
+
   return (
     <>
       <Row noGutters className="page-header py-4">
@@ -153,33 +181,35 @@ export default function StandardForm() {
                 <Row>
                   <Col>
                     {loading.dataLoading ? (
-                      <div style={{ textAlign: "center" }}>
-                        <Spinner />
-                      </div>
+                      <Spinner />
                     ) : (
-                      <Form>
+                      <Form onSubmit={handleSubmit(onSubmit)}>
+                        <input
+                          type="hidden"
+                          id="id"
+                          name="uuid"
+                          defaultValue={uuid}
+                          ref={register}
+                        />
                         <Row form>
                           <Col md="3" className="form-group">
-                            <label htmlFor="feIdentification">Identificação da Norma</label>
+                            <label htmlFor="identification">Identificação da Norma</label>
                             <FormInput
-                              id="feIdentification"
-                              type="text"
+                              id="identification"
+                              name="identification"
                               placeholder="Identificação: ISO 9001:2020"
-                              value={formData.identification}
-                              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                setFormData({ ...formData, identification: e.target.value })
-                              }
+                              innerRef={register({ required: true })}
+                              invalid={errors.identification ? true : false}
                             />
                           </Col>
                           <Col md="3" className="form-group">
-                            <label htmlFor="feTitle">Link</label>
+                            <label htmlFor="url">Link</label>
                             <FormInput
-                              id="feUrl"
-                              placeholder="url: http://iso.org"
-                              value={formData.url}
-                              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                setFormData({ ...formData, url: e.target.value })
-                              }
+                              id="url"
+                              name="url"
+                              placeholder="http://iso.org"
+                              innerRef={register({ required: true })}
+                              invalid={errors.url ? true : false}
                             />
                           </Col>
                           <Col md="3" className="form-group">
@@ -190,29 +220,18 @@ export default function StandardForm() {
                                   outline
                                   type="button"
                                   theme="success"
-                                  disabled={
-                                    formData.file === "" || standardFile !== null ? true : false
-                                  }
-                                  onClick={() => {
-                                    if (!formData.file.match(/http/)) {
-                                      formData.file = generateUrl(formData.file);
-                                    }
-                                    //console.log(formData.file);
-                                    window.open(formData.file);
-                                  }}
-                                  style={
-                                    formData.file === "" || standardFile !== null
-                                      ? { cursor: "not-allowed" }
-                                      : {}
-                                  }
+                                  onClick={() => window.open(getValues().file)}
+                                  disabled={isAllowedToDownloadFile() ? true : false}
+                                  style={isAllowedToDownloadFile() ? { cursor: "not-allowed" } : {}}
                                 >
                                   <i className="fa fa-download"></i> Baixar arquivo
                                 </Button>
                               </div>
                               <FormInput
-                                id="feFile"
+                                id="file"
+                                name="file"
                                 placeholder="filename"
-                                value={formData.file}
+                                innerRef={register}
                                 disabled={true}
                               />
                             </div>
@@ -224,12 +243,12 @@ export default function StandardForm() {
                                 <input
                                   type="file"
                                   className="custom-file-input"
-                                  id="feStandardFile"
+                                  id="standardFile"
                                   aria-describedby="inputGroupStandardFile"
                                   onChange={onStandardFileChange}
                                   ref={standardFileRef}
                                 />
-                                <label className="custom-file-label" htmlFor="feStandardFile">
+                                <label className="custom-file-label" htmlFor="standardFile">
                                   {standardFile === null
                                     ? "Escolher arquivo..."
                                     : standardFile.name}
@@ -240,97 +259,101 @@ export default function StandardForm() {
                         </Row>
                         <Row form>
                           <Col md="6" className="form-group">
-                            <label htmlFor="feTitle">Título</label>
+                            <label htmlFor="title">Título</label>
                             <FormInput
-                              id="feTitle"
+                              id="title"
+                              name="title"
                               placeholder="Título"
-                              value={formData.title}
-                              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                setFormData({ ...formData, title: e.target.value })
-                              }
+                              innerRef={register({ required: true })}
+                              invalid={errors.title ? true : false}
                             />
                           </Col>
 
                           <Col md="3" className="form-group">
-                            <label htmlFor="fePublishDate">Data de Publicação</label>
-                            <DatePickerWrapper>
-                              <DatePicker
-                                required
-                                size="md"
-                                selected={formData.publicationDate}
-                                onChange={(e: Date) =>
-                                  setFormData({ ...formData, publicationDate: e })
-                                }
-                                placeholderText="Data de Publicação"
-                                dropdownMode="select"
-                                dateFormat="dd/MM/yyyy"
-                              />
-                            </DatePickerWrapper>
+                            <label htmlFor="publicationDate">Data de Publicação</label>
+                            <Controller
+                              name="publicationDate"
+                              control={control}
+                              rules={{ required: true }}
+                              render={({ onChange, value }) => (
+                                <DatePickerWrapper>
+                                  <DatePicker
+                                    size="md"
+                                    id="publicationDate"
+                                    selected={value}
+                                    onChange={onChange}
+                                    placeholderText="Data de Publicação"
+                                    dropdownMode="select"
+                                    dateFormat="dd/MM/yyyy"
+                                    className={errors.publicationDate && "is-invalid"}
+                                  />
+                                </DatePickerWrapper>
+                              )}
+                            />
                           </Col>
                           <Col md="3" className="form-group">
-                            <label htmlFor="feValidityStart">Data de Válidade</label>
-                            <DatePickerWrapper>
-                              <DatePicker
-                                required
-                                size="md"
-                                selected={formData.validityStart}
-                                onChange={(e: Date) =>
-                                  setFormData({ ...formData, validityStart: e })
-                                }
-                                placeholderText="Data de Válidade"
-                                dropdownMode="select"
-                                dateFormat="dd/MM/yyyy"
-                              />
-                            </DatePickerWrapper>
+                            <label htmlFor="validityStart">Data de Válidade</label>
+                            <Controller
+                              name="validityStart"
+                              control={control}
+                              rules={{ required: true }}
+                              render={({ onChange, value }) => (
+                                <DatePickerWrapper>
+                                  <DatePicker
+                                    size="md"
+                                    id="validityStart"
+                                    selected={value}
+                                    onChange={onChange}
+                                    placeholderText="Data de Válidade"
+                                    dropdownMode="select"
+                                    dateFormat="dd/MM/yyyy"
+                                    className={errors.validityStart && "is-invalid"}
+                                  />
+                                </DatePickerWrapper>
+                              )}
+                            />
                           </Col>
                         </Row>
                         <Row form>
                           <Col md="6" className="form-group">
-                            <label htmlFor="feGlobalTitleLanguage">Título Global</label>
+                            <label htmlFor="titleGlobalLanguage">Título Global</label>
                             <FormInput
-                              id="feGlobalTitleLanguage"
+                              id="titleGlobalLanguage"
+                              name="titleGlobalLanguage"
                               placeholder="Título Global"
-                              value={formData.titleGlobalLanguage}
-                              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                setFormData({
-                                  ...formData,
-                                  titleGlobalLanguage: e.target.value,
-                                })
-                              }
+                              innerRef={register({ required: true })}
+                              invalid={errors.titleGlobalLanguage ? true : false}
                             />
                           </Col>
                           <Col md="3" className="form-group">
-                            <label htmlFor="feComite">Comitê</label>
+                            <label htmlFor="comite">Comitê</label>
                             <FormInput
-                              id="feComite"
+                              id="comite"
+                              name="comite"
                               placeholder="Comitê"
-                              value={formData.comite}
-                              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                setFormData({ ...formData, comite: e.target.value })
-                              }
+                              innerRef={register({ required: true })}
+                              invalid={errors.comite ? true : false}
                             />
                           </Col>
 
                           <Col md="1" className="form-group">
-                            <label htmlFor="fePages">Páginas</label>
+                            <label htmlFor="pages">Páginas</label>
                             <FormInput
-                              id="fePages"
+                              id="pages"
+                              name="pages"
                               placeholder="Páginas"
-                              value={formData.pages}
                               type="number"
-                              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                setFormData({ ...formData, pages: +e.target.value })
-                              }
+                              innerRef={register({ required: true, min: 1 })}
+                              invalid={errors.pages ? true : false}
                             />
                           </Col>
                           <Col md="2" className="form-group">
-                            <label htmlFor="feStatus">Status</label>
+                            <label htmlFor="status">Status</label>
                             <FormSelect
-                              id="feStatus"
-                              value={formData.status}
-                              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                setFormData({ ...formData, status: e.target.value })
-                              }
+                              id="status"
+                              name="status"
+                              innerRef={register({ required: true })}
+                              invalid={errors.status ? true : false}
                             >
                               <option value="" disabled hidden>
                                 Selecione uma opção
@@ -345,59 +368,54 @@ export default function StandardForm() {
                         </Row>
                         <Row form>
                           <Col md="12" className="form-group">
-                            <label htmlFor="feObjective">Objetivo</label>
+                            <label htmlFor="objective">Objetivo</label>
                             <FormTextarea
-                              id="feObjective"
+                              id="objective"
+                              name="objective"
                               placeholder="Objetivo"
-                              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                setFormData({ ...formData, objective: e.target.value })
-                              }
-                              value={formData.objective}
+                              innerRef={register({ required: true })}
+                              invalid={errors.objective ? true : false}
                             />
                           </Col>
                         </Row>
                         <Row form>
                           <Col md="6" className="form-group">
-                            <label htmlFor="feOrganization">Organização</label>
+                            <label htmlFor="organization">Organização</label>
                             <FormInput
-                              id="feOrganization"
+                              id="organization"
+                              name="organization"
                               placeholder="Organização"
-                              value={formData.organization}
-                              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                setFormData({ ...formData, organization: e.target.value })
-                              }
+                              innerRef={register({ required: true })}
+                              invalid={errors.organization ? true : false}
                             />
                           </Col>
                           <Col md="2" className="form-group">
-                            <label htmlFor="feLanguage">Idioma</label>
+                            <label htmlFor="language">Idioma</label>
                             <FormInput
-                              id="feLanguage"
+                              id="language"
+                              name="language"
                               placeholder="Idioma"
-                              value={formData.language}
-                              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                setFormData({ ...formData, language: e.target.value })
-                              }
+                              innerRef={register({ required: true })}
+                              invalid={errors.language ? true : false}
                             />
                           </Col>
                           <Col md="2" className="form-group">
-                            <label htmlFor="fePrice">Preço</label>
+                            <label htmlFor="price">Preço</label>
                             <FormInput
-                              id="fePrice"
+                              id="price"
+                              name="price"
                               placeholder="Preço"
-                              value={formData.price}
-                              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                setFormData({ ...formData, price: +e.target.value })
-                              }
+                              innerRef={register({ required: true })}
+                              invalid={errors.price ? true : false}
                             />
                           </Col>
                           <Col md="2" className="form-group">
-                            <label htmlFor="feCurrency">Moeda</label>
+                            <label htmlFor="currency">Moeda</label>
                             <FormSelect
-                              id="feCurrency"
-                              value={formData.currency}
-                              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                setFormData({ ...formData, currency: e.target.value })
-                              }
+                              id="currency"
+                              name="currency"
+                              innerRef={register({ required: true })}
+                              invalid={errors.currency ? true : false}
                             >
                               <option value="" disabled hidden>
                                 Selecione uma opção
@@ -409,11 +427,7 @@ export default function StandardForm() {
                             </FormSelect>
                           </Col>
                         </Row>
-                        <Button
-                          type="submit"
-                          onClick={submitForm}
-                          disabled={loading.buttonsClicked ? true : false}
-                        >
+                        <Button type="submit" disabled={loading.buttonsClicked ? true : false}>
                           {isEditingMode ? "Atualizar" : "Criar"}
                         </Button>
                         {isEditingMode && (

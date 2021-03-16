@@ -1,7 +1,7 @@
 import PageTitle from "components/common/PageTitle";
 import { Spinner } from "components/spinner";
 import { ConsultingModel, emptyConsultingModel } from "models/Consulting";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { SyntheticEvent } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useHistory, useParams } from "react-router-dom";
@@ -43,25 +43,35 @@ export default function ConsultingForm() {
   const toogleButtonsClicked = (isClicked: boolean) =>
     setLoading({ ...loading, buttonsClicked: isClicked });
 
-  async function loadConsulting() {
-    if (uuid !== undefined) {
-      await consultingService
-        .get(uuid)
-        .then((response) => reset({ ...response }))
-        .catch((err) => {
-          addToast("Não foi possível exibir o registro selecionado.", { appearance: "error" });
-          history.goBack();
-        });
+  useEffect(() => {
+    let isSubscribed = true;
+
+    async function loadConsulting() {
+      if (uuid !== undefined) {
+        await consultingService
+          .get(uuid)
+          .then((response) => isSubscribed && reset(response))
+          .catch((_) => {
+            if (isSubscribed) {
+              addToast("Não foi possível exibir o registro selecionado.", { appearance: "error" });
+              history.goBack();
+            }
+          });
+      }
+
+      if (isSubscribed) {
+        setLoading({ ...loading, dataLoading: false });
+      }
     }
 
-    setLoading({ ...loading, dataLoading: false });
-  }
-
-  useEffect(() => {
     loadConsulting();
+
+    return () => {
+      isSubscribed = false;
+    };
   }, []);
 
-  async function onSubmit(model: ConsultingModel) {
+  function onSubmit(model: ConsultingModel) {
     const service = isEditingMode
       ? () => consultingService.update(model.uuid, model)
       : () => consultingService.create(model);
@@ -69,7 +79,7 @@ export default function ConsultingForm() {
     executeAsync(service, `Registro ${isEditingMode ? "atualizado" : "salvo"} com sucesso!`);
   }
 
-  async function deleteRecord(e: SyntheticEvent) {
+  function deleteRecord(e: SyntheticEvent) {
     e.preventDefault();
 
     if (uuid) {
