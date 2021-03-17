@@ -6,6 +6,7 @@ import { Controller, useForm } from "react-hook-form";
 import { useHistory, useParams } from "react-router-dom";
 import { useToasts } from "react-toast-notifications";
 import StandardService from "services/StandardService";
+import StandardUpdateService from "services/StandardUpdateService";
 import { UploaderService } from "services/UploaderService";
 import {
   ListGroup,
@@ -28,18 +29,12 @@ export default function StandardForm() {
   const history = useHistory();
 
   const { addToast } = useToasts();
-  const { uuid } = useParams<{ uuid?: string }>();
+  const { uuid, importuuid } = useParams<{ uuid?: string; importuuid?: string }>();
   const isEditingMode = uuid !== undefined;
 
-  const {
-    register,
-    handleSubmit,
-    errors,
-    control,
-    reset,
-    setValue,
-    getValues,
-  } = useForm<StandardModel>({ defaultValues: emptyStandardModel });
+  const { register, handleSubmit, errors, control, reset, getValues } = useForm<StandardModel>({
+    defaultValues: emptyStandardModel,
+  });
 
   const standardFileRef = useRef<HTMLInputElement>(null);
   const [standardFile, setStandardFile] = useState<File | null>(null);
@@ -50,32 +45,43 @@ export default function StandardForm() {
 
   const standardService = React.useMemo(() => new StandardService(), []);
   const uploaderService = React.useMemo(() => new UploaderService(), []);
+  const standardUpdateService = React.useMemo(() => new StandardUpdateService(), []);
 
   const toogleButtonsClicked = (isClicked: boolean) =>
     setLoading({ ...loading, buttonsClicked: isClicked });
 
   useEffect(() => {
     let isSubscribed = true;
+    let getStandard = () => new Promise<StandardModel>((resolve) => resolve(getValues()));
 
     async function loadStandard() {
       if (uuid !== undefined) {
-        await standardService
-          .get(uuid)
-          .then((response) => isSubscribed && reset(response))
-          .catch((_) => {
-            if (isSubscribed) {
-              addToast("Não foi possível exibir o registro selecionado.", { appearance: "error" });
-              history.goBack();
-            }
+        getStandard = () => standardService.get(uuid).then((response) => response);
+      } else if (importuuid !== undefined) {
+        getStandard = () =>
+          standardUpdateService.get(importuuid).then((response) => {
+            return {
+              ...getValues(),
+              publicationDate: response.publicationDate,
+              identification: response.identification,
+              url: response.link,
+              objective: response.description,
+              title: response.title,
+            };
           });
       }
 
-      if (isSubscribed) {
-        setLoading({ ...loading, dataLoading: false });
-      }
+      await getStandard()
+        .then((standard) => reset(standard))
+        .catch((_) => {
+          if (isSubscribed) {
+            addToast("Não foi possível exibir o registro selecionado.", { appearance: "error" });
+            history.goBack();
+          }
+        });
     }
 
-    loadStandard();
+    loadStandard().then((_) => isSubscribed && setLoading({ ...loading, dataLoading: false }));
 
     return () => {
       isSubscribed = false;

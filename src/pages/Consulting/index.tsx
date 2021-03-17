@@ -65,7 +65,7 @@ export default function Consulting() {
                   ) : data.length > 0 ? (
                     <Table columns={columns} data={data} getTrProps={navigateToConsultancy} />
                   ) : (
-                    "No data found"
+                    "Não há consultorias e assessorias cadastradas"
                   )}
                 </div>
               </CardBody>

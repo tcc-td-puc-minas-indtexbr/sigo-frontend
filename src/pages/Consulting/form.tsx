@@ -58,13 +58,9 @@ export default function ConsultingForm() {
             }
           });
       }
-
-      if (isSubscribed) {
-        setLoading({ ...loading, dataLoading: false });
-      }
     }
 
-    loadConsulting();
+    loadConsulting().then((_) => isSubscribed && setLoading({ ...loading, dataLoading: false }));
 
     return () => {
       isSubscribed = false;

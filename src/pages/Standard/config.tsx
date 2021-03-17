@@ -9,16 +9,12 @@ export const columnsConfig = [
   {
     Header: "Data de Publicação",
     accessor: "publicationDate",
-    Cell: ({ value }: { value: Date }) => {
-      return `${value.toLocaleDateString("pt-BR")}`;
-    },
+    Cell: ({ value }: { value: Date }) => `${value.toLocaleDateString("pt-BR")}`,
   },
   {
     Header: "Data de Validade",
     accessor: "validityStart",
-    Cell: ({ value }: { value: Date }) => {
-      return `${value.toLocaleDateString("pt-BR")}`;
-    },
+    Cell: ({ value }: { value: Date }) => `${value.toLocaleDateString("pt-BR")}`,
   },
   {
     Header: "Título",

@@ -3,16 +3,18 @@ interface IPageWithForm {
   form: string;
 }
 
-interface IPageWithSync {
-  index: string;
-  form: string;
+interface IPageWithSync extends IPageWithForm {
   check: string;
+}
+
+interface IStandard extends IPageWithForm {
+  formImport: string;
 }
 
 interface IRoutesPath {
   index: string;
   login: string;
-  standard: IPageWithForm;
+  standard: IStandard;
   standardUpdate: IPageWithSync;
   consulting: IPageWithForm;
 }
@@ -23,6 +25,7 @@ export const RoutesPath: IRoutesPath = {
   standard: {
     index: "/standard",
     form: "/standard/form",
+    formImport: "/standard/form/import",
   },
   standardUpdate: {
     index: "/standard-update/",

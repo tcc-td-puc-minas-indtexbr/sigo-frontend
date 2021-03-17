@@ -29,26 +29,16 @@ class StandardUpdateService extends BaseService<StandardUpdateModel, StandardUpd
 
   protected toModel(item: StandardUpdateDto): StandardUpdateModel {
     return {
-      identification: item.identification,
-      uuid: item.uuid,
-      link: item.link,
-      description: item.description,
-      synchronized: item.synchronized == "true",
-      title: item.title,
-      publicationDate: new Date(item.publication_date),
-    } as StandardUpdateModel;
+      ...item,
+      publicationDate: new Date(item.publication_date || Date.now()),
+    };
   }
 
   protected toDto(item: StandardUpdateModel): StandardUpdateDto {
     return {
-      identification: item.identification,
-      uuid: item.uuid,
-      link: item.link,
-      description: item.description,
-      synchronized: item.synchronized ? "true" : "false",
-      title: item.title,
+      ...item,
       publication_date: dateToString(item.publicationDate),
-    } as StandardUpdateDto;
+    };
   }
 }
 

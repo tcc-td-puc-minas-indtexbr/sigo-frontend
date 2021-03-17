@@ -62,7 +62,7 @@ export default function Standard() {
                   ) : data.length > 0 ? (
                     <Table columns={columns} data={data} getTrProps={navigateToStandard} />
                   ) : (
-                    "No data found"
+                    "Não há normas cadastradas"
                   )}
                 </div>
               </CardBody>

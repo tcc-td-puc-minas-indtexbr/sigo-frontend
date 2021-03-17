@@ -3,7 +3,7 @@ import PageTitle from "components/common/PageTitle";
 import Table from "components/datatable";
 import { Spinner } from "components/spinner";
 import { StandardUpdateModel } from "models/StandardUpdate";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { RoutesPath } from "routes/constants";
 import StandardUpdateService from "services/StandardUpdateService";
@@ -12,23 +12,30 @@ import { Row, Col, Card, CardHeader, CardBody, Button } from "shards-react";
 export default function StandardUpdate() {
   const history = useHistory();
   const [data, setData] = useState<StandardUpdateModel[]>([]);
-  const [loading, setLoading] = useState(true); //TODO: Improve loading when we have an API
+  const [loading, setLoading] = useState(true);
 
   const columns = React.useMemo(() => columnsConfig, []);
   const standardUpdateService = React.useMemo(() => new StandardUpdateService(), []);
 
   useEffect(() => {
+    let isSubscribed = true;
+
     async function getData() {
-      const response = await standardUpdateService.getAll();
-      setData(response);
-      setLoading(false);
+      const response = await standardUpdateService
+        .getAll()
+        .then((response) => response.filter((x) => x.synchronized === false));
+
+      if (isSubscribed) {
+        setData(response);
+        setLoading(false);
+      }
     }
 
     getData();
-  }, []);
 
-  const navigateToStandardUpdate = useCallback((standardDto: StandardUpdateModel) => {
-    history.push(`${RoutesPath.standardUpdate.form}/${standardDto.uuid}`);
+    return () => {
+      isSubscribed = false;
+    };
   }, []);
 
   return (
@@ -54,12 +61,7 @@ export default function StandardUpdate() {
                   {loading ? (
                     <Spinner />
                   ) : data.length > 0 ? (
-                    <Table
-                      columns={columns}
-                      data={data}
-                      // getTrProps={navigateToStandardUpdate}
-                      getTrProps={() => ({})}
-                    />
+                    <Table columns={columns} data={data} getTrProps={() => ({})} />
                   ) : (
                     "Não há atualizações disponíveis"
                   )}

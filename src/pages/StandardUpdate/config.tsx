@@ -1,13 +1,13 @@
-import { StandardUpdateModel } from "../../models/StandardUpdate";
-import { RoutesPath } from "../../routes/constants";
-import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
-import { Tooltip, Button } from "shards-react";
+import { StandardUpdateModel } from "models/StandardUpdate";
+import React from "react";
+import { useHistory } from "react-router";
+import { RoutesPath } from "routes/constants";
+import { Button } from "shards-react";
 
 export const columnsConfig = [
   {
     Header: "Identificação",
-    Cell: Navigate,
+    accessor: "identification",
   },
   {
     Header: "Data de Publicação",
@@ -23,13 +23,7 @@ export const columnsConfig = [
   {
     Header: "Atualizado",
     accessor: "synchronized",
-    Cell: ({ value }: { value: boolean }) => {
-      if (value) {
-        return `Sim`;
-      } else {
-        return `Não`;
-      }
-    },
+    Cell: ({ value }: { value: boolean }) => (value ? "Sim" : "Não"),
   },
   {
     Header: "Link",
@@ -42,34 +36,17 @@ export const columnsConfig = [
   },
 ];
 
-function Navigate({ row }: { row: any }) {
-  const value = row.original;
-  const url = RoutesPath.standardUpdate.form + "/" + value.uuid;
-  return (
-    <a
-      onClick={() => {
-        // useHistory().push(`${url}`);
-        window.location.href = url;
-      }}
-    >
-      {value.identification}
-    </a>
-  );
-}
-function Import({ row }: { row: any }) {
-  const value = row.original;
-  const url = RoutesPath.standard.form + "/?import=true&ref=" + value.uuid;
+function Import({ row: { original } }: { row: { original: StandardUpdateModel } }) {
+  const history = useHistory();
   return (
     <Button
       outline
-      // className="ml-4"
       type="button"
       theme="success"
-      disabled={value === "" ? true : false}
-      onClick={() => {
-        window.location.href = url;
+      onClick={(e: React.ChangeEvent<HTMLInputElement>) => {
+        e.stopPropagation();
+        history.push(`${RoutesPath.standard.formImport}/${original.uuid}`);
       }}
-      style={value === "" ? { cursor: "not-allowed" } : {}}
     >
       <i className="fa fa-link"></i>
       Importar
@@ -85,7 +62,10 @@ function OpenURL({ value }: { value: string }) {
       type="button"
       theme="primary"
       disabled={value === "" ? true : false}
-      onClick={() => window.open(value)}
+      onClick={(e: React.ChangeEvent<HTMLInputElement>) => {
+        e.stopPropagation();
+        window.open(value, "_blank", "noopener,noreferrer");
+      }}
       style={value === "" ? { cursor: "not-allowed" } : {}}
     >
       <i className="fa fa-link"></i>

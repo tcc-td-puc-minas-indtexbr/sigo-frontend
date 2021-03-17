@@ -90,6 +90,6 @@ export type StandardUpdateDto = {
   uuid: string;
   link: string;
   description: string;
-  synchronized: string;
+  synchronized: boolean;
   title: string;
 };
