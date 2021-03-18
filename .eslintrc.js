@@ -33,7 +33,6 @@ module.exports = {
     "@typescript-eslint/ban-types": "off",
     "react/prop-types": "off",
     "no-var": "error",
-    "no-debbuger": "warning",
     "prefer-const": "error",
     "prettier/prettier": [
       "error",

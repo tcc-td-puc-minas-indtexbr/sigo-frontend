@@ -5,9 +5,13 @@ import AppContext from "../../../store/AppContext";
 import classNames from "classnames";
 import React, { useContext } from "react";
 import { Col } from "shards-react";
+import AuthContext from "store/AuthContext";
 
 const MainSidebar: React.FC = () => {
   const { isSidebarVisible } = useContext(AppContext);
+  const { user } = useContext(AuthContext);
+
+  if (user.name === "") return <></>;
 
   return (
     <Col
@@ -18,7 +22,7 @@ const MainSidebar: React.FC = () => {
     >
       <SidebarMainNavbar />
       <SidebarSearch />
-      <SidebarNavItems />
+      <SidebarNavItems user={user} />
     </Col>
   );
 };

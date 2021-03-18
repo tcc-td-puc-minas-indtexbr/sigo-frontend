@@ -18,7 +18,7 @@ import {
 } from "shards-react";
 import AuthContext from "store/AuthContext";
 
-const Login: React.FC = () => {
+export default function Login() {
   const { login } = useContext(AuthContext);
   const history = useHistory();
 
@@ -97,6 +97,4 @@ const Login: React.FC = () => {
       </Row>
     </Container>
   );
-};
-
-export default Login;
+}
