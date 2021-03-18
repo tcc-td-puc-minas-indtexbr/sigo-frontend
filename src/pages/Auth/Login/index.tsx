@@ -1,5 +1,7 @@
 import { Spinner } from "components/spinner";
+import { emptyLoginRequest, LoginRequest } from "models/Request";
 import React, { useContext, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import {
   Container,
@@ -21,31 +23,28 @@ const Login: React.FC = () => {
   const history = useHistory();
 
   const [isLoading, setIsloading] = useState(false);
-  const [isInvalid, setIsInvalid] = useState(false);
-  const [form, setForm] = useState({
-    email: "",
-    password: "",
+  const { register, handleSubmit, errors, setError } = useForm<LoginRequest>({
+    defaultValues: emptyLoginRequest,
   });
 
-  const setEmail = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setForm({ ...form, email: e.target.value });
-
-  const setPassword = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setForm({ ...form, password: e.target.value });
-
-  const onSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  async function onSubmit(model: LoginRequest) {
     setIsloading(true);
 
-    const isLoginSuccess = await login(form);
+    const isLoginSuccess = await login(model)
+      .then((response) => {
+        if (!response) {
+          setError("email", {});
+          setError("password", {});
+        }
 
-    setIsInvalid(!isLoginSuccess);
-    setIsloading(false);
+        return response;
+      })
+      .finally(() => setIsloading(false));
 
     if (isLoginSuccess) {
       history.push("/");
     }
-  };
+  }
 
   return (
     <Container fluid>
@@ -57,28 +56,28 @@ const Login: React.FC = () => {
                 <h4 className="pb-2">SIGO</h4>
                 <CardSubtitle>Acesse sua conta</CardSubtitle>
               </Col>
-              <Form onSubmit={onSubmit}>
+              <Form onSubmit={handleSubmit(onSubmit)}>
                 <FormGroup>
-                  <label htmlFor="#email">Email</label>
+                  <label htmlFor="email">Email</label>
                   <FormInput
-                    autoComplete="email"
-                    id="#email"
+                    id="email"
+                    name="email"
                     placeholder="Email"
-                    onChange={setEmail}
-                    required
-                    invalid={isInvalid}
+                    autoComplete="email"
+                    innerRef={register({ required: true })}
+                    invalid={errors.email ? true : false}
                   />
                 </FormGroup>
                 <FormGroup>
-                  <label htmlFor="#password">Senha</label>
+                  <label htmlFor="password">Senha</label>
                   <FormInput
-                    autoComplete="current-password"
+                    id="password"
+                    name="password"
                     type="password"
-                    id="#password"
                     placeholder="Senha"
-                    onChange={setPassword}
-                    required
-                    invalid={isInvalid}
+                    autoComplete="current-password"
+                    innerRef={register({ required: true })}
+                    invalid={errors.password ? true : false}
                   />
                   <FormFeedback>Email ou senha incorretos.</FormFeedback>
                 </FormGroup>
