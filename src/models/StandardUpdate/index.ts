@@ -15,5 +15,5 @@ export const emptyStandardUpdateModel = {
   link: "",
   description: "",
   synchronized: false,
-  title: "f",
+  title: "",
 };

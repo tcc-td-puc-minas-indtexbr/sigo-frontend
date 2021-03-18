@@ -1,19 +1,13 @@
-import LoginRequest from "../../models/Request/LoginRequest";
-import AuthService from "../../services/AuthService";
+import { LoginRequest } from "models/Request";
+import { UserModel, userModelInitialState } from "models/User";
 import { ReactNodeLike } from "prop-types";
 import React, { useEffect, useState } from "react";
+import AuthService from "services/AuthService";
 import { LocalStorageKeys } from "shared/constants";
-
-type User = {
-  name: string;
-  role: string;
-  email: string;
-  avatarUrl: string;
-};
 
 type AuthContextProps = {
   token: string;
-  user: User;
+  user: UserModel;
   login: (request: LoginRequest) => Promise<boolean>;
   logout: () => void;
 };
@@ -22,16 +16,9 @@ type AuthProviderProps = {
   children: ReactNodeLike;
 };
 
-const userInitialState = {
-  name: "",
-  role: "",
-  email: "",
-  avatarUrl: "",
-};
-
 const AuthContext = React.createContext<AuthContextProps>({
   token: "",
-  user: userInitialState,
+  user: userModelInitialState,
   login: () => Promise.resolve(false),
   logout: () => void 0,
 });
@@ -39,7 +26,7 @@ const AuthContext = React.createContext<AuthContextProps>({
 export const AuthProvider: React.FC<AuthProviderProps> = (props) => {
   const authService = new AuthService();
   const [token, setToken] = useState<string>("");
-  const [user, setUser] = useState<User>(userInitialState);
+  const [user, setUser] = useState<UserModel>(userModelInitialState);
 
   const login = async (request: LoginRequest) => {
     const response = await authService.Login(request);
@@ -57,7 +44,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = (props) => {
   const logout = () => {
     localStorage.setItem(LocalStorageKeys.user, "");
     localStorage.setItem(LocalStorageKeys.token, "");
-    setUser(userInitialState);
+    setUser(userModelInitialState);
     setToken("");
   };
 

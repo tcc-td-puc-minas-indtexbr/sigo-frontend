@@ -17,6 +17,7 @@ const Pagination = styled.div`
 `;
 
 type DataTableProps<T> = {
+  // eslint-disable-next-line
   columns: any[];
   data: T[];
   getTrProps: (props: T) => void;
