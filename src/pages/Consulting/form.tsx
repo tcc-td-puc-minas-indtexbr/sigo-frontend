@@ -20,6 +20,7 @@ import {
   FormSelect,
   ListGroup,
   ListGroupItem,
+  FormTextarea,
   Row,
 } from "shards-react";
 import { DatePickerWrapper } from "shared/styles";
@@ -262,7 +263,7 @@ export default function ConsultingForm() {
                           </Col>
                         </Row>
                         <Row form>
-                          <Col md="4" className="form-group">
+                          <Col md="6" className="form-group">
                             <label htmlFor="standard">Norma</label>
                             <FormSelect
                               id="standard"
@@ -282,7 +283,7 @@ export default function ConsultingForm() {
                               })}
                             </FormSelect>
                           </Col>
-                          <Col md="4" className="form-group">
+                          <Col md="6" className="form-group">
                             <label htmlFor="objective">Objetivo</label>
                             <FormInput
                               id="objective"
@@ -292,9 +293,11 @@ export default function ConsultingForm() {
                               invalid={errors.objective ? true : false}
                             />
                           </Col>
-                          <Col md="4" className="form-group">
+                        </Row>
+                        <Row form>
+                          <Col md="12" className="form-group">
                             <label htmlFor="details">Observações</label>
-                            <FormInput
+                            <FormTextarea
                               id="details"
                               name="details"
                               placeholder="Observações"
