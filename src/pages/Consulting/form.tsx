@@ -1,12 +1,14 @@
 import PageTitle from "components/common/PageTitle";
 import { Spinner } from "components/spinner";
 import { ConsultingModel, emptyConsultingModel } from "models/Consulting";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import { StandardModel } from "models/Standard";
+import React, { useEffect, useMemo, useState } from "react";
 import { SyntheticEvent } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useHistory, useParams } from "react-router-dom";
 import { useToasts } from "react-toast-notifications";
 import ConsultingService from "services/ConsultingService";
+import StandardService from "services/StandardService";
 import {
   Button,
   Card,
@@ -33,12 +35,14 @@ export default function ConsultingForm() {
     defaultValues: emptyConsultingModel,
   });
 
+  const [standards, setStandards] = useState<StandardModel[]>([]);
   const [loading, setLoading] = useState({
     dataLoading: true,
     buttonsClicked: false,
   });
 
   const consultingService = useMemo(() => new ConsultingService(), []);
+  const standardService = useMemo(() => new StandardService(), []);
 
   const toogleButtonsClicked = (isClicked: boolean) =>
     setLoading({ ...loading, buttonsClicked: isClicked });
@@ -46,7 +50,16 @@ export default function ConsultingForm() {
   useEffect(() => {
     let isSubscribed = true;
 
-    async function loadConsulting() {
+    async function loadData() {
+      await standardService
+        .getAll()
+        .then((response) => isSubscribed && setStandards(response))
+        .catch((_) => {
+          if (isSubscribed) {
+            addToast("Não foi possível obter as normas.", { appearance: "error" });
+          }
+        });
+
       if (uuid !== undefined) {
         await consultingService
           .get(uuid)
@@ -60,7 +73,7 @@ export default function ConsultingForm() {
       }
     }
 
-    loadConsulting().then((_) => isSubscribed && setLoading({ ...loading, dataLoading: false }));
+    loadData().then((_) => isSubscribed && setLoading({ ...loading, dataLoading: false }));
 
     return () => {
       isSubscribed = false;
@@ -245,6 +258,48 @@ export default function ConsultingForm() {
                                   />
                                 </DatePickerWrapper>
                               )}
+                            />
+                          </Col>
+                        </Row>
+                        <Row form>
+                          <Col md="4" className="form-group">
+                            <label htmlFor="standard">Norma</label>
+                            <FormSelect
+                              id="standard"
+                              name="standardId"
+                              innerRef={register({ required: true })}
+                              invalid={errors.standardId ? true : false}
+                            >
+                              <option value="" disabled hidden>
+                                Selecione uma opção
+                              </option>
+                              {standards.map((item) => {
+                                return (
+                                  <option key={item.uuid} value={item.uuid}>
+                                    {item.identification}
+                                  </option>
+                                );
+                              })}
+                            </FormSelect>
+                          </Col>
+                          <Col md="4" className="form-group">
+                            <label htmlFor="objective">Objetivo</label>
+                            <FormInput
+                              id="objective"
+                              name="objective"
+                              placeholder="Objetivo"
+                              innerRef={register({ required: true })}
+                              invalid={errors.objective ? true : false}
+                            />
+                          </Col>
+                          <Col md="4" className="form-group">
+                            <label htmlFor="details">Observações</label>
+                            <FormInput
+                              id="details"
+                              name="details"
+                              placeholder="Observações"
+                              innerRef={register({ required: true })}
+                              invalid={errors.details ? true : false}
                             />
                           </Col>
                         </Row>

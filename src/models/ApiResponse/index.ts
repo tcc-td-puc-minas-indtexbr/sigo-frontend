@@ -63,6 +63,9 @@ export type ConsultingDto = {
   agreementDate: string;
   startDate: string;
   endDate: string;
+  standardId: string;
+  objective: string;
+  details: string;
 };
 
 export type StandardDto = {

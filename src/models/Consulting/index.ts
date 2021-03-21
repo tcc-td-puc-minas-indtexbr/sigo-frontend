@@ -7,6 +7,9 @@ export type ConsultingModel = {
   agreementDate: Date;
   startDate: Date;
   endDate: Date;
+  standardId: string;
+  objective: string;
+  details: string;
 };
 
 export const emptyConsultingModel = {
@@ -18,4 +21,7 @@ export const emptyConsultingModel = {
   agreementDate: new Date(Date.now()),
   startDate: new Date(Date.now()),
   endDate: new Date(Date.now()),
+  standardId: "",
+  objective: "",
+  details: "",
 };
