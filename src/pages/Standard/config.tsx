@@ -1,3 +1,4 @@
+import { isAllowedToDownloadStandard } from "models/Standard";
 import React from "react";
 import { Button } from "shards-react";
 
@@ -44,18 +45,19 @@ export const columnsConfig = [
 ];
 
 function DownloadFile({ value }: { value: string }) {
+  const allowDownload = isAllowedToDownloadStandard(value);
   return (
     <Button
       outline
       className="ml-2"
       type="button"
       theme="success"
-      disabled={value === "" ? true : false}
+      disabled={!allowDownload}
       onClick={(e: React.ChangeEvent<HTMLInputElement>) => {
         e.stopPropagation();
         window.open(value, "_blank", "noopener,noreferrer");
       }}
-      style={value === "" ? { cursor: "not-allowed" } : {}}
+      style={!allowDownload ? { cursor: "not-allowed" } : {}}
     >
       <i className="fa fa-download"></i>
     </Button>

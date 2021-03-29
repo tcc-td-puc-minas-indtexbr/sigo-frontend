@@ -35,3 +35,7 @@ export const emptyStandardModel = {
   uuid: "",
   validityStart: new Date(Date.now()),
 };
+
+export function isAllowedToDownloadStandard(file: string | undefined | null) {
+  return file !== null && file !== undefined && file !== "";
+}

@@ -1,6 +1,6 @@
 import PageTitle from "components/common/PageTitle";
 import { Spinner } from "components/spinner";
-import { StandardModel, emptyStandardModel } from "models/Standard";
+import { StandardModel, emptyStandardModel, isAllowedToDownloadStandard } from "models/Standard";
 import React, { SyntheticEvent, useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useHistory, useParams } from "react-router-dom";
@@ -166,7 +166,7 @@ export default function StandardForm() {
   }
 
   function isAllowedToDownloadFile() {
-    return getValues().file === "" || standardFile !== null;
+    return isAllowedToDownloadStandard(getValues().file) || standardFile !== null;
   }
 
   return (
@@ -227,8 +227,10 @@ export default function StandardForm() {
                                   type="button"
                                   theme="success"
                                   onClick={() => window.open(getValues().file)}
-                                  disabled={isAllowedToDownloadFile() ? true : false}
-                                  style={isAllowedToDownloadFile() ? { cursor: "not-allowed" } : {}}
+                                  disabled={!isAllowedToDownloadFile()}
+                                  style={
+                                    !isAllowedToDownloadFile() ? { cursor: "not-allowed" } : {}
+                                  }
                                 >
                                   <i className="fa fa-download"></i> Baixar arquivo
                                 </Button>

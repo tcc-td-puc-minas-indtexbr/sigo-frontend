@@ -1,3 +1,4 @@
+import Amplify from "aws-amplify";
 import { LoginRequest } from "models/Request";
 import { UserModel, userModelInitialState } from "models/User";
 import { ReactNodeLike } from "prop-types";
@@ -44,13 +45,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = (props) => {
   const logout = () => {
     localStorage.setItem(LocalStorageKeys.user, "");
     localStorage.setItem(LocalStorageKeys.token, "");
+
     setUser(userModelInitialState);
-    setToken("");
+    localStorage.clear();
   };
 
   useEffect(() => {
     const token = localStorage.getItem(LocalStorageKeys.token);
     const user = localStorage.getItem(LocalStorageKeys.user);
+
+    console.log({ storage: Amplify.Storage });
+    console.log({ storage: Amplify.DataStore });
 
     if (token !== "" && token !== null && user !== "" && user !== null) {
       setUser(JSON.parse(user));

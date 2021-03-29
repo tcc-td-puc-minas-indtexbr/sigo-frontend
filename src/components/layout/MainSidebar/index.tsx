@@ -21,7 +21,6 @@ const MainSidebar: React.FC = () => {
       md={{ size: 3 }}
     >
       <SidebarMainNavbar />
-      <SidebarSearch />
       <SidebarNavItems user={user} />
     </Col>
   );
