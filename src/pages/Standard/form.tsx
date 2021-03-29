@@ -46,6 +46,7 @@ export default function StandardForm() {
 
   const standardFileRef = useRef<HTMLInputElement>(null);
   const [standardFile, setStandardFile] = useState<File | null>(null);
+  const [fileUrl, setFileUrl] = useState("");
   const [loading, setLoading] = useState({
     dataLoading: true,
     buttonsClicked: false,
@@ -83,6 +84,7 @@ export default function StandardForm() {
       await getStandard()
         .then((standard) => {
           if (isSubscribed) {
+            setFileUrl(standard.file);
             reset(standard);
           }
         })
@@ -178,10 +180,6 @@ export default function StandardForm() {
     }
   }
 
-  function isAllowedToDownloadFile() {
-    return isAllowedToDownloadStandard(getValues().file) || standardFile !== null;
-  }
-
   return (
     <>
       <Row noGutters className="page-header py-4">
@@ -238,11 +236,17 @@ export default function StandardForm() {
                                 <Button
                                   outline
                                   type="button"
-                                  theme="success"
-                                  onClick={() => window.open(getValues().file)}
-                                  disabled={!isAllowedToDownloadFile()}
+                                  theme={`${
+                                    isAllowedToDownloadStandard(fileUrl) ? "success" : "dark"
+                                  }`}
+                                  onClick={() =>
+                                    window.open(fileUrl, "_blank", "noopener,noreferrer")
+                                  }
+                                  disabled={!isAllowedToDownloadStandard(fileUrl)}
                                   style={
-                                    !isAllowedToDownloadFile() ? { cursor: "not-allowed" } : {}
+                                    !isAllowedToDownloadStandard(fileUrl)
+                                      ? { cursor: "not-allowed" }
+                                      : {}
                                   }
                                 >
                                   <i className="fa fa-download"></i> Baixar arquivo

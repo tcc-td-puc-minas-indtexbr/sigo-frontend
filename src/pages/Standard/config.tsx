@@ -51,7 +51,7 @@ function DownloadFile({ value }: { value: string }) {
       outline
       className="ml-2"
       type="button"
-      theme="success"
+      theme={`${allowDownload ? "success" : "dark"}`}
       disabled={!allowDownload}
       onClick={(e: React.ChangeEvent<HTMLInputElement>) => {
         e.stopPropagation();
