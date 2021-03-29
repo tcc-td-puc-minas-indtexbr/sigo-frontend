@@ -54,9 +54,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = (props) => {
     const token = localStorage.getItem(LocalStorageKeys.token);
     const user = localStorage.getItem(LocalStorageKeys.user);
 
-    console.log({ storage: Amplify.Storage });
-    console.log({ storage: Amplify.DataStore });
-
     if (token !== "" && token !== null && user !== "" && user !== null) {
       setUser(JSON.parse(user));
       setToken(token);

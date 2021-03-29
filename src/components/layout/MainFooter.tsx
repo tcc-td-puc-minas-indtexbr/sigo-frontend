@@ -5,7 +5,7 @@ import { Container, Row, Nav, NavItem, NavLink } from "shards-react";
 const menuItems = [
   {
     title: "Inicio",
-    to: "#",
+    to: "/",
   },
 ];
 

@@ -32,7 +32,15 @@ export default function StandardForm() {
   const { uuid, importuuid } = useParams<{ uuid?: string; importuuid?: string }>();
   const isEditingMode = uuid !== undefined;
 
-  const { register, handleSubmit, errors, control, reset, getValues } = useForm<StandardModel>({
+  const {
+    register,
+    handleSubmit,
+    errors,
+    control,
+    reset,
+    getValues,
+    setValue,
+  } = useForm<StandardModel>({
     defaultValues: emptyStandardModel,
   });
 
@@ -60,6 +68,7 @@ export default function StandardForm() {
       } else if (importuuid !== undefined) {
         getStandard = () =>
           standardUpdateService.get(importuuid).then((response) => {
+            addToast("A norma foi importada para o formulário.", { appearance: "success" });
             return {
               ...getValues(),
               publicationDate: response.publicationDate,
@@ -72,7 +81,11 @@ export default function StandardForm() {
       }
 
       await getStandard()
-        .then((standard) => reset(standard))
+        .then((standard) => {
+          if (isSubscribed) {
+            reset(standard);
+          }
+        })
         .catch((_) => {
           if (isSubscribed) {
             addToast("Não foi possível exibir o registro selecionado.", { appearance: "error" });
@@ -413,8 +426,18 @@ export default function StandardForm() {
                               id="price"
                               name="price"
                               placeholder="Preço"
+                              maxLength="14"
                               innerRef={register({ required: true })}
                               invalid={errors.price ? true : false}
+                              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                let price = e.target.value.replace(/\D/g, "");
+                                price = price.replace(/(\d{1})(\d{14})$/, "$1.$2");
+                                price = price.replace(/(\d{1})(\d{11})$/, "$1.$2");
+                                price = price.replace(/(\d{1})(\d{8})$/, "$1.$2");
+                                price = price.replace(/(\d{1})(\d{5})$/, "$1.$2");
+                                price = price.replace(/(\d{1})(\d{1,2})$/, "$1,$2");
+                                setValue("price", price);
+                              }}
                             />
                           </Col>
                           <Col md="2" className="form-group">
