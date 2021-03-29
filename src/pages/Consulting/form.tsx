@@ -32,7 +32,7 @@ export default function ConsultingForm() {
   const { uuid } = useParams<{ uuid?: string }>();
   const isEditingMode = uuid !== undefined;
 
-  const { register, handleSubmit, errors, control, reset } = useForm<ConsultingModel>({
+  const { register, handleSubmit, errors, control, reset, setValue } = useForm<ConsultingModel>({
     defaultValues: emptyConsultingModel,
   });
 
@@ -64,7 +64,11 @@ export default function ConsultingForm() {
       if (uuid !== undefined) {
         await consultingService
           .get(uuid)
-          .then((response) => isSubscribed && reset(response))
+          .then((response) => {
+            if (isSubscribed) {
+              reset(response);
+            }
+          })
           .catch((_) => {
             if (isSubscribed) {
               addToast("Não foi possível exibir o registro selecionado.", { appearance: "error" });
@@ -189,8 +193,17 @@ export default function ConsultingForm() {
                               id="cnpj"
                               name="cnpj"
                               placeholder="CNPJ"
-                              innerRef={register({ required: true })}
+                              maxLength="18"
                               invalid={errors.cnpj ? true : false}
+                              innerRef={register({ required: true })}
+                              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                let cnpj = e.target.value.replace(/\D/g, "");
+                                cnpj = cnpj.replace(/^(\d{2})(\d)/, "$1.$2");
+                                cnpj = cnpj.replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3");
+                                cnpj = cnpj.replace(/\.(\d{3})(\d)/, ".$1/$2");
+                                cnpj = cnpj.replace(/(\d{4})(\d)/, "$1-$2");
+                                setValue("cnpj", cnpj);
+                              }}
                             />
                           </Col>
                         </Row>
