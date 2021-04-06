@@ -15,7 +15,7 @@ export default function StandardUpdateCheck() {
   const [data, setData] = useState<StandardUpdateModel[]>([]);
 
   const standardUpdateService = React.useMemo(() => new StandardUpdateService(), []);
-  const [alertVisibility, setAlertVisibility] = useState(true);
+  const [alertVisibility, setAlertVisibility] = useState(false);
 
   const columns = React.useMemo(() => columnsConfig, []);
 
@@ -27,9 +27,10 @@ export default function StandardUpdateCheck() {
 
   useEffect(() => {
     async function getData() {
-      // const response = await standardUpdateService.checkUpdates();
-      // setData(response);
+      const response = await standardUpdateService.checkUpdates();
+      setData(response);
       setLoading(false);
+      setAlertVisibility(true);
     }
 
     getData();
