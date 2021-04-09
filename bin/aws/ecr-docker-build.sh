@@ -1,1 +1,0 @@
-docker build -t sigo-frontend -f ./docker/node/production/Dockerfile .
