@@ -10,8 +10,11 @@ phases:
     commands:
       - echo Installing all requirements
       - npm install
+      - echo Download awsexport.ts file
+      - aws s3 cp s3://tcc-td-sigo-production/sigo-frontend/aws-exports.ts ./src/aws-exports.ts
   build:
     commands:
+      - echo Bulding project
       - npm run build
 #      - echo Bulding docker image
 #      - ./bin/aws/ecr-docker-build.sh
