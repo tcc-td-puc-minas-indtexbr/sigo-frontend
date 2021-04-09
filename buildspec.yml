@@ -10,8 +10,8 @@ phases:
       - echo Installing all requirements
       - npm install
       - echo Download awsexport.ts file
-      - aws s3 cp s3://$S3_BUCKET/sigo-frontend/aws-exports.ts ./src/aws-exports.ts
-      - aws s3 cp s3://$S3_BUCKET/sigo-frontend/env.production .env
+      - aws s3 cp s3://$ENV_S3_BUCKET/sigo-frontend/aws-exports.ts ./src/aws-exports.ts
+      - aws s3 cp s3://$ENV_S3_BUCKET/sigo-frontend/env.production .env
   build:
     commands:
       - echo Bulding project
