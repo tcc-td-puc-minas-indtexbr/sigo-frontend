@@ -2,7 +2,6 @@ version: 0.2
 env:
   variables:
     PROJECT_NAME: "sigo-frontend"
-    REGION: "sa-east-1"
 phases:
   install:
     runtime-versions:
@@ -11,42 +10,13 @@ phases:
       - echo Installing all requirements
       - npm install
       - echo Download awsexport.ts file
-      - aws s3 cp s3://tcc-td-sigo-production/sigo-frontend/aws-exports.ts ./src/aws-exports.ts
+      - aws s3 cp s3://$S3_BUCKET/sigo-frontend/aws-exports.ts ./src/aws-exports.ts
+      - aws s3 cp s3://$S3_BUCKET/sigo-frontend/env.production .env
   build:
     commands:
       - echo Bulding project
       - npm run build
-#      - echo Bulding docker image
-#      - ./bin/aws/ecr-docker-build.sh
-#      - echo Generating docker tag
-#      - ./bin/aws/ecr-docker-tag.sh $ACCOUNT_ID
-  post_build:
-    commands:
-      - echo Execute a CloudFront invalidation
-      - aws cloudfront create-invalidation --distribution-id E2KXPUVCJYGEFQ --paths "/*"
-#      - TODO An error occurred (AccessDenied) when calling the CreateInvalidation operation: User: arn:aws:sts::xxxxxxx:assumed-role/codebuild-ecs-service-role/AWSCodeBuild-01316fcf-eedc-4924-963d-ad2ac34bd500 is not authorized to perform: cloudfront:CreateInvalidation on resource: arn:aws:cloudfront::xxxxxx:distribution/E2KXPUVCJYGEFQ
-#      - echo Loging in ECR
-#      - PASSWORD=$(aws ecr get-login-password --region sa-east-1)
-#      - docker login -u AWS -p $PASSWORD $ACCOUNT_ID.dkr.ecr.sa-east-1.amazonaws.com
-#      - echo Pushing docker images
-#      - ./bin/aws/ecr-docker-push.sh $ACCOUNT_ID
-    #      - echo Installing test requirements
-    #      - pip install -r ./requirements-tests.txt
-    #      - echo Running unit testes
-    #      - ./bin/tests/unit-coverage-no-report-html.sh
-#    finally:
-#      - echo Generating imagedefinitions.json file
-#      - printf '[{"name":"%s", "imageUri":"%s"}]' "${PROJECT_NAME}" "${ACCOUNT_ID}.dkr.ecr.sa-east-1.amazonaws.com/${PROJECT_NAME}" >> imagedefinitions.json
-#      - cat imagedefinitions.json
-#      - echo Generating package file
-#      - ./bin/tools/package.sh
-#reports:
-#  UnitTestsReports:
-#    files:
-#      - 'target/unit/clover.xml'
-#    file-format: 'CLOVERXML'
 artifacts:
   base-directory: build
   files:
-#    - imagedefinitions.json
     - '**/*'

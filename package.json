@@ -31,13 +31,12 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "dev": "NODE_ENV=development react-scripts start",
+    "dev": "cp .env.dev .env && NODE_ENV=development react-scripts start",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint . --fix",
-    "s3": "./bin/aws/s3-sync.sh"
+    "lint": "eslint . --fix"
   },
   "eslintConfig": {
     "extends": [
