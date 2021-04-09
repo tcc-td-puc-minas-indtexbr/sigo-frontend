@@ -4,9 +4,7 @@ Frontend do sistema SIGO que faz parte do TCC do curso Especialização em Arqui
 
 
 <!-- badges -->
-[![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)]()
-
----
+[![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](LICENSE.md)
 
 ## Prerequisites
 - React
