@@ -6,7 +6,13 @@ export function buildApiInstanceForURL(url: string) {
     throw new Error("URL cannot be empty.");
   }
 
-  const token = localStorage.getItem(LocalStorageKeys.token);
+  const key = LocalStorageKeys?.token ?? "AUTH_TOKEN";
+  let token = "";
+  try {
+    token = JSON.parse(localStorage.getItem(key) ?? "");
+  } catch (e) {
+    console.error(e);
+  }
 
   const api = axios.create({
     baseURL: url,
