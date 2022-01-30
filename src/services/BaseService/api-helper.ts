@@ -9,7 +9,7 @@ export function buildApiInstanceForURL(url: string) {
   const key = LocalStorageKeys?.token ?? "AUTH_TOKEN";
   let token = "";
   try {
-    token = JSON.parse(localStorage.getItem(key) ?? "");
+    token = JSON.parse(localStorage.getItem(key) ?? "{}");
   } catch (e) {
     console.error(e);
   }
